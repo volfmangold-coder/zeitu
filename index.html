@@ -3,236 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEITU | Minimalist Clothing</title>
-    <!-- Подключаем стильный современный шрифт -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>ZEITU | Premium</title>
+    
+    <!-- Подключаем шрифты: Cinzel для логотипа (готика/люкс) и Roboto Mono для брутального текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
     
     <style>
-        /* Основные переменные и настройки */
         :root {
-            --bg-color: #050505; /* Глубокий черный */
-            --text-color: #f5f5f5; /* Почти белый для контраста */
-            --accent-color: #1a1a1a;
-            --btn-hover: #333333;
+            --bg: #000000;
+            --fg: #ffffff;
+            --grey: #555555;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Шапка сайта */
+        /* Навигация */
         header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            padding: 40px 20px 20px 20px;
-            border-bottom: 1px solid var(--accent-color);
+            padding: 30px 40px;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            border-bottom: 1px solid #222;
         }
 
         .logo {
+            font-family: 'Cinzel', serif;
             font-size: 2.5rem;
-            font-weight: 600;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: 10px;
             cursor: pointer;
         }
 
-        /* Навигация (Мужчины / Женщины) */
         nav {
             display: flex;
-            gap: 40px;
+            gap: 30px;
         }
 
         nav button {
             background: none;
             border: none;
-            color: #666; /* Серый цвет для неактивных кнопок */
-            font-size: 1rem;
-            font-weight: 400;
+            color: var(--grey);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
             letter-spacing: 2px;
-            text-transform: uppercase;
             cursor: pointer;
-            padding-bottom: 5px;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
         }
 
-        nav button.active {
-            color: var(--text-color);
-            border-bottom: 1px solid var(--text-color);
+        nav button.active, nav button:hover {
+            color: var(--fg);
         }
 
-        nav button:hover {
-            color: var(--text-color);
-        }
-
-        /* Сетка товаров */
+        /* Журнальная сетка */
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 50px 20px;
+            padding: 40px;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            /* Крупные карточки для вайба Chrome Hearts */
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
             gap: 40px;
         }
 
-        /* Карточка товара */
         .product-card {
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border: 1px solid transparent;
+            transition: border 0.3s;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            border: 1px solid #333;
         }
 
         .product-image {
             width: 100%;
-            height: 400px;
+            height: 650px;
             object-fit: cover;
-            border-radius: 4px;
-            background-color: var(--accent-color);
+            filter: grayscale(20%) contrast(110%);
+            transition: filter 0.5s, transform 0.7s ease;
         }
 
+        .product-card:hover .product-image {
+            filter: grayscale(0%) contrast(120%);
+            transform: scale(1.02);
+        }
+
+        /* Информация о товаре появляется поверх фото внизу */
         .product-info {
-            padding: 15px 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .product-details h3 {
-            margin: 0;
             font-size: 1rem;
             font-weight: 400;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
         }
 
         .product-details p {
-            margin: 5px 0 0 0;
-            color: #888;
-            font-size: 0.9rem;
-        }
-
-        /* Кнопка "В корзину" (Второй клик) */
-        .btn-add {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 10px 20px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
+            color: var(--grey);
             font-size: 0.85rem;
-            text-transform: uppercase;
-            border-radius: 2px;
+        }
+
+        /* Брутальная кнопка покупки */
+        .btn-buy {
+            background: transparent;
+            color: var(--fg);
+            border: 1px solid var(--fg);
+            padding: 12px 25px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
         }
 
-        .btn-add:hover {
-            background-color: #cccccc;
+        .product-card:hover .btn-buy {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Утилита для скрытия секций */
+        .btn-buy:hover {
+            background: var(--fg);
+            color: var(--bg);
+        }
+
         .hidden {
             display: none;
+        }
+
+        /* Адаптив для телефонов */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .product-image {
+                height: 500px;
+            }
+            .btn-buy {
+                opacity: 1; /* На телефоне кнопка видна всегда */
+                transform: none;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Шапка сайта с логотипом и навигацией -->
     <header>
         <div class="logo">ZEITU</div>
         <nav>
-            <!-- Клик 1: Выбор категории -->
-            <button id="btn-men" class="active" onclick="switchCategory('men')">Men</button>
-            <button id="btn-women" onclick="switchCategory('women')">Women</button>
+            <button id="btn-men" class="active" onclick="switchCategory('men')">Menswear</button>
+            <button id="btn-women" onclick="switchCategory('women')">Womenswear</button>
         </nav>
     </header>
 
     <div class="container">
         
-        <!-- МУЖСКАЯ КОЛЛЕКЦИЯ -->
+        <!-- MENSWEAR -->
         <div id="men-section">
             <div class="grid">
-                <!-- Товар 1 -->
                 <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1520975954732-57dd99ddce61?auto=format&fit=crop&w=400&q=80" alt="Men Coat" class="product-image">
+                    <!-- Заменил фото на более мрачные/стильные -->
+                    <img src="https://images.unsplash.com/photo-1550246140-5119ae4790b8?auto=format&fit=crop&w=800&q=80" alt="Leather Jacket" class="product-image">
                     <div class="product-info">
                         <div class="product-details">
-                            <h3>Wool Overcoat</h3>
-                            <p>$189.00</p>
+                            <h3>Heavy Leather Jacket</h3>
+                            <p>USD 1,200</p>
                         </div>
-                        <button class="btn-add">Buy</button> <!-- Клик 2: Покупка -->
+                        <button class="btn-buy">Purchase</button>
                     </div>
                 </div>
-                <!-- Товар 2 -->
+                
                 <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=400&q=80" alt="Men T-Shirt" class="product-image">
+                    <img src="https://images.unsplash.com/photo-1509539662397-116cb90542f1?auto=format&fit=crop&w=800&q=80" alt="Black Hoodie" class="product-image">
                     <div class="product-info">
                         <div class="product-details">
-                            <h3>Basic T-Shirt</h3>
-                            <p>$45.00</p>
+                            <h3>Oversized Void Hoodie</h3>
+                            <p>USD 350</p>
                         </div>
-                        <button class="btn-add">Buy</button>
+                        <button class="btn-buy">Purchase</button>
                     </div>
                 </div>
-                <!-- Товар 3 -->
+
                 <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=400&q=80" alt="Men Pants" class="product-image">
+                    <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80" alt="Cargo Pants" class="product-image">
                     <div class="product-info">
                         <div class="product-details">
-                            <h3>Classic Trousers</h3>
-                            <p>$95.00</p>
+                            <h3>Tactical Denim</h3>
+                            <p>USD 480</p>
                         </div>
-                        <button class="btn-add">Buy</button>
+                        <button class="btn-buy">Purchase</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ЖЕНСКАЯ КОЛЛЕКЦИЯ -->
+        <!-- WOMENSWEAR -->
         <div id="women-section" class="hidden">
             <div class="grid">
-                <!-- Товар 1 -->
                 <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?auto=format&fit=crop&w=400&q=80" alt="Women Coat" class="product-image">
+                    <img src="https://images.unsplash.com/photo-1617019114594-54afef31d558?auto=format&fit=crop&w=800&q=80" alt="Dark Dress" class="product-image">
                     <div class="product-info">
                         <div class="product-details">
-                            <h3>Trench Coat</h3>
-                            <p>$210.00</p>
+                            <h3>Silk Noir Dress</h3>
+                            <p>USD 890</p>
                         </div>
-                        <button class="btn-add">Buy</button>
+                        <button class="btn-buy">Purchase</button>
                     </div>
                 </div>
-                <!-- Товар 2 -->
+
                 <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1515347619362-67fd0baf1a6b?auto=format&fit=crop&w=400&q=80" alt="Women Dress" class="product-image">
+                    <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?auto=format&fit=crop&w=800&q=80" alt="Corset" class="product-image">
                     <div class="product-info">
                         <div class="product-details">
-                            <h3>Evening Dress</h3>
-                            <p>$150.00</p>
+                            <h3>Structured Corset Top</h3>
+                            <p>USD 420</p>
                         </div>
-                        <button class="btn-add">Buy</button>
+                        <button class="btn-buy">Purchase</button>
                     </div>
                 </div>
-                <!-- Товар 3 -->
+
                 <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Women T-Shirt" class="product-image">
+                    <img src="https://images.unsplash.com/photo-1588117305388-c2631a279f82?auto=format&fit=crop&w=800&q=80" alt="Boots" class="product-image">
                     <div class="product-info">
                         <div class="product-details">
-                            <h3>Cotton Top</h3>
-                            <p>$40.00</p>
+                            <h3>Combat Leather Boots</h3>
+                            <p>USD 950</p>
                         </div>
-                        <button class="btn-add">Buy</button>
+                        <button class="btn-buy">Purchase</button>
                     </div>
                 </div>
             </div>
@@ -240,20 +272,28 @@
 
     </div>
 
-    <!-- Логика переключения коллекций (JavaScript) -->
     <script>
         function switchCategory(category) {
-            // Убираем активный статус у всех кнопок навигации
             document.getElementById('btn-men').classList.remove('active');
             document.getElementById('btn-women').classList.remove('active');
+            
+            // Плавное скрытие
+            document.getElementById('men-section').style.opacity = '0';
+            document.getElementById('women-section').style.opacity = '0';
 
-            // Скрываем все разделы с товарами
-            document.getElementById('men-section').classList.add('hidden');
-            document.getElementById('women-section').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('men-section').classList.add('hidden');
+                document.getElementById('women-section').classList.add('hidden');
 
-            // Делаем нажатую кнопку активной и показываем нужный раздел
-            document.getElementById('btn-' + category).classList.add('active');
-            document.getElementById(category + '-section').classList.remove('hidden');
+                document.getElementById('btn-' + category).classList.add('active');
+                document.getElementById(category + '-section').classList.remove('hidden');
+                
+                // Плавное появление
+                setTimeout(() => {
+                    document.getElementById(category + '-section').style.opacity = '1';
+                    document.getElementById(category + '-section').style.transition = 'opacity 0.4s ease';
+                }, 50);
+            }, 200); // Небольшая задержка для эффекта
         }
     </script>
 </body>
