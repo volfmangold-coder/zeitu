@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEITU | Minimalist Clothing</title>
+    <!-- Подключаем стильный современный шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Основные переменные и настройки */
+        :root {
+            --bg-color: #050505; /* Глубокий черный */
+            --text-color: #f5f5f5; /* Почти белый для контраста */
+            --accent-color: #1a1a1a;
+            --btn-hover: #333333;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Шапка сайта */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 20px 20px;
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        /* Навигация (Мужчины / Женщины) */
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: #666; /* Серый цвет для неактивных кнопок */
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        nav button.active {
+            color: var(--text-color);
+            border-bottom: 1px solid var(--text-color);
+        }
+
+        nav button:hover {
+            color: var(--text-color);
+        }
+
+        /* Сетка товаров */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        /* Карточка товара */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 4px;
+            background-color: var(--accent-color);
+        }
+
+        .product-info {
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-details h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .product-details p {
+            margin: 5px 0 0 0;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Кнопка "В корзину" (Второй клик) */
+        .btn-add {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-add:hover {
+            background-color: #cccccc;
+        }
+
+        /* Утилита для скрытия секций */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта с логотипом и навигацией -->
+    <header>
+        <div class="logo">ZEITU</div>
+        <nav>
+            <!-- Клик 1: Выбор категории -->
+            <button id="btn-men" class="active" onclick="switchCategory('men')">Men</button>
+            <button id="btn-women" onclick="switchCategory('women')">Women</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <!-- МУЖСКАЯ КОЛЛЕКЦИЯ -->
+        <div id="men-section">
+            <div class="grid">
+                <!-- Товар 1 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1520975954732-57dd99ddce61?auto=format&fit=crop&w=400&q=80" alt="Men Coat" class="product-image">
+                    <div class="product-info">
+                        <div class="product-details">
+                            <h3>Wool Overcoat</h3>
+                            <p>$189.00</p>
+                        </div>
+                        <button class="btn-add">Buy</button> <!-- Клик 2: Покупка -->
+                    </div>
+                </div>
+                <!-- Товар 2 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=400&q=80" alt="Men T-Shirt" class="product-image">
+                    <div class="product-info">
+                        <div class="product-details">
+                            <h3>Basic T-Shirt</h3>
+                            <p>$45.00</p>
+                        </div>
+                        <button class="btn-add">Buy</button>
+                    </div>
+                </div>
+                <!-- Товар 3 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=400&q=80" alt="Men Pants" class="product-image">
+                    <div class="product-info">
+                        <div class="product-details">
+                            <h3>Classic Trousers</h3>
+                            <p>$95.00</p>
+                        </div>
+                        <button class="btn-add">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЖЕНСКАЯ КОЛЛЕКЦИЯ -->
+        <div id="women-section" class="hidden">
+            <div class="grid">
+                <!-- Товар 1 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?auto=format&fit=crop&w=400&q=80" alt="Women Coat" class="product-image">
+                    <div class="product-info">
+                        <div class="product-details">
+                            <h3>Trench Coat</h3>
+                            <p>$210.00</p>
+                        </div>
+                        <button class="btn-add">Buy</button>
+                    </div>
+                </div>
+                <!-- Товар 2 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1515347619362-67fd0baf1a6b?auto=format&fit=crop&w=400&q=80" alt="Women Dress" class="product-image">
+                    <div class="product-info">
+                        <div class="product-details">
+                            <h3>Evening Dress</h3>
+                            <p>$150.00</p>
+                        </div>
+                        <button class="btn-add">Buy</button>
+                    </div>
+                </div>
+                <!-- Товар 3 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Women T-Shirt" class="product-image">
+                    <div class="product-info">
+                        <div class="product-details">
+                            <h3>Cotton Top</h3>
+                            <p>$40.00</p>
+                        </div>
+                        <button class="btn-add">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Логика переключения коллекций (JavaScript) -->
+    <script>
+        function switchCategory(category) {
+            // Убираем активный статус у всех кнопок навигации
+            document.getElementById('btn-men').classList.remove('active');
+            document.getElementById('btn-women').classList.remove('active');
+
+            // Скрываем все разделы с товарами
+            document.getElementById('men-section').classList.add('hidden');
+            document.getElementById('women-section').classList.add('hidden');
+
+            // Делаем нажатую кнопку активной и показываем нужный раздел
+            document.getElementById('btn-' + category).classList.add('active');
+            document.getElementById(category + '-section').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
