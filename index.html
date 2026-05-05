@@ -1,11 +1,10 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZEITU | Premium Clothing</title>
     
-    <!-- Шрифты: Cinzel для премиального логотипа, Inter для чистого и современного интерфейса -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
@@ -20,6 +19,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            transition: background 0.3s, color 0.3s;
         }
 
         body {
@@ -30,9 +30,20 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- ШАПКА САЙТА --- */
+        /* АНИМАЦИИ ДИНАМИКИ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated-section {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* ШАПКА */
         header {
             display: flex;
             justify-content: space-between;
@@ -41,12 +52,11 @@
             position: sticky;
             top: 0;
             background: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             z-index: 100;
             border-bottom: 1px solid var(--border);
         }
 
-        /* Логотип и глаз */
         .brand-container {
             display: flex;
             align-items: center;
@@ -54,12 +64,13 @@
             cursor: pointer;
         }
 
-        .eye-icon {
-            width: 35px;
+        /* ГИФКА ГЛАЗА */
+        .eye-gif {
+            width: 45px;
             height: 35px;
-            fill: none;
-            stroke: var(--fg);
-            stroke-width: 1.5;
+            object-fit: cover;
+            /* Если гифки пока нет, тут будет темный квадрат */
+            background-color: #111; 
         }
 
         .logo {
@@ -70,16 +81,15 @@
             text-transform: uppercase;
         }
 
-        /* Центральное меню (Мужское / Женское) */
-        .category-nav {
+        .main-nav {
             display: flex;
-            gap: 40px;
+            gap: 30px;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
         }
 
-        .category-nav button {
+        .main-nav button, .sub-nav button {
             background: none;
             border: none;
             color: var(--grey);
@@ -89,45 +99,82 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: color 0.3s;
             padding-bottom: 4px;
         }
 
-        .category-nav button.active, .category-nav button:hover {
+        .main-nav button.active, .sub-nav button.active,
+        .main-nav button:hover, .sub-nav button:hover {
             color: var(--fg);
         }
-
-        .category-nav button.active {
+        .main-nav button.active, .sub-nav button.active {
             border-bottom: 1px solid var(--fg);
         }
 
-        /* Правое меню (Логин / Корзина) */
-        .user-nav {
+        .controls-nav {
             display: flex;
-            gap: 25px;
+            align-items: center;
+            gap: 20px;
         }
 
-        .user-nav a {
+        .lang-select {
+            background: transparent;
             color: var(--fg);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 400;
-            letter-spacing: 1px;
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
             text-transform: uppercase;
-            transition: opacity 0.3s;
         }
 
-        .user-nav a:hover {
-            opacity: 0.6;
+        .lang-select option {
+            background: var(--bg);
+            color: var(--fg);
         }
 
-        /* --- ОСНОВНОЙ КОНТЕНТ --- */
+        /* КОНТЕНТ */
         main {
             flex-grow: 1;
             padding: 40px;
             max-width: 1600px;
             margin: 0 auto;
             width: 100%;
+        }
+
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* ИСТОРИЯ БРЕНДА (HOMEPAGE) */
+        .history-section {
+            max-width: 800px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .history-section h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+        }
+
+        .history-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        /* ОДЕЖДА */
+        .sub-nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 50px;
         }
 
         .grid {
@@ -140,12 +187,11 @@
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            group: hover;
         }
 
         .image-container {
             width: 100%;
-            height: 500px;
+            height: 550px;
             overflow: hidden;
             background-color: #111;
             position: relative;
@@ -155,11 +201,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
+            transition: transform 0.6s ease, filter 0.3s;
+            filter: grayscale(20%);
         }
 
         .product-card:hover .product-image {
             transform: scale(1.05);
+            filter: grayscale(0%);
         }
 
         .product-info {
@@ -182,7 +230,6 @@
             font-size: 0.9rem;
         }
 
-        /* Кнопка "Купить" (в два клика) */
         .btn-buy {
             background: var(--fg);
             color: var(--bg);
@@ -200,237 +247,254 @@
             background: #cccccc;
         }
 
-        /* --- ФУТЕР И КУКИ --- */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 40px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--grey);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .hidden { display: none !important; }
 
-        .footer-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .footer-links a {
-            color: var(--grey);
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            color: var(--fg);
-        }
-
-        .cookie-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #111111;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.75rem;
-            z-index: 1000;
-            border-top: 1px solid var(--border);
-        }
-
-        .cookie-close {
-            background: none;
-            border: none;
-            color: var(--fg);
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Адаптив для телефонов */
         @media (max-width: 900px) {
-            header {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .category-nav {
-                position: relative;
-                left: 0;
-                transform: none;
-            }
-            .footer-links {
-                flex-direction: column;
-                gap: 15px;
-            }
+            header { flex-direction: column; gap: 20px; }
+            .main-nav { position: relative; left: 0; transform: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ШАПКА -->
     <header>
-        <div class="brand-container">
-            <!-- Векторная иконка глаза под стиль вашего лого -->
-            <svg class="eye-icon" viewBox="0 0 24 24">
-                <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7.5 11 7.5s9.27-3.61 11-7.5c-1.73-3.89-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                <!-- Блик/Звезда в центре -->
-                <path d="M12 10.5L12.5 11.5L13.5 12L12.5 12.5L12 13.5L11.5 12.5L10.5 12L11.5 11.5Z" fill="#ffffff" stroke="none"/>
-            </svg>
+        <div class="brand-container" onclick="switchPage('home')">
+            <!-- СЮДА ВСТАВИТЬ ГИФКУ -->
+            <img src="eye.gif" alt="ZEITU Eye" class="eye-gif">
             <div class="logo">ZEITU</div>
         </div>
 
-        <nav class="category-nav">
-            <button id="btn-men" class="active" onclick="switchCategory('men')">Menswear</button>
-            <button id="btn-women" onclick="switchCategory('women')">Womenswear</button>
+        <nav class="main-nav">
+            <button id="nav-home" class="active" onclick="switchPage('home')" data-i18n="navHome">Home</button>
+            <button id="nav-clothes" onclick="switchPage('clothes')" data-i18n="navClothes">Clothes</button>
         </nav>
 
-        <nav class="user-nav">
-            <a href="#">Login</a>
-            <a href="#">Bag (0)</a>
-        </nav>
+        <div class="controls-nav">
+            <select class="lang-select" onchange="changeLanguage(this.value)">
+                <option value="en">EN</option>
+                <option value="ru">RU</option>
+                <option value="de">DE</option>
+                <option value="es">ES</option>
+                <option value="ar">AR</option>
+            </select>
+            <span style="font-size: 0.85rem; text-transform: uppercase; cursor: pointer;" data-i18n="login">Login</span>
+        </div>
     </header>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
     <main>
         
-        <!-- МУЖСКАЯ КОЛЛЕКЦИЯ -->
-        <div id="men-section">
-            <div class="grid">
-                <!-- Товар 1 -->
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="https://images.unsplash.com/photo-1550246140-5119ae4790b8?auto=format&fit=crop&w=800&q=80" alt="Leather Jacket" class="product-image">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-details">
-                            <h3>Void Leather Jacket</h3>
-                            <p>USD 1,200</p>
-                        </div>
-                        <button class="btn-buy">Buy</button>
-                    </div>
-                </div>
-                
-                <!-- Товар 2 -->
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="https://images.unsplash.com/photo-1509539662397-116cb90542f1?auto=format&fit=crop&w=800&q=80" alt="Black Hoodie" class="product-image">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-details">
-                            <h3>Oversized Dark Hoodie</h3>
-                            <p>USD 350</p>
-                        </div>
-                        <button class="btn-buy">Buy</button>
-                    </div>
-                </div>
-
-                <!-- Товар 3 -->
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80" alt="Cargo Pants" class="product-image">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-details">
-                            <h3>Tactical Denim</h3>
-                            <p>USD 480</p>
-                        </div>
-                        <button class="btn-buy">Buy</button>
-                    </div>
-                </div>
+        <!-- HOMEPAGE (ИСТОРИЯ БРЕНДА) -->
+        <div id="page-home" class="page active animated-section">
+            <div class="history-section">
+                <h1 data-i18n="storyTitle">Our Story</h1>
+                <p data-i18n="storyP1">ZEITU was born from the void. A vision to create minimalist, brutalist aesthetics for the modern era. We strip away the unnecessary to reveal raw form and uncompromising quality.</p>
+                <p data-i18n="storyP2">Every piece is a statement. Designed for those who walk in the shadows but demand to be seen. Welcome to the new standard.</p>
             </div>
         </div>
 
-        <!-- ЖЕНСКАЯ КОЛЛЕКЦИЯ -->
-        <div id="women-section" class="hidden">
-            <div class="grid">
-                <!-- Товар 1 -->
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="https://images.unsplash.com/photo-1617019114594-54afef31d558?auto=format&fit=crop&w=800&q=80" alt="Dark Dress" class="product-image">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-details">
-                            <h3>Silk Noir Dress</h3>
-                            <p>USD 890</p>
-                        </div>
-                        <button class="btn-buy">Buy</button>
-                    </div>
-                </div>
+        <!-- РАЗДЕЛ ОДЕЖДЫ -->
+        <div id="page-clothes" class="page">
+            
+            <nav class="sub-nav animated-section">
+                <button id="cat-men" class="active" onclick="switchCategory('men')" data-i18n="menswear">Menswear</button>
+                <button id="cat-women" onclick="switchCategory('women')" data-i18n="womenswear">Womenswear</button>
+            </nav>
 
-                <!-- Товар 2 -->
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?auto=format&fit=crop&w=800&q=80" alt="Corset" class="product-image">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-details">
-                            <h3>Structured Corset</h3>
-                            <p>USD 420</p>
+            <!-- МУЖСКАЯ -->
+            <div id="men-section" class="animated-section">
+                <div class="grid">
+                    <!-- Футболка -->
+                    <div class="product-card">
+                        <div class="image-container">
+                            <!-- СЮДА ВСТАВЛЯЙ СВОЮ ССЫЛКУ НА ФОТО -->
+                            <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=800&q=80" alt="T-Shirt" class="product-image">
                         </div>
-                        <button class="btn-buy">Buy</button>
-                    </div>
-                </div>
-
-                <!-- Товар 3 -->
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="https://images.unsplash.com/photo-1588117305388-c2631a279f82?auto=format&fit=crop&w=800&q=80" alt="Boots" class="product-image">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-details">
-                            <h3>Combat Boots</h3>
-                            <p>USD 950</p>
+                        <div class="product-info">
+                            <div class="product-details">
+                                <h3 data-i18n="tshirt">T-Shirt</h3>
+                                <p>€ 120</p>
+                            </div>
+                            <button class="btn-buy" data-i18n="buy">Buy</button>
                         </div>
-                        <button class="btn-buy">Buy</button>
+                    </div>
+                    <!-- Кофта -->
+                    <div class="product-card">
+                        <div class="image-container">
+                            <!-- СЮДА ВСТАВЛЯЙ СВОЮ ССЫЛКУ НА ФОТО -->
+                            <img src="https://images.unsplash.com/photo-1509539662397-116cb90542f1?auto=format&fit=crop&w=800&q=80" alt="Hoodie" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-details">
+                                <h3 data-i18n="hoodie">Hoodie</h3>
+                                <p>€ 250</p>
+                            </div>
+                            <button class="btn-buy" data-i18n="buy">Buy</button>
+                        </div>
+                    </div>
+                    <!-- Кожанка -->
+                    <div class="product-card">
+                        <div class="image-container">
+                            <!-- СЮДА ВСТАВЛЯЙ СВОЮ ССЫЛКУ НА ФОТО -->
+                            <img src="https://images.unsplash.com/photo-1550246140-5119ae4790b8?auto=format&fit=crop&w=800&q=80" alt="Leather Jacket" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-details">
+                                <h3 data-i18n="leatherJacket">Leather Jacket</h3>
+                                <p>€ 850</p>
+                            </div>
+                            <button class="btn-buy" data-i18n="buy">Buy</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+            <!-- ЖЕНСКАЯ -->
+            <div id="women-section" class="hidden animated-section">
+                <div class="grid">
+                    <!-- Футболка -->
+                    <div class="product-card">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80" alt="T-Shirt" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-details">
+                                <h3 data-i18n="tshirt">T-Shirt</h3>
+                                <p>€ 120</p>
+                            </div>
+                            <button class="btn-buy" data-i18n="buy">Buy</button>
+                        </div>
+                    </div>
+                    <!-- Кофта -->
+                    <div class="product-card">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?auto=format&fit=crop&w=800&q=80" alt="Hoodie" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-details">
+                                <h3 data-i18n="hoodie">Hoodie</h3>
+                                <p>€ 250</p>
+                            </div>
+                            <button class="btn-buy" data-i18n="buy">Buy</button>
+                        </div>
+                    </div>
+                    <!-- Кожанка -->
+                    <div class="product-card">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1520975954732-57dd99ddce61?auto=format&fit=crop&w=800&q=80" alt="Leather Jacket" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-details">
+                                <h3 data-i18n="leatherJacket">Leather Jacket</h3>
+                                <p>€ 850</p>
+                            </div>
+                            <button class="btn-buy" data-i18n="buy">Buy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </main>
 
-    <!-- ПОДВАЛ -->
-    <footer>
-        <div class="footer-links">
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-            <a href="#">Returns</a>
-        </div>
-        <div>
-            <a href="#" style="color: var(--grey); text-decoration: none;">Contact Us</a>
-        </div>
-    </footer>
-
-    <!-- БАННЕР С КУКИ -->
-    <div id="cookie-banner" class="cookie-banner">
-        <span>By continuing to use our site, you agree to our Terms & Conditions and Privacy Policy.</span>
-        <button class="cookie-close" onclick="closeCookie()">✕</button>
-    </div>
-
-    <!-- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ -->
+    <!-- СКРИПТЫ: Логика и Языки -->
     <script>
-        function switchCategory(category) {
-            // Убираем активный класс
-            document.getElementById('btn-men').classList.remove('active');
-            document.getElementById('btn-women').classList.remove('active');
+        // --- 1. ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ ---
+        function switchPage(page) {
+            document.getElementById('nav-home').classList.remove('active');
+            document.getElementById('nav-clothes').classList.remove('active');
             
-            // Скрываем все
+            document.getElementById('page-home').classList.remove('active');
+            document.getElementById('page-clothes').classList.remove('active');
+
+            document.getElementById('nav-' + page).classList.add('active');
+            
+            const targetPage = document.getElementById('page-' + page);
+            targetPage.classList.add('active');
+            
+            // Перезапуск анимации
+            targetPage.classList.remove('animated-section');
+            void targetPage.offsetWidth; 
+            targetPage.classList.add('animated-section');
+        }
+
+        // --- 2. ПЕРЕКЛЮЧЕНИЕ МУЖСКОЕ/ЖЕНСКОЕ ---
+        function switchCategory(category) {
+            document.getElementById('cat-men').classList.remove('active');
+            document.getElementById('cat-women').classList.remove('active');
+            
             document.getElementById('men-section').classList.add('hidden');
             document.getElementById('women-section').classList.add('hidden');
 
-            // Показываем нужное
-            document.getElementById('btn-' + category).classList.add('active');
-            document.getElementById(category + '-section').classList.remove('hidden');
+            document.getElementById('cat-' + category).classList.add('active');
+            
+            const targetCat = document.getElementById(category + '-section');
+            targetCat.classList.remove('hidden');
+            
+            targetCat.classList.remove('animated-section');
+            void targetCat.offsetWidth;
+            targetCat.classList.add('animated-section');
         }
 
-        function closeCookie() {
-            document.getElementById('cookie-banner').classList.add('hidden');
+        // --- 3. МУЛЬТИЯЗЫЧНОСТЬ ---
+        const translations = {
+            en: {
+                navHome: "Home", navClothes: "Clothes", login: "Login",
+                storyTitle: "Our Story",
+                storyP1: "ZEITU was born from the void. A vision to create minimalist, brutalist aesthetics for the modern era. We strip away the unnecessary to reveal raw form and uncompromising quality.",
+                storyP2: "Every piece is a statement. Designed for those who walk in the shadows but demand to be seen. Welcome to the new standard.",
+                menswear: "Menswear", womenswear: "Womenswear",
+                tshirt: "T-Shirt", hoodie: "Hoodie", leatherJacket: "Leather Jacket", buy: "Buy"
+            },
+            ru: {
+                navHome: "Главная", navClothes: "Одежда", login: "Войти",
+                storyTitle: "Наша история",
+                storyP1: "ZEITU рожден из пустоты. Наше видение — создавать минималистичную, брутальную эстетику для современной эпохи. Мы отбрасываем лишнее, оставляя чистую форму и бескомпромиссное качество.",
+                storyP2: "Каждая вещь — это манифест. Создано для тех, кто предпочитает тень, но требует внимания. Добро пожаловать в новый стандарт.",
+                menswear: "Мужское", womenswear: "Женское",
+                tshirt: "Футболка", hoodie: "Кофта", leatherJacket: "Кожаная куртка", buy: "Купить"
+            },
+            de: {
+                navHome: "Startseite", navClothes: "Kleidung", login: "Anmelden",
+                storyTitle: "Unsere Geschichte",
+                storyP1: "ZEITU wurde aus der Leere geboren. Die Vision, minimalistische, brutalistische Ästhetik für die moderne Ära zu schaffen. Wir entfernen das Unnötige, um rohe Form und kompromisslose Qualität zu offenbaren.",
+                storyP2: "Jedes Stück ist ein Statement. Entworfen für diejenigen, die in den Schatten gehen, aber gesehen werden wollen. Willkommen beim neuen Standard.",
+                menswear: "Herren", womenswear: "Damen",
+                tshirt: "T-Shirt", hoodie: "Kapuzenpullover", leatherJacket: "Lederjacke", buy: "Kaufen"
+            },
+            es: {
+                navHome: "Inicio", navClothes: "Ropa", login: "Acceso",
+                storyTitle: "Nuestra Historia",
+                storyP1: "ZEITU nació del vacío. Una visión para crear una estética minimalista y brutalista para la era moderna. Eliminamos lo innecesario para revelar la forma cruda y la calidad sin concesiones.",
+                storyP2: "Cada pieza es una declaración. Diseñado para aquellos que caminan en las sombras pero exigen ser vistos. Bienvenidos al nuevo estándar.",
+                menswear: "Hombre", womenswear: "Mujer",
+                tshirt: "Camiseta", hoodie: "Sudadera", leatherJacket: "Chaqueta de cuero", buy: "Comprar"
+            },
+            ar: {
+                navHome: "الرئيسية", navClothes: "ملابس", login: "تسجيل الدخول",
+                storyTitle: "قصتنا",
+                storyP1: "ولدت زيتو من الفراغ. رؤية لخلق جماليات بسيطة وقاسية للعصر الحديث. نحن نزيل ما هو غير ضروري للكشف عن الشكل الخام والجودة التي لا هوادة فيها.",
+                storyP2: "كل قطعة هي بيان. مصممة لأولئك الذين يمشون في الظلال ولكنهم يطالبون بأن يتم رؤيتهم. مرحبا بكم في المعيار الجديد.",
+                menswear: "رجالي", womenswear: "نسائي",
+                tshirt: "تي شيرت", hoodie: "سترة", leatherJacket: "سترة جلدية", buy: "شراء"
+            }
+        };
+
+        function changeLanguage(lang) {
+            // Если язык Арабский, меняем направление текста справа налево (RTL)
+            if (lang === 'ar') {
+                document.body.style.direction = "rtl";
+            } else {
+                document.body.style.direction = "ltr";
+            }
+
+            // Находим все элементы с атрибутом data-i18n и меняем текст
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
         }
     </script>
 </body>
