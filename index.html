@@ -3,499 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEITU | Premium Clothing</title>
-    
+    <title>ZEITU | Official Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --bg: #050505;
-            --fg: #ffffff;
-            --grey: #888888;
-            --border: #222222;
-        }
+        :root { --bg: #050505; --fg: #ffffff; --grey: #888888; --border: #222222; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+        
+        .animated { animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: background 0.3s, color 0.3s;
-        }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; position: sticky; top: 0; background: rgba(5,5,5,0.9); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--border); }
+        .brand { display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        
+        /* Логотип-гифка */
+        .eye-gif { width: 45px; height: 45px; object-fit: cover; background: #000; border-radius: 50%; border: 1px solid #111; }
+        .logo { font-family: 'Cinzel', serif; font-size: 1.8rem; letter-spacing: 6px; text-transform: uppercase; }
+        
+        .main-nav button { background: none; border: none; color: var(--grey); text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin: 0 15px; font-size: 0.9rem; padding-bottom: 5px; }
+        .main-nav button.active { color: var(--fg); border-bottom: 1px solid var(--fg); }
 
-        body {
-            background-color: var(--bg);
-            color: var(--fg);
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        .lang-select { background: none; color: var(--fg); border: 1px solid var(--border); padding: 5px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; font-family: 'Inter', sans-serif; }
+        .lang-select option { background: #000; color: #fff; }
 
-        /* АНИМАЦИИ ДИНАМИКИ */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        main { flex-grow: 1; padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .page { display: none; }
+        .page.active { display: block; }
 
-        .animated-section {
-            animation: fadeIn 0.6s ease-out forwards;
-        }
+        .home-content { text-align: center; margin-top: 10vh; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .home-content h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; margin-bottom: 30px; letter-spacing: 8px; }
+        .home-content p { color: var(--grey); line-height: 2; margin-bottom: 20px; font-size: 1.1rem; }
 
-        /* ШАПКА */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            position: sticky;
-            top: 0;
-            background: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; margin-top: 30px; }
+        .card { border: 1px solid var(--border); padding: 15px; transition: 0.4s ease; background: #080808; }
+        .card:hover { border-color: #555; }
+        .img-box { width: 100%; height: 500px; background: #111; overflow: hidden; position: relative; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; filter: grayscale(30%); }
+        .card:hover img { transform: scale(1.03); filter: grayscale(0%); }
+        .info { display: flex; justify-content: space-between; align-items: center; padding: 20px 5px 5px; }
+        .btn-buy { background: var(--fg); color: var(--bg); border: none; padding: 10px 20px; cursor: pointer; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
 
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-        }
+        footer { padding: 80px 40px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 40px; font-size: 0.85rem; color: var(--grey); }
+        footer a { color: var(--grey); text-decoration: none; display: block; margin-bottom: 12px; text-transform: uppercase; transition: 0.3s; }
+        footer a:hover { color: var(--fg); }
+        .contact-info { text-align: right; }
 
-        /* ГИФКА ГЛАЗА */
-        .eye-gif {
-            width: 45px;
-            height: 35px;
-            object-fit: cover;
-            /* Если гифки пока нет, тут будет темный квадрат */
-            background-color: #111; 
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; padding: 80px 20px; overflow-y: auto; }
+        .modal-content { max-width: 700px; margin: 0 auto; line-height: 2; font-size: 1rem; color: #ccc; }
+        .modal-content h1 { font-family: 'Cinzel', serif; color: #fff; margin-bottom: 30px; }
+        .close-modal { position: fixed; top: 30px; right: 40px; font-size: 2.5rem; cursor: pointer; color: #fff; }
 
-        .logo {
-            font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-        }
-
-        .main-nav {
-            display: flex;
-            gap: 30px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .main-nav button, .sub-nav button {
-            background: none;
-            border: none;
-            color: var(--grey);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            padding-bottom: 4px;
-        }
-
-        .main-nav button.active, .sub-nav button.active,
-        .main-nav button:hover, .sub-nav button:hover {
-            color: var(--fg);
-        }
-        .main-nav button.active, .sub-nav button.active {
-            border-bottom: 1px solid var(--fg);
-        }
-
-        .controls-nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .lang-select {
-            background: transparent;
-            color: var(--fg);
-            border: 1px solid var(--border);
-            padding: 5px 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        .lang-select option {
-            background: var(--bg);
-            color: var(--fg);
-        }
-
-        /* КОНТЕНТ */
-        main {
-            flex-grow: 1;
-            padding: 40px;
-            max-width: 1600px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .page {
-            display: none;
-        }
-        .page.active {
-            display: block;
-        }
-
-        /* ИСТОРИЯ БРЕНДА (HOMEPAGE) */
-        .history-section {
-            max-width: 800px;
-            margin: 100px auto;
-            text-align: center;
-        }
-
-        .history-section h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            margin-bottom: 30px;
-            letter-spacing: 5px;
-        }
-
-        .history-section p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #ccc;
-            margin-bottom: 20px;
-        }
-
-        /* ОДЕЖДА */
-        .sub-nav {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 40px;
-        }
-
-        .product-card {
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .image-container {
-            width: 100%;
-            height: 550px;
-            overflow: hidden;
-            background-color: #111;
-            position: relative;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease, filter 0.3s;
-            filter: grayscale(20%);
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-            filter: grayscale(0%);
-        }
-
-        .product-info {
-            padding: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .product-details h3 {
-            font-size: 1.1rem;
-            font-weight: 400;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .product-details p {
-            color: var(--grey);
-            font-size: 0.9rem;
-        }
-
-        .btn-buy {
-            background: var(--fg);
-            color: var(--bg);
-            border: none;
-            padding: 10px 25px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn-buy:hover {
-            background: #cccccc;
-        }
+        .cookie { position: fixed; bottom: 0; left: 0; width: 100%; background: #0a0a0a; border-top: 1px solid var(--border); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; z-index: 999; }
+        .cookie button { background: none; border: 1px solid var(--fg); color: var(--fg); padding: 6px 20px; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; }
 
         .hidden { display: none !important; }
-
         @media (max-width: 900px) {
-            header { flex-direction: column; gap: 20px; }
-            .main-nav { position: relative; left: 0; transform: none; }
+            header { flex-direction: column; gap: 25px; }
+            footer { grid-template-columns: 1fr; text-align: center; }
+            .contact-info { text-align: center; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="brand-container" onclick="switchPage('home')">
-            <!-- СЮДА ВСТАВИТЬ ГИФКУ -->
-            <img src="eye.gif" alt="ZEITU Eye" class="eye-gif">
+        <div class="brand" onclick="showPage('home')">
+            <!-- Сюда подтянется твоя гифка из папки на GitHub -->
+            <img src="eye.gif" alt="" class="eye-gif">
             <div class="logo">ZEITU</div>
         </div>
-
         <nav class="main-nav">
-            <button id="nav-home" class="active" onclick="switchPage('home')" data-i18n="navHome">Home</button>
-            <button id="nav-clothes" onclick="switchPage('clothes')" data-i18n="navClothes">Clothes</button>
+            <button id="n-home" class="active" onclick="showPage('home')" data-t="navHome">Home</button>
+            <button id="n-clothes" onclick="showPage('clothes')" data-t="navClothes">Clothes</button>
         </nav>
-
-        <div class="controls-nav">
-            <select class="lang-select" onchange="changeLanguage(this.value)">
-                <option value="en">EN</option>
-                <option value="ru">RU</option>
-                <option value="de">DE</option>
-                <option value="es">ES</option>
-                <option value="ar">AR</option>
+        <div>
+            <select class="lang-select" onchange="setLang(this.value)">
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+                <option value="ar">العربية</option>
             </select>
-            <span style="font-size: 0.85rem; text-transform: uppercase; cursor: pointer;" data-i18n="login">Login</span>
         </div>
     </header>
 
     <main>
-        
-        <!-- HOMEPAGE (ИСТОРИЯ БРЕНДА) -->
-        <div id="page-home" class="page active animated-section">
-            <div class="history-section">
-                <h1 data-i18n="storyTitle">Our Story</h1>
-                <p data-i18n="storyP1">Born in Syria. Forged through Egyptian creation. Sharpened with German precision. A brand built across borders — carrying truth in its threads.</p>
-                <p data-i18n="storyP2">The journey of ZEITU didn't begin in a fashion studio, but with a singular, raw moment of creation. The very first print—a conceptual manifesto. It represented the "Archive of Time" and the founding vision of the brand: to create something significant from scratch that remains static amidst the chaos of fashion</p>
-                <p data-i18n="storyP3">To transform a raw concept into a premium, engineered garment, ZEITU required a unique lens of precision. This evolution was led by a close friend and lead designer, a professional chef by trade. Bringing the meticulous discipline of the culinary arts—where the quality of every ingredient and the balance of every element is paramount—he translated the brand’s soul into the first hoodie designs.</p>
+        <!-- ГЛАВНАЯ СТРАНИЦА -->
+        <div id="p-home" class="page active animated">
+            <div class="home-content">
+                <h1 data-t="homeTitle">ZEITU ERA</h1>
+                <p data-t="homeDesc1">Мы создаем не просто одежду, а визуальный язык для тех, кто ценит тишину и качество. Наша история началась с поиска идеального черного цвета и безупречного кроя.</p>
+                <p data-t="homeDesc2">Минимализм — это не отсутствие чего-то, это идеальное количество необходимого. Каждая коллекция выпускается ограниченным тиражом.</p>
             </div>
         </div>
 
         <!-- РАЗДЕЛ ОДЕЖДЫ -->
-        <div id="page-clothes" class="page">
+        <div id="p-clothes" class="page">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <button onclick="setCat('m')" id="c-m" class="lang-select" style="padding: 10px 30px; margin-right: 10px;">MEN</button>
+                <button onclick="setCat('w')" id="c-w" class="lang-select" style="padding: 10px 30px;">WOMEN</button>
+            </div>
             
-            <nav class="sub-nav animated-section">
-                <button id="cat-men" class="active" onclick="switchCategory('men')" data-i18n="menswear">Menswear</button>
-                <button id="cat-women" onclick="switchCategory('women')" data-i18n="womenswear">Womenswear</button>
-            </nav>
-
-            <!-- МУЖСКАЯ -->
-            <div id="men-section" class="animated-section">
-                <div class="grid">
-                    <!-- Футболка -->
-                    <div class="product-card">
-                        <div class="image-container">
-                            <!-- СЮДА ВСТАВЛЯЙ СВОЮ ССЫЛКУ НА ФОТО -->
-                            <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=800&q=80" alt="T-Shirt" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-details">
-                                <h3 data-i18n="tshirt">T-Shirt</h3>
-                                <p>€ 120</p>
-                            </div>
-                            <button class="btn-buy" data-i18n="buy">Buy</button>
-                        </div>
+            <div id="cat-m" class="grid animated">
+                <div class="card">
+                    <div class="img-box"><img src="tshirt-m.png" alt=""></div> 
+                    <div class="info">
+                        <div><p data-t="tshirt">T-Shirt</p><p>€ 120.00</p></div>
+                        <button class="btn-buy" data-t="buy">Buy</button>
                     </div>
-                    <!-- Кофта -->
-                    <div class="product-card">
-                        <div class="image-container">
-                            <!-- СЮДА ВСТАВЛЯЙ СВОЮ ССЫЛКУ НА ФОТО -->
-                            <img src="https://images.unsplash.com/photo-1509539662397-116cb90542f1?auto=format&fit=crop&w=800&q=80" alt="Hoodie" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-details">
-                                <h3 data-i18n="hoodie">Hoodie</h3>
-                                <p>€ 250</p>
-                            </div>
-                            <button class="btn-buy" data-i18n="buy">Buy</button>
-                        </div>
-                    </div>
-                    <!-- Кожанка -->
-                    <div class="product-card">
-                        <div class="image-container">
-                            <!-- СЮДА ВСТАВЛЯЙ СВОЮ ССЫЛКУ НА ФОТО -->
-                            <img src="https://images.unsplash.com/photo-1550246140-5119ae4790b8?auto=format&fit=crop&w=800&q=80" alt="Leather Jacket" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-details">
-                                <h3 data-i18n="leatherJacket">Leather Jacket</h3>
-                                <p>€ 850</p>
-                            </div>
-                            <button class="btn-buy" data-i18n="buy">Buy</button>
-                        </div>
+                </div>
+                <div class="card">
+                    <div class="img-box"><img src="hoodie-m.png" alt=""></div> 
+                    <div class="info">
+                        <div><p data-t="hoodie">Hoodie</p><p>€ 280.00</p></div>
+                        <button class="btn-buy" data-t="buy">Buy</button>
                     </div>
                 </div>
             </div>
 
-            <!-- ЖЕНСКАЯ -->
-            <div id="women-section" class="hidden animated-section">
-                <div class="grid">
-                    <!-- Футболка -->
-                    <div class="product-card">
-                        <div class="image-container">
-                            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80" alt="T-Shirt" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-details">
-                                <h3 data-i18n="tshirt">T-Shirt</h3>
-                                <p>€ 120</p>
-                            </div>
-                            <button class="btn-buy" data-i18n="buy">Buy</button>
-                        </div>
-                    </div>
-                    <!-- Кофта -->
-                    <div class="product-card">
-                        <div class="image-container">
-                            <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?auto=format&fit=crop&w=800&q=80" alt="Hoodie" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-details">
-                                <h3 data-i18n="hoodie">Hoodie</h3>
-                                <p>€ 250</p>
-                            </div>
-                            <button class="btn-buy" data-i18n="buy">Buy</button>
-                        </div>
-                    </div>
-                    <!-- Кожанка -->
-                    <div class="product-card">
-                        <div class="image-container">
-                            <img src="https://images.unsplash.com/photo-1520975954732-57dd99ddce61?auto=format&fit=crop&w=800&q=80" alt="Leather Jacket" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-details">
-                                <h3 data-i18n="leatherJacket">Leather Jacket</h3>
-                                <p>€ 850</p>
-                            </div>
-                            <button class="btn-buy" data-i18n="buy">Buy</button>
-                        </div>
+            <div id="cat-w" class="grid animated hidden">
+                <div class="card">
+                    <div class="img-box"><img src="tshirt-w.jpg" alt=""></div> 
+                    <div class="info">
+                        <div><p data-t="tshirt">T-Shirt</p><p>€ 110.00</p></div>
+                        <button class="btn-buy" data-t="buy">Buy</button>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- СКРИПТЫ: Логика и Языки -->
+    <footer>
+        <div>
+            <a href="#" onclick="openModal('privacy')" data-t="privacy">Privacy Policy</a>
+            <a href="#" onclick="openModal('terms')" data-t="terms">Terms of Service</a>
+            <a href="#" data-t="shipping">Shipping & Returns</a>
+        </div>
+        <div style="text-align: center;">
+            <p style="letter-spacing: 2px; color: #fff; margin-bottom: 10px;">© 2026 ZEITU</p>
+            <p>Berlin / Moscow / Dubai / Madrid / Riyadh</p>
+        </div>
+        <div class="contact-info">
+            <p data-t="contactUs">CONTACT US:</p>
+            <a href="mailto:brand@zeitu.com" style="margin-top: 10px;">brand@zeitu.com</a>
+            <p style="margin-top: 10px;">+49 123 456 78 90</p>
+        </div>
+    </footer>
+
+    <div id="policy-modal" class="modal">
+        <span class="close-modal" onclick="closeModal()">×</span>
+        <div class="modal-content" id="modal-text"></div>
+    </div>
+
+    <div id="cookie" class="cookie">
+        <p data-t="cookieTxt">This website uses cookies to ensure you get the best experience.</p>
+        <button onclick="this.parentElement.remove()" data-t="accept">ACCEPT</button>
+    </div>
+
     <script>
-        // --- 1. ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ ---
-        function switchPage(page) {
-            document.getElementById('nav-home').classList.remove('active');
-            document.getElementById('nav-clothes').classList.remove('active');
-            
-            document.getElementById('page-home').classList.remove('active');
-            document.getElementById('page-clothes').classList.remove('active');
-
-            document.getElementById('nav-' + page).classList.add('active');
-            
-            const targetPage = document.getElementById('page-' + page);
-            targetPage.classList.add('active');
-            
-            // Перезапуск анимации
-            targetPage.classList.remove('animated-section');
-            void targetPage.offsetWidth; 
-            targetPage.classList.add('animated-section');
+        function showPage(p) {
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.main-nav button').forEach(el => el.classList.remove('active'));
+            document.getElementById('p-'+p).classList.add('active');
+            document.getElementById('n-'+p).classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        // --- 2. ПЕРЕКЛЮЧЕНИЕ МУЖСКОЕ/ЖЕНСКОЕ ---
-        function switchCategory(category) {
-            document.getElementById('cat-men').classList.remove('active');
-            document.getElementById('cat-women').classList.remove('active');
-            
-            document.getElementById('men-section').classList.add('hidden');
-            document.getElementById('women-section').classList.add('hidden');
-
-            document.getElementById('cat-' + category).classList.add('active');
-            
-            const targetCat = document.getElementById(category + '-section');
-            targetCat.classList.remove('hidden');
-            
-            targetCat.classList.remove('animated-section');
-            void targetCat.offsetWidth;
-            targetCat.classList.add('animated-section');
+        function setCat(c) {
+            document.getElementById('cat-m').classList.toggle('hidden', c==='w');
+            document.getElementById('cat-w').classList.toggle('hidden', c==='m');
         }
 
-        // --- 3. МУЛЬТИЯЗЫЧНОСТЬ ---
-        const translations = {
-            en: {
-                navHome: "Home", navClothes: "Clothes", login: "Login",
-                storyTitle: "Our Story",
-                storyP1: "ZEITU was born from the void. A vision to create minimalist, brutalist aesthetics for the modern era. We strip away the unnecessary to reveal raw form and uncompromising quality.",
-                storyP2: "Every piece is a statement. Designed for those who walk in the shadows but demand to be seen. Welcome to the new standard.",
-                menswear: "Menswear", womenswear: "Womenswear",
-                tshirt: "T-Shirt", hoodie: "Hoodie", leatherJacket: "Leather Jacket", buy: "Buy"
-            },
-            ru: {
-                navHome: "Главная", navClothes: "Одежда", login: "Войти",
-                storyTitle: "Наша история",
-                storyP1: "ZEITU рожден из пустоты. Наше видение — создавать минималистичную, брутальную эстетику для современной эпохи. Мы отбрасываем лишнее, оставляя чистую форму и бескомпромиссное качество.",
-                storyP2: "Каждая вещь — это манифест. Создано для тех, кто предпочитает тень, но требует внимания. Добро пожаловать в новый стандарт.",
-                menswear: "Мужское", womenswear: "Женское",
-                tshirt: "Футболка", hoodie: "Кофта", leatherJacket: "Кожаная куртка", buy: "Купить"
-            },
-            de: {
-                navHome: "Startseite", navClothes: "Kleidung", login: "Anmelden",
-                storyTitle: "Unsere Geschichte",
-                storyP1: "ZEITU wurde aus der Leere geboren. Die Vision, minimalistische, brutalistische Ästhetik für die moderne Ära zu schaffen. Wir entfernen das Unnötige, um rohe Form und kompromisslose Qualität zu offenbaren.",
-                storyP2: "Jedes Stück ist ein Statement. Entworfen für diejenigen, die in den Schatten gehen, aber gesehen werden wollen. Willkommen beim neuen Standard.",
-                menswear: "Herren", womenswear: "Damen",
-                tshirt: "T-Shirt", hoodie: "Kapuzenpullover", leatherJacket: "Lederjacke", buy: "Kaufen"
-            },
-            es: {
-                navHome: "Inicio", navClothes: "Ropa", login: "Acceso",
-                storyTitle: "Nuestra Historia",
-                storyP1: "ZEITU nació del vacío. Una visión para crear una estética minimalista y brutalista para la era moderna. Eliminamos lo innecesario para revelar la forma cruda y la calidad sin concesiones.",
-                storyP2: "Cada pieza es una declaración. Diseñado para aquellos que caminan en las sombras pero exigen ser vistos. Bienvenidos al nuevo estándar.",
-                menswear: "Hombre", womenswear: "Mujer",
-                tshirt: "Camiseta", hoodie: "Sudadera", leatherJacket: "Chaqueta de cuero", buy: "Comprar"
-            },
-            ar: {
-                navHome: "الرئيسية", navClothes: "ملابس", login: "تسجيل الدخول",
-                storyTitle: "قصتنا",
-                storyP1: "ولدت زيتو من الفراغ. رؤية لخلق جماليات بسيطة وقاسية للعصر الحديث. نحن نزيل ما هو غير ضروري للكشف عن الشكل الخام والجودة التي لا هوادة فيها.",
-                storyP2: "كل قطعة هي بيان. مصممة لأولئك الذين يمشون في الظلال ولكنهم يطالبون بأن يتم رؤيتهم. مرحبا بكم في المعيار الجديد.",
-                menswear: "رجالي", womenswear: "نسائي",
-                tshirt: "تي شيرت", hoodie: "سترة", leatherJacket: "سترة جلدية", buy: "شراء"
-            }
+        function openModal(type) {
+            const content = type === 'privacy' 
+                ? '<h1>Privacy Policy</h1><p>We take your privacy seriously. All personal data is encrypted and stored securely. We do not share your information with third-party vendors without your explicit consent.</p>' 
+                : '<h1>Terms of Service</h1><p>By purchasing from ZEITU, you agree to our conditions of sale. All items are produced in limited quantities. Shipping times may vary based on your location.</p>';
+            document.getElementById('modal-text').innerHTML = content;
+            document.getElementById('policy-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() { 
+            document.getElementById('policy-modal').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
+
+        const dict = {
+            en: { navHome: "Home", navClothes: "Clothes", homeTitle: "ZEITU ERA", homeDesc1: "We create a visual language for those who value silence and quality. Our story began with the search for the perfect black and impeccable cut.", homeDesc2: "Minimalism is not the absence of something, it is the perfect amount of the necessary.", tshirt: "T-Shirt", hoodie: "Hoodie", buy: "Buy", privacy: "Privacy Policy", terms: "Terms of Service", shipping: "Shipping & Returns", contactUs: "CONTACT US:", cookieTxt: "This website uses cookies for the best experience.", accept: "ACCEPT" },
+            ru: { navHome: "Главная", navClothes: "Одежда", homeTitle: "ЭПОХА ZEITU", homeDesc1: "Мы создаем визуальный язык для тех, кто ценит тишину и качество. Наша история началась с поиска идеального черного цвета.", homeDesc2: "Минимализм — это не отсутствие чего-то, это идеальное количество необходимого.", tshirt: "Футболка", hoodie: "Худи", buy: "Купить", privacy: "Приватность", terms: "Условия", shipping: "Доставка", contactUs: "СВЯЗЬ С НАМИ:", cookieTxt: "Мы используем куки для вашего удобства.", accept: "ПРИНЯТЬ" },
+            de: { navHome: "Start", navClothes: "Kleidung", homeTitle: "ZEITU ÄRA", homeDesc1: "Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen. Unsere Geschichte begann mit der Suche nach dem perfekten Schwarz.", homeDesc2: "Minimalismus ist nicht das Fehlen von etwas, es ist die perfekte Menge des Notwendigen.", tshirt: "T-Shirt", hoodie: "Hoodie", buy: "Kaufen", privacy: "Datenschutz", terms: "AGB", shipping: "Versand", contactUs: "KONTAKT:", cookieTxt: "Diese Website verwendet Cookies.", accept: "AKZEPTIEREN" },
+            es: { navHome: "Inicio", navClothes: "Ropa", homeTitle: "ERA ZEITU", homeDesc1: "Creamos un lenguaje visual para quienes valoran el silencio y la calidad. Nuestra historia comenzó con la búsqueda del negro perfecto.", homeDesc2: "El minimalismo no es la ausencia de algo, es la cantidad perfecta de lo necesario.", tshirt: "Camiseta", hoodie: "Sudadera", buy: "Comprar", privacy: "Privacidad", terms: "Términos", shipping: "Envíos", contactUs: "CONTACTO:", cookieTxt: "Este sitio usa cookies.", accept: "ACEPTAR" },
+            ar: { navHome: "الرئيسية", navClothes: "ملابس", homeTitle: "عصر زيتو", homeDesc1: "نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة. بدأت قصتنا بالبحث عن اللون الأسود المثالي.", homeDesc2: "البساطة ليست غياب شيء ما، بل هي الكمية المثالية من الضروري.", tshirt: "تي شерт", hoodie: "هوديي", buy: "شراء", privacy: "الخصوصية", terms: "الشروط", shipping: "الشحن", contactUs: "اتصل بنا:", cookieTxt: "يستخدم هذا الموقع ملفات تعريف الارتباط.", accept: "قبول" }
         };
 
-        function changeLanguage(lang) {
-            // Если язык Арабский, меняем направление текста справа налево (RTL)
-            if (lang === 'ar') {
-                document.body.style.direction = "rtl";
-            } else {
-                document.body.style.direction = "ltr";
-            }
-
-            // Находим все элементы с атрибутом data-i18n и меняем текст
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) {
-                    el.innerText = translations[lang][key];
-                }
+        function setLang(l) {
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if(dict[l] && dict[l][key]) el.innerText = dict[l][key];
             });
+            document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
         }
     </script>
 </body>
