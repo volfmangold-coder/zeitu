@@ -23,14 +23,31 @@
         .nav-links a:hover { color: var(--fg); }
 
         .lang-select { background: none; color: var(--fg); border: 1px solid var(--border); padding: 5px; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; }
+        .lang-select option { background: var(--bg); color: var(--fg); }
 
         /* Секции */
         section { min-height: 100vh; padding: 120px 40px 60px; display: flex; flex-direction: column; align-items: center; }
         
-        /* История */
+        /* История и Логотип над I */
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; }
-        .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; }
+        .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.2; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.2rem; margin-bottom: 20px; }
+
+        /* СПЕЦИАЛЬНЫЙ КЛАСС ДЛЯ БУКВЫ "I" С ГИФКОЙ */
+        .i-logo {
+            position: relative;
+            display: inline-block;
+        }
+        .i-logo img {
+            position: absolute;
+            bottom: 90%; /* Поднимаем логотип ровно над буквой */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0.5em; /* Размер логотипа относительно текста */
+            height: 0.5em;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
         /* Блоки одежды */
         .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; width: 100%; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
@@ -41,7 +58,7 @@
         .img-box img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.6s; }
         .card:hover img { filter: grayscale(0%); transform: scale(1.02); }
         
-        .badge { position: absolute; top: 20px; left: 20px; background: var(--fg); color: var(--bg); padding: 4px 10px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; }
+        .badge { position: absolute; top: 20px; left: 20px; background: var(--fg); color: var(--bg); padding: 4px 10px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; z-index: 10; }
 
         .info { display: flex; justify-content: space-between; align-items: center; padding: 20px 5px; }
         .info h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -92,7 +109,7 @@
     </header>
 
     <section class="history reveal">
-        <h1 data-t="homeTitle">ZEITU ERA</h1>
+        <h1 data-t="homeTitle">ZE<span class="i-logo">I<img src="eye.gif" alt=""></span>TU ERA</h1>
         <p data-t="homeDesc1">ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.</p>
         <p data-t="homeDesc2">Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.</p>
     </section>
@@ -101,19 +118,19 @@
         <h2 class="section-title" data-t="navTshirts">T-Shirts</h2>
         <div class="grid">
             <div class="card">
-                <span class="badge">MEN</span>
+                <span class="badge" data-t="men">MEN</span>
                 <div class="img-box"><img src="tshirt-m.jpg" alt=""></div>
                 <div class="info">
                     <h3>Void T-Shirt</h3>
-                    <button class="btn-buy" data-t="buy">€ 120</button>
+                    <button class="btn-buy">€ 120</button>
                 </div>
             </div>
             <div class="card">
-                <span class="badge">WOMEN</span>
+                <span class="badge" data-t="women">WOMEN</span>
                 <div class="img-box"><img src="tshirt-w.jpg" alt=""></div>
                 <div class="info">
                     <h3>Luna T-Shirt</h3>
-                    <button class="btn-buy" data-t="buy">€ 110</button>
+                    <button class="btn-buy">€ 110</button>
                 </div>
             </div>
         </div>
@@ -123,19 +140,19 @@
         <h2 class="section-title" data-t="navHoodies">Hoodies</h2>
         <div class="grid">
             <div class="card">
-                <span class="badge">MEN</span>
+                <span class="badge" data-t="men">MEN</span>
                 <div class="img-box"><img src="hoodie-m.jpg" alt=""></div>
                 <div class="info">
                     <h3>Shadow Hoodie</h3>
-                    <button class="btn-buy" data-t="buy">€ 280</button>
+                    <button class="btn-buy">€ 280</button>
                 </div>
             </div>
             <div class="card">
-                <span class="badge">WOMEN</span>
+                <span class="badge" data-t="women">WOMEN</span>
                 <div class="img-box"><img src="hoodie-w.jpg" alt=""></div>
                 <div class="info">
                     <h3>Ghost Hoodie</h3>
-                    <button class="btn-buy" data-t="buy">€ 260</button>
+                    <button class="btn-buy">€ 260</button>
                 </div>
             </div>
         </div>
@@ -149,7 +166,7 @@
                 <div class="img-box"><img src="jacket-1.jpg" alt=""></div>
                 <div class="info">
                     <h3>Armor Jacket</h3>
-                    <button class="btn-buy" data-t="buy">€ 850</button>
+                    <button class="btn-buy">€ 850</button>
                 </div>
             </div>
         </div>
@@ -162,7 +179,7 @@
             <p>© 2026 ZEITU</p>
         </div>
         <div style="text-align: center;">
-            <p>BERLIN / DUBAI</p>
+            <p>BERLIN / MOSCOW / DUBAI</p>
             <p>EYE OF THE VOID</p>
         </div>
         <div class="contact-info">
@@ -198,26 +215,30 @@
         window.addEventListener("scroll", reveal);
         reveal(); // Запуск при загрузке
 
-        // Модалки
         function openPol(type) {
             document.getElementById('m-text').innerHTML = type === 'privacy' ? '<h1>Privacy</h1><p>Your data is safe with ZEITU...</p>' : '<h1>Terms</h1><p>Terms and conditions for ZEITU era...</p>';
             document.getElementById('m-pol').style.display = 'block';
         }
         function closePol() { document.getElementById('m-pol').style.display = 'none'; }
 
-        // Языки
+        // Обновленный словарь: Гифка теперь вшита прямо в перевод!
+        const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt=""></span>';
+        
         const dict = {
-            en: { navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", homeTitle: "ZEITU ERA", buy: "Buy", contact: "CONTACT:", privacy: "Privacy", terms: "Terms", cookieTxt: "We use cookies." },
-            ru: { navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", homeTitle: "ЭПОХА ZEITU", buy: "Купить", contact: "СВЯЗЬ:", privacy: "Приватность", terms: "Условия", cookieTxt: "Мы используем куки." },
-            de: { navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", homeTitle: "ZEITU ÄRA", buy: "Kaufen", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB", cookieTxt: "Wir verwenden Cookies." },
-            es: { navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", homeTitle: "ERA ZEITU", buy: "Comprar", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos", cookieTxt: "Usamos cookies." },
-            ar: { navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", homeTitle: "عصر زيتو", buy: "شراء", contact: "اتصال:", privacy: "الخصوصية", terms: "الشروط", cookieTxt: "نحن نستخدم ملفات تعريف الارتباط." }
+            en: { navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", homeTitle: `ZE${logoHTML}TU ERA`, men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy", terms: "Terms", cookieTxt: "We use cookies." },
+            ru: { navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", homeTitle: `ЭПОХА ZE${logoHTML}TU`, men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Приватность", terms: "Условия", cookieTxt: "Мы используем куки." },
+            de: { navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", homeTitle: `ZE${logoHTML}TU ÄRA`, men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB", cookieTxt: "Wir verwenden Cookies." },
+            es: { navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", homeTitle: `ERA ZE${logoHTML}TU`, men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos", cookieTxt: "Usamos cookies." },
+            ar: { navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", homeTitle: `عصر ZE${logoHTML}TU`, men: "رجال", women: "نساء", contact: "اتصال:", privacy: "الخصوصية", terms: "الشروط", cookieTxt: "نحن نستخدم ملفات تعريف الارتباط." }
         };
 
         function changeLang(l) {
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
-                if(dict[l][key]) el.innerText = dict[l][key];
+                if(dict[l][key]) {
+                    // Используем innerHTML вместо innerText, чтобы код гифки работал внутри текста
+                    el.innerHTML = dict[l][key]; 
+                }
             });
             document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
         }
