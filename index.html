@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZEITU</title>
+    <!-- Шрифты -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -18,7 +19,7 @@
             margin: 0; 
             padding: 0; 
             scroll-behavior: smooth; 
-            cursor: crosshair; /* Оставляем фирменный курсор-прицел */
+            cursor: crosshair;
         }
         
         body { 
@@ -29,7 +30,7 @@
             position: relative;
         }
 
-        /* НАСТРОЙКА ФОНОВОЙ ГИФКИ / ФОТОГРАФИИ */
+        /* Фоновая текстура */
         body::before {
             content: "";
             position: fixed;
@@ -37,26 +38,26 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('eye.gif'); /* ЗАМЕНИ НА НАЗВАНИЕ СВОЕЙ ГИФКИ ИЛИ ССЫЛКУ */
+            background-image: url('eye.gif'); /* Твоя фоновая гифка */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.12; /* Прозрачность фона (0.12 = 12%). Настраивай, чтобы текст читался */
-            z-index: -1; /* Уводит на самый задний план */
-            pointer-events: none; /* Чтобы фон не мешал кликать по кнопкам */
+            opacity: 0.12; 
+            z-index: -1; 
+            pointer-events: none; 
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
 
-        /* Анимация появления при скролле */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; position: fixed; width: 100%; top: 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
         .brand { display: flex; align-items: center; gap: 15px; }
-        .eye-gif { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; filter: grayscale(100%); }
         
-        /* Возврат к Cinzel для лого */
+        /* УБРАЛ ГРЕЙСКЕЙЛ - теперь цветная */
+        .eye-gif { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; }
+        
         .logo { font-family: 'Cinzel', serif; font-size: 1.6rem; letter-spacing: 5px; text-transform: uppercase; }
         
         .nav-links a { color: var(--grey); text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 0 15px; transition: 0.3s; }
@@ -65,23 +66,23 @@
         .lang-select { background: none; color: var(--fg); border: 1px solid var(--border); padding: 5px; text-transform: uppercase; font-size: 0.7rem; outline: none; }
         .lang-select option { background: var(--bg); color: var(--fg); }
 
-        /* Секции */
         section { min-height: 100vh; padding: 150px 40px 60px; display: flex; flex-direction: column; align-items: center; }
         
         /* История */
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; }
-        .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.2; }
+        .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
 
         /* Буква "I" с гифкой */
         .i-logo { position: relative; display: inline-block; }
-        .i-logo img { position: absolute; bottom: 90%; left: 35%; transform: translateX(-50%); width: 0.5em; height: 0.5em; object-fit: cover; border-radius: 50%; filter: grayscale(100%); }
+        
+        /* УБРАЛ ГРЕЙСКЕЙЛ И ВЫРОВНЯЛ ПО ЦЕНТРУ БУКВЫ I */
+        .i-logo img { position: absolute; bottom: 85%; left: 50%; transform: translateX(-50%); width: 0.55em; height: 0.55em; object-fit: cover; border-radius: 50%; }
 
         /* Блоки одежды */
         .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; width: 100%; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; width: 100%; margin-bottom: 100px; }
         
-        /* Карточки товаров в стиле Chrome Hearts */
         .card { border: none; padding: 0; background: transparent; position: relative; }
         .img-box { width: 100%; height: 500px; background: #0b0b0b; overflow: hidden; border: 1px solid var(--border); }
         .img-box img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(110%); transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -92,7 +93,6 @@
         .info { display: flex; justify-content: space-between; align-items: center; padding: 20px 5px; }
         .info h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 400; }
         
-        /* НАСТРОЙКИ КНОПКИ КАK У НИХ (Premium Minimalist) */
         .btn-buy { 
             background: transparent; 
             color: var(--fg); 
@@ -111,13 +111,11 @@
             color: var(--bg); 
         }
 
-        /* Футер */
         footer { padding: 80px 40px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; font-size: 0.75rem; color: var(--grey); background: rgba(3, 3, 3, 0.9); letter-spacing: 1px; }
         footer a { color: var(--grey); text-decoration: none; display: block; margin-bottom: 10px; text-transform: uppercase; transition: 0.3s; }
         footer a:hover { color: var(--fg); text-decoration: line-through; }
         .contact-info { text-align: right; }
 
-        /* Модалка */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 2000; padding: 100px 20px; }
         .modal-content { max-width: 700px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; }
         .modal-content h1 { font-family: 'Cinzel', serif; margin-bottom: 20px; }
@@ -131,7 +129,9 @@
             .nav-links { display: none; }
             footer { grid-template-columns: 1fr; text-align: center; }
             .contact-info { text-align: center; }
-            .history h1 { font-size: 2.5rem; }
+            
+            /* ИЗМЕНЕНИЯ ДЛЯ МОБИЛОК: Увеличил line-height чтобы глаз не наезжал на текст сверху */
+            .history h1 { font-size: 2.2rem; line-height: 1.8; letter-spacing: 5px; }
         }
     </style>
 </head>
@@ -159,7 +159,7 @@
     </header>
 
     <section class="history reveal">
-        <h1 data-t="homeTitle">ZE<span class="i-logo">I<img src="eye.gif" alt=""></span>TU ERA</h1>
+        <h1 data-t="homeTitle"></h1> <!-- Текст подставляется через JS -->
         <p data-t="homeDesc1">ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.</p>
         <p data-t="homeDesc2">Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.</p>
     </section>
@@ -270,35 +270,37 @@
         }
         function closePol() { document.getElementById('m-pol').style.display = 'none'; }
 
+        // ИСПРАВЛЕНИЕ: Оборачиваем логотип в неразрывный блок (nowrap) с жестким направлением слева-направо (ltr)
         const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt=""></span>';
+        const brandHTML = `<span style="display: inline-block; direction: ltr; white-space: nowrap;">ZE${logoHTML}TU</span>`;
         
         const dict = {
             en: { 
-                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", homeTitle: `ZE${logoHTML}TU ERA`, 
+                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", homeTitle: `${brandHTML} ERA`, 
                 homeDesc1: "ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.",
                 homeDesc2: "Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.",
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy", terms: "Terms", cookieTxt: "We use cookies." 
             },
             ru: { 
-                navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", homeTitle: `ЭПОХА ZE${logoHTML}TU`, 
+                navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", homeTitle: `ЭПОХА ${brandHTML}`, 
                 homeDesc1: "ZEITU родился из поиска идеальной формы. Мы создаем визуальный язык для тех, кто ценит тишину и качество.",
                 homeDesc2: "Каждая вещь — это манифест минимализма. Никакого шума, только чистая эстетика и бескомпромиссные материалы.",
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Приватность", terms: "Условия", cookieTxt: "Мы используем куки." 
             },
             de: { 
-                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", homeTitle: `ZE${logoHTML}TU ÄRA`, 
+                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", homeTitle: `${brandHTML} ÄRA`, 
                 homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB", cookieTxt: "Wir verwenden Cookies." 
             },
             es: { 
-                navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", homeTitle: `ERA ZE${logoHTML}TU`, 
-                homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un language visual para quienes valoran el silencio y la calidad.",
+                navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", homeTitle: `ERA ${brandHTML}`, 
+                homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio y la calidad.",
                 homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y materiales sin concesiones.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos", cookieTxt: "Usamos cookies." 
             },
             ar: { 
-                navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", homeTitle: `عصر ZE${logoHTML}TU`, 
+                navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", homeTitle: `عصر ${brandHTML}`, 
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "الخصوصية", terms: "الشروط", cookieTxt: "نحن نستخدم ملفات تعريف الارتباط." 
@@ -314,6 +316,11 @@
             });
             document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
         }
+
+        // Вызываем changeLang при загрузке страницы, чтобы сразу отрисовать нужный Title (по умолчанию EN)
+        document.addEventListener('DOMContentLoaded', () => {
+            changeLang(document.querySelector('.lang-select').value);
+        });
     </script>
 </body>
 </html>
