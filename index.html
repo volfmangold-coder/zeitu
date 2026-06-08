@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>ZEITU</title>
-    <!-- Добавлен фоллбэк для фавиконки (статичный PNG) -->
     <link rel="icon" href="eye.png" type="image/png">
     <link rel="icon" href="eye.gif" type="image/gif">
     <meta name="description" content="ZEITU was born from the search for the perfect form. Every piece is a statement of minimalism.">
@@ -40,7 +39,6 @@
             overflow-x: hidden;
         }
 
-        /* Фоновая текстура с глазом */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('eye.gif'); 
@@ -77,7 +75,6 @@
         .mobile-nav a { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--fg); text-decoration: none; text-transform: uppercase; letter-spacing: 5px; transition: 0.3s; }
         .mobile-nav a:hover { color: var(--grey); text-decoration: line-through; }
         
-        /* Увеличенная зона клика для крестика на мобильных */
         .close-menu { position: absolute; top: 20px; right: 20px; font-size: 3rem; background: none; border: none; color: var(--fg); cursor: pointer; padding: 10px; line-height: 1; }
 
         section { min-height: 100vh; padding: 150px 40px 60px; display: flex; flex-direction: column; align-items: center; }
@@ -86,39 +83,22 @@
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
 
-        .i-logo { 
-            position: relative; 
-            display: inline-block; 
-            vertical-align: baseline;
-        }
-        .i-logo img { 
-            position: absolute; 
-            top: 0;
-            left: 40%; 
-            transform: translate(-50%, -60%); 
-            width: 0.45em; 
-            height: 0.45em; 
-            object-fit: cover; 
-            border-radius: 50%; 
-        }
+        .i-logo { position: relative; display: inline-block; vertical-align: baseline; }
+        .i-logo img { position: absolute; top: 0; left: 40%; transform: translate(-50%, -60%); width: 0.45em; height: 0.45em; object-fit: cover; border-radius: 50%; }
 
         .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; width: 100%; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; width: 100%; margin-bottom: 100px; }
         
         .card { border: none; padding: 0; background: transparent; position: relative; }
         
-        /* КАРТИНКИ: СМЕНА ПРИ НАВЕДЕНИИ И ТАПЕ ДЛЯ МОБИЛОК */
         .img-box { position: relative; width: 100%; height: 500px; background: #0b0b0b; overflow: hidden; border: 1px solid var(--border); }
         .img-front, .img-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(110%); transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .img-back { opacity: 0; transform: scale(1.05); } 
         
-        /* Медиазапрос для hover-эффекта только на устройствах с мышью */
         @media (hover: hover) {
             .card:hover .img-front { opacity: 0; } 
             .card:hover .img-back { opacity: 1; transform: scale(1); filter: grayscale(100%) contrast(130%); } 
         }
-        
-        /* Класс для переключения по тапу на мобилках */
         .card.active-mobile .img-front { opacity: 0; }
         .card.active-mobile .img-back { opacity: 1; transform: scale(1); filter: grayscale(100%) contrast(130%); }
 
@@ -145,24 +125,8 @@
         .sub-input-group button { background: var(--fg); color: var(--bg); border: none; padding: 10px 15px; font-size: 0.7rem; font-weight: 600; cursor: crosshair; letter-spacing: 1px; font-family: 'Inter', sans-serif; transition: 0.3s; }
         .sub-input-group button:hover { opacity: 0.8; }
         
-        .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 0.6rem; color: var(--grey); cursor: pointer; text-transform: uppercase; margin-top: 5px;}
-        .checkbox-label input { cursor: pointer; accent-color: var(--grey); }
-
         /* МОДАЛКИ (ПЛАВНОЕ ПРОЯВЛЕНИЕ) */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.96); 
-            z-index: 3000; 
-            padding: 100px 20px; 
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            overflow-y: auto;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 3000; padding: 100px 20px; opacity: 0; transition: opacity 0.4s ease; overflow-y: auto; }
         .modal.active { display: block; opacity: 1; }
         .modal-content { max-width: 500px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; position: relative; }
         .modal-content h2 { font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.5rem; text-align: center; }
@@ -179,31 +143,34 @@
         .close { position: absolute; top: 20px; right: 20px; font-size: 2.5rem; cursor: pointer; background: transparent; border: none; color: #fff; z-index: 10; width: 40px; height: 40px; line-height: 40px; text-align: center;}
 
         /* КАСТОМНЫЙ TOAST (УВЕДОМЛЕНИЕ) */
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: var(--fg);
-            color: var(--bg);
-            text-align: center;
-            border-radius: 0;
-            padding: 15px;
+        #toast { visibility: hidden; min-width: 250px; background-color: var(--fg); color: var(--bg); text-align: center; border-radius: 0; padding: 15px; position: fixed; z-index: 9999; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; opacity: 0; transition: opacity 0.5s ease, bottom 0.5s ease; }
+        #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+
+        /* PRIVACY BANNER */
+        #privacy-banner {
             position: fixed;
-            z-index: 9999;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-size: 0.75rem;
-            letter-spacing: 2px;
+            bottom: -100px; /* Скрыто изначально */
+            left: 0;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 4000;
+            transition: bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 0.65rem;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            font-weight: 500;
-            opacity: 0;
-            transition: opacity 0.5s ease, bottom 0.5s ease;
+            color: var(--grey);
         }
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
-            bottom: 50px;
-        }
+        #privacy-banner.show { bottom: 0; }
+        #privacy-banner a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+        .banner-btns { display: flex; gap: 15px; }
+        .banner-btn { background: transparent; color: var(--fg); border: 1px solid var(--fg); padding: 8px 25px; font-size: 0.6rem; letter-spacing: 2px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;}
+        .banner-btn:hover { background: var(--fg); color: var(--bg); }
 
         @media (max-width: 768px) {
             header { padding: 20px; }
@@ -213,18 +180,30 @@
             .contact-info { text-align: center; }
             .history h1 { font-size: 2.2rem; line-height: 1.8; letter-spacing: 5px; }
             .sub-input-group input[type="email"] { width: 100%; }
+            #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
+            .banner-btns { width: 100%; justify-content: center;}
         }
     </style>
 </head>
 <body>
 
-    <!-- КАСТОМНОЕ УВЕДОМЛЕНИЕ -->
     <div id="toast">Message</div>
 
     <div id="preloader">
         <div class="preloader-content">
             <img src="eye.gif" alt="ZEITU Eye Animation" style="width: 50px; border-radius: 50%;">
             ZEITU
+        </div>
+    </div>
+
+    <div id="privacy-banner">
+        <div class="banner-text">
+            <span data-t="bannerText">We process data to enhance your experience in the void. Read our </span>
+            <a href="javascript:void(0)" onclick="openPol('privacy')" data-t="privacy">Privacy Policy</a>.
+        </div>
+        <div class="banner-btns">
+            <button class="banner-btn" onclick="handlePrivacy('accept')" data-t="accept">ACCEPT</button>
+            <button class="banner-btn" onclick="handlePrivacy('decline')" data-t="decline">DECLINE</button>
         </div>
     </div>
 
@@ -268,7 +247,6 @@
     <section id="tshirts" class="reveal">
         <h2 class="section-title" data-t="navTshirts">T-Shirts</h2>
         <div class="grid">
-            <!-- Добавлено переключение класса для мобильных экранов -->
             <div class="card" onclick="this.classList.toggle('active-mobile')">
                 <span class="badge" data-t="men">MEN</span>
                 <div class="img-box">
@@ -280,7 +258,6 @@
                         <h3>Void T-Shirt</h3>
                         <p data-t="cotton">100% HEAVY COTTON</p>
                     </div>
-                    <!-- Остановлено всплытие события, чтобы кнопка нажималась на мобильных корректно -->
                     <button class="btn-buy" onclick="event.stopPropagation(); openOrder('Void T-Shirt', '€ 120')">€ 120</button>
                 </div>
             </div>
@@ -369,10 +346,6 @@
                     <input type="email" placeholder="EMAIL ADDRESS" required>
                     <button type="submit" data-t="subBtn">ENTER</button>
                 </div>
-                <label class="checkbox-label">
-                    <input type="checkbox" required>
-                    <span data-t="agreePrivacy">I agree to the Privacy Policy</span>
-                </label>
             </form>
         </div>
 
@@ -386,7 +359,6 @@
     <div id="m-pol" class="modal">
         <div class="modal-content" id="m-text" style="background: transparent; border: none; padding-top: 60px;">
             <span class="close" onclick="closeModal('m-pol')">×</span>
-            <!-- Контент подставляется через JS -->
         </div>
     </div>
 
@@ -397,7 +369,6 @@
             <div class="item-name" id="order-item-name">Item Name - € 000</div>
             
             <form class="order-form" onsubmit="event.preventDefault(); showToast('Request sent to the Void.'); closeModal('m-order'); this.reset();">
-                
                 <div class="form-row">
                     <div>
                         <label data-t="sizeLabel">SELECT SIZE</label>
@@ -417,44 +388,48 @@
                 <label style="margin-top: 20px;">EMAIL</label>
                 <input type="email" required placeholder="contact@email.com">
                 
-                <label class="checkbox-label" style="margin-top: 20px;">
-                    <input type="checkbox" required>
-                    <span data-t="agreePrivacy">I agree to the Privacy Policy</span>
-                </label>
-
                 <button type="submit" data-t="submitOrder">SUBMIT ORDER</button>
             </form>
         </div>
     </div>
 
     <script>
-        // 1. ФУНКЦИЯ СКРОЛЛА БЕЗ ИЗМЕНЕНИЯ ССЫЛКИ
         function scrollToSec(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // 2. ОЧИСТКА ССЫЛКИ ОТ СТАРЫХ ЯКОРЕЙ
         if (window.location.hash) {
             history.replaceState(null, null, window.location.pathname);
         }
 
-        // 3. ПРЕЛОАДЕР
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('preloader').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('preloader').style.visibility = 'hidden';
                 }, 1000);
+                
+                // Вызываем баннер Privacy Policy через 1.5 сек после загрузки, если не было решения
+                setTimeout(() => {
+                    if(!localStorage.getItem('zeitu_privacy')) {
+                        document.getElementById('privacy-banner').classList.add('show');
+                    }
+                }, 1500);
+
             }, 1200);
         });
 
-        // 4. БУРГЕР МЕНЮ
+        // Функция обработки кнопок Privacy
+        function handlePrivacy(choice) {
+            localStorage.setItem('zeitu_privacy', choice); // сохраняем выбор в кэш
+            document.getElementById('privacy-banner').classList.remove('show'); // прячем баннер
+        }
+
         function toggleMenu() {
             const menu = document.getElementById('mob-menu');
             menu.classList.toggle('active');
         }
 
-        // 5. АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -469,7 +444,6 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // 6. ПЛАВНОЕ ОТКРЫТИЕ И ЗАКРЫТИЕ МОДАЛОК
         function openPol(type) {
             const modal = document.getElementById('m-pol');
             const innerContainer = document.getElementById('m-text');
@@ -502,7 +476,6 @@
             }
         });
 
-        // 7. TOAST (УВЕДОМЛЕНИЯ)
         function showToast(message) {
             const toast = document.getElementById("toast");
             toast.innerText = message;
@@ -510,7 +483,6 @@
             setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        // 8. ЯЗЫКИ И ПЕРЕВОДЫ
         const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt="Eye Detail"></span>';
         
         const dict = {
@@ -522,7 +494,7 @@
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy Policy", terms: "Terms of Service",
                 cotton: "100% HEAVY COTTON", leather: "PREMIUM VEGAN LEATHER", joinVoid: "JOIN THE VOID (EARLY ACCESS)", subBtn: "ENTER",
                 orderTitle: "ORDER REQUEST", sizeLabel: "SELECT SIZE", qtyLabel: "QUANTITY", submitOrder: "SUBMIT ORDER",
-                agreePrivacy: "I agree to the Privacy Policy"
+                bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE"
             },
             ru: { 
                 navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", 
@@ -532,7 +504,7 @@
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Политика конфиденциальности", terms: "Условия использования",
                 cotton: "100% ПЛОТНЫЙ ХЛОПОК", leather: "ПРЕМИУМ ЭКО-КОЖА", joinVoid: "ВСТУПИТЬ В ПУСТОТУ (РАННИЙ ДОСТУП)", subBtn: "ВОЙТИ",
                 orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", sizeLabel: "ВЫБЕРИТЕ РАЗМЕР", qtyLabel: "КОЛИЧЕСТВО", submitOrder: "ПОДТВЕРДИТЬ ЗАКАЗ",
-                agreePrivacy: "Я согласен с Политикой конфиденциальности"
+                bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ"
             },
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
@@ -542,7 +514,7 @@
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
                 orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", qtyLabel: "MENGE", submitOrder: "BESTELLUNG ABSCHLIESSEN",
-                agreePrivacy: "Ich stimme den Datenschutzrichtlinien zu"
+                bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN"
             },
             es: { 
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
@@ -552,7 +524,7 @@
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
-                agreePrivacy: "Acepto la Política de Privacidad"
+                bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR"
             },
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
@@ -562,7 +534,7 @@
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
-                agreePrivacy: "أوافق على سياسة الخصوصية"
+                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض"
             }
         };
 
