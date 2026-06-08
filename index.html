@@ -82,19 +82,21 @@
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
 
-        /* Исправлено: Стили для позиционирования глаза в H1 */
+        /* ИСПРАВЛЕНО: Абсолютное центрирование глаза строго посередине буквы I */
         .i-logo { 
             position: relative; 
-            display: inline-block; 
-            vertical-align: baseline; /* Помогаем с выравниванием по строке */
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            line-height: 1;
+            color: transparent; /* Делаем текстовую букву прозрачной, чтобы ее засечки не вылезали за пределы анимации */
         }
         .i-logo img { 
             position: absolute; 
-            /* Выравнивание по центру буквы */
+            top: 50%;
             left: 50%; 
-            transform: translateX(-50%); 
-            /* Точное позиционирование по вертикали */
-            bottom: 75%; /* Опустили немного вниз */
+            transform: translate(-50%, -50%); /* Сдвиг ровно на половину ширины и высоты самого глаза */
             width: 0.55em; 
             height: 0.55em; 
             object-fit: cover; 
@@ -427,6 +429,7 @@
         });
 
         // 7. ЯЗЫКИ И ПЕРЕВОДЫ
+        // ИСПРАВЛЕНО: Буква 'I' служит невидимым каркасом для флексбокса
         const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt=""></span>';
         
         const dict = {
@@ -452,7 +455,7 @@
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
                 homeTitle: `ZEITU ÄRA`,
                 homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
-                homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
+                homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Äстhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
                 orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", submitOrder: "BESTELLUNG ABSCHLIESSEN"
