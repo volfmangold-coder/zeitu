@@ -82,23 +82,20 @@
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
 
-        /* ИСПРАВЛЕНО: Убрал color: transparent; Теперь буква I видна, а глаз поверх неё */
+        /* ИСПРАВЛЕНО: Глаз ровно НАД буквой I */
         .i-logo { 
             position: relative; 
-            display: inline-flex; 
-            align-items: center;
-            justify-content: center;
-            vertical-align: middle;
-            line-height: 1;
-            /* Убрана прозрачность, буква I будет белой как весь текст */
+            display: inline-block; 
+            vertical-align: baseline;
         }
         .i-logo img { 
             position: absolute; 
-            top: 50%;
+            top: 0;
             left: 50%; 
-            transform: translate(-50%, -50%); /* Глаз строго по центру буквы I */
-            width: 0.6em; /* Слегка увеличил глаз, чтобы он гармонично смотрелся на фоне буквы */
-            height: 0.6em; 
+            /* Сдвиг на 50% влево для центрирования и на 100% вверх, чтобы глаз был четко над буквой */
+            transform: translate(-50%, -100%); 
+            width: 0.4em; /* Немного уменьшил, чтобы глаз не перекрывал соседние буквы и смотрелся как точка */
+            height: 0.4em; 
             object-fit: cover; 
             border-radius: 50%; 
         }
@@ -463,7 +460,7 @@
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
                 homeTitle: `ERA ZEITU`,
                 homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual для quienes valoran el silencio и la calidad.",
-                homeDesc2: "Каждая пьеса - это декларация минимализма. Без шума, только эстетика пура и материалы без уступок.",
+                homeDesc2: "Каждая пьеса - это декларация минимализма. Без шума, только эстетика пура и materiales sin compromisos.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", submitOrder: "ENVIAR PEDIDO"
