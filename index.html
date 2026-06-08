@@ -60,7 +60,6 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; position: absolute; width: 100%; top: 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
         .brand { display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .eye-gif { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; }
-        /* Исправлено: в шапке теперь обычный текст, без стилизованной I */
         .logo { font-family: 'Cinzel', serif; font-size: 1.6rem; letter-spacing: 5px; text-transform: uppercase; }
         
         .nav-links a { color: var(--grey); text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 0 15px; transition: 0.3s; }
@@ -80,12 +79,27 @@
         section { min-height: 100vh; padding: 150px 40px 60px; display: flex; flex-direction: column; align-items: center; }
         
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; }
-        /* Исправлено: заголовок в описании теперь может быть стилизован скриптом */
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
 
-        .i-logo { position: relative; display: inline-block; }
-        .i-logo img { position: absolute; bottom: 85%; left: 50%; transform: translateX(-50%); width: 0.55em; height: 0.55em; object-fit: cover; border-radius: 50%; }
+        /* Исправлено: Стили для позиционирования глаза в H1 */
+        .i-logo { 
+            position: relative; 
+            display: inline-block; 
+            vertical-align: baseline; /* Помогаем с выравниванием по строке */
+        }
+        .i-logo img { 
+            position: absolute; 
+            /* Выравнивание по центру буквы */
+            left: 50%; 
+            transform: translateX(-50%); 
+            /* Точное позиционирование по вертикали */
+            bottom: 75%; /* Опустили немного вниз */
+            width: 0.55em; 
+            height: 0.55em; 
+            object-fit: cover; 
+            border-radius: 50%; 
+        }
 
         .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; width: 100%; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; width: 100%; margin-bottom: 100px; }
@@ -418,7 +432,7 @@
         const dict = {
             en: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", 
-                homeTitle: `ZEITU ERA`, // Исправлено: теперь здесь чистый текст
+                homeTitle: `ZEITU ERA`,
                 homeDesc1: "ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.",
                 homeDesc2: "Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.",
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy", terms: "Terms",
@@ -427,7 +441,7 @@
             },
             ru: { 
                 navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", 
-                homeTitle: `ЭПОХА ZEITU`, // Исправлено: теперь здесь чистый текст
+                homeTitle: `ЭПОХА ZEITU`,
                 homeDesc1: "ZEITU родился из поиска идеальной формы. Мы создаем визуальный язык для тех, кто ценит тишину и качество.",
                 homeDesc2: "Каждая вещь — это манифест минимализма. Никакого шума, только чистая эстетика и бескомпромиссные материалы.",
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Приватность", terms: "Условия",
@@ -436,7 +450,7 @@
             },
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
-                homeTitle: `ZEITU ÄRA`, // Исправлено: теперь здесь чистый текст
+                homeTitle: `ZEITU ÄRA`,
                 homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB",
@@ -445,8 +459,8 @@
             },
             es: { 
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
-                homeTitle: `ERA ZEITU`, // Исправлено: теперь здесь чистый текст
-                homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio и la calidad.",
+                homeTitle: `ERA ZEITU`,
+                homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual для quienes valoran el silencio и la calidad.",
                 homeDesc2: "Каждая пьеса - это декларация минимализма. Без шума, только эстетика пура и материалы без уступок.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
@@ -454,7 +468,7 @@
             },
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
-                homeTitle: `عصر ZEITU`, // Исправлено: теперь здесь чистый текст
+                homeTitle: `عصر ZEITU`,
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "الخصوصية", terms: "الشروط",
@@ -470,7 +484,7 @@
             });
             document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
             
-            // Исправлено: после смены языка перерисовываем стилизованную I только в описании
+            // После смены языка перерисовываем стилизованную I в описании
             const homeTitleH1 = document.querySelector('.history h1');
             const currentTitleText = homeTitleH1.innerText;
             if (currentTitleText.includes('ZEITU')) {
