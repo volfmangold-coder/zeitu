@@ -38,10 +38,10 @@
             overflow-x: hidden;
         }
 
-        /* Фоновая текстура с твоим глазом */
+        /* Фоновая текстура с глазом */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('eye.gif'); /* ГИФКА НА ФОНЕ */
+            background-image: url('eye.gif'); 
             background-size: cover; background-position: center; background-repeat: no-repeat;
             opacity: 0.12; z-index: -1; pointer-events: none; 
         }
@@ -116,20 +116,34 @@
         .subscribe-box { text-align: center; }
         .subscribe-box h4 { color: var(--fg); font-size: 0.8rem; margin-bottom: 15px; letter-spacing: 2px; font-weight: 400; }
         .sub-form { display: flex; justify-content: center; margin-top: 10px; }
-        .sub-form input { background: transparent; border: 1px solid var(--border); border-right: none; color: var(--fg); padding: 10px; font-size: 0.7rem; outline: none; width: 60%; }
-        .sub-form button { background: var(--fg); color: var(--bg); border: none; padding: 10px 15px; font-size: 0.7rem; font-weight: 600; cursor: crosshair; letter-spacing: 1px; }
+        .sub-form input { background: transparent; border: 1px solid var(--border); border-right: none; color: var(--fg); padding: 10px; font-size: 0.7rem; outline: none; width: 60%; font-family: 'Inter', sans-serif; }
+        .sub-form button { background: var(--fg); color: var(--bg); border: none; padding: 10px 15px; font-size: 0.7rem; font-weight: 600; cursor: crosshair; letter-spacing: 1px; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        .sub-form button:hover { opacity: 0.8; }
 
-        /* МОДАЛКИ */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 3000; padding: 100px 20px; }
-        .modal-content { max-width: 500px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; }
+        /* МОДАЛКИ (ПЛАВНОЕ ПРОЯВЛЕНИЕ) */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.96); 
+            z-index: 3000; 
+            padding: 100px 20px; 
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .modal.active { display: block; opacity: 1; }
+        .modal-content { max-width: 500px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; position: relative; }
         .modal-content h2 { font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.5rem; text-align: center; }
         .modal-content .item-name { text-align: center; color: var(--grey); font-size: 0.8rem; margin-bottom: 30px; letter-spacing: 2px; }
         .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; }
         .order-form select, .order-form input { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; font-family: 'Inter', sans-serif; cursor: crosshair; }
         .order-form option { background: var(--bg); }
-        .order-form button { width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 15px; margin-top: 30px; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; }
+        .order-form button { width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 15px; margin-top: 30px; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; font-family: 'Inter', sans-serif; }
         .order-form button:hover { opacity: 0.8; }
-        .close { position: absolute; top: 40px; right: 40px; font-size: 2.5rem; cursor: pointer; background: transparent; border: none; color: #fff; }
+        .close { position: absolute; top: 40px; right: 40px; font-size: 2.5rem; cursor: pointer; background: transparent; border: none; color: #fff; z-index: 10; }
 
         @media (max-width: 768px) {
             header { padding: 20px; }
@@ -183,7 +197,7 @@
     </header>
 
     <section class="history reveal">
-        <h1 data-t="homeTitle"></h1>
+        <h1 data-t="homeTitle">ZEITU ERA</h1>
         <p data-t="homeDesc1">ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.</p>
         <p data-t="homeDesc2">Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.</p>
     </section>
@@ -285,10 +299,10 @@
         
         <div class="subscribe-box">
             <h4 data-t="joinVoid">JOIN THE VOID (EARLY ACCESS)</h4>
-            <div class="sub-form">
+            <form class="sub-form" onsubmit="event.preventDefault(); alert('Joined the early access list.'); this.reset();">
                 <input type="email" placeholder="EMAIL ADDRESS" required>
-                <button type="button" data-t="subBtn">ENTER</button>
-            </div>
+                <button type="submit" data-t="subBtn">ENTER</button>
+            </form>
         </div>
 
         <div class="contact-info">
@@ -299,17 +313,17 @@
     </footer>
 
     <div id="m-pol" class="modal">
-        <span class="close" onclick="closePol('m-pol')">×</span>
+        <span class="close" onclick="closeModal('m-pol')">×</span>
         <div class="modal-content" id="m-text" style="background: transparent; border: none;"></div>
     </div>
 
     <div id="m-order" class="modal">
-        <span class="close" onclick="closePol('m-order')">×</span>
+        <span class="close" onclick="closeModal('m-order')">×</span>
         <div class="modal-content">
             <h2 data-t="orderTitle">ORDER REQUEST</h2>
             <div class="item-name" id="order-item-name">Item Name - € 000</div>
             
-            <form class="order-form" onsubmit="event.preventDefault(); alert('Request sent to the Void.'); closePol('m-order');">
+            <form class="order-form" onsubmit="event.preventDefault(); alert('Request sent to the Void.'); closeModal('m-order'); this.reset();">
                 <label data-t="sizeLabel">SELECT SIZE</label>
                 <select required>
                     <option value="s">S</option>
@@ -368,16 +382,33 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // 6. ОТКРЫТИЕ МОДАЛОК
+        // 6. ПЛАВНОЕ ОТКРЫТИЕ И ЗАКРЫТИЕ МОДАЛОК
         function openPol(type) {
+            const modal = document.getElementById('m-pol');
             document.getElementById('m-text').innerHTML = type === 'privacy' ? '<h1>Privacy</h1><p>Your data is safe with ZEITU...</p>' : '<h1>Terms</h1><p>Terms and conditions for ZEITU era...</p>';
-            document.getElementById('m-pol').style.display = 'block';
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('active'), 10);
         }
+
         function openOrder(name, price) {
+            const modal = document.getElementById('m-order');
             document.getElementById('order-item-name').innerText = `${name} — ${price}`;
-            document.getElementById('m-order').style.display = 'block';
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('active'), 10);
         }
-        function closePol(id) { document.getElementById(id).style.display = 'none'; }
+
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 400); 
+        }
+
+        // Закрытие по клику вне контента модалки
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                closeModal(event.target.id);
+            }
+        });
 
         // 7. ЯЗЫКИ И ПЕРЕВОДЫ
         const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt=""></span>';
@@ -385,7 +416,7 @@
         
         const dict = {
             en: { 
-                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", homeTitle: `${brandHTML} ERA`, 
+                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", homeTitle: `ZEITU ERA`, 
                 homeDesc1: "ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.",
                 homeDesc2: "Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.",
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy", terms: "Terms",
@@ -393,7 +424,7 @@
                 orderTitle: "ORDER REQUEST", sizeLabel: "SELECT SIZE", submitOrder: "SUBMIT ORDER"
             },
             ru: { 
-                navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", homeTitle: `ЭПОХА ${brandHTML}`, 
+                navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", homeTitle: `ЭПОХА ZEITU`, 
                 homeDesc1: "ZEITU родился из поиска идеальной формы. Мы создаем визуальный язык для тех, кто ценит тишину и качество.",
                 homeDesc2: "Каждая вещь — это манифест минимализма. Никакого шума, только чистая эстетика и бескомпромиссные материалы.",
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Приватность", terms: "Условия",
@@ -401,7 +432,7 @@
                 orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", sizeLabel: "ВЫБЕРИТЕ РАЗМЕР", submitOrder: "ПОДТВЕРДИТЬ ЗАКАЗ"
             },
             de: { 
-                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", homeTitle: `${brandHTML} ÄRA`, 
+                navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", homeTitle: `ZEITU ÄRA`, 
                 homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB",
@@ -409,15 +440,15 @@
                 orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", submitOrder: "BESTELLUNG ABSCHLIESSEN"
             },
             es: { 
-                navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", homeTitle: `ERA ${brandHTML}`, 
+                navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", homeTitle: `ERA ZEITU`, 
                 homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio y la calidad.",
                 homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y materiales sin concesiones.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos",
-                cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETE AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
+                cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", submitOrder: "ENVIAR PEDIDO"
             },
             ar: { 
-                navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", homeTitle: `عصر ${brandHTML}`, 
+                navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", homeTitle: `عصر ZEITU`, 
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "الخصوصية", terms: "الشروط",
@@ -435,6 +466,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Инициализация логотипа в шапке с гифкой глаза
+            document.querySelector('.brand .logo').innerHTML = brandHTML;
             changeLang(document.querySelector('.lang-select').value);
         });
     </script>
