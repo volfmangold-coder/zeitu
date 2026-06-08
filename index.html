@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZEITU</title>
-    <!-- Шрифты -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -28,36 +27,32 @@
             font-family: 'Inter', sans-serif; 
             -webkit-font-smoothing: antialiased; 
             position: relative;
+            overflow-x: hidden;
         }
 
         /* Фоновая текстура */
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('eye.gif'); /* Твоя фоновая гифка */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.12; 
-            z-index: -1; 
-            pointer-events: none; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('bg-texture.gif'); 
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            opacity: 0.12; z-index: -1; pointer-events: none; 
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
+
+        /* ПРЕЛОАДЕР */
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease, visibility 1s ease; }
+        .preloader-content { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 15px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; position: fixed; width: 100%; top: 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
         .brand { display: flex; align-items: center; gap: 15px; }
-        
-        /* УБРАЛ ГРЕЙСКЕЙЛ - теперь цветная */
         .eye-gif { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; }
-        
         .logo { font-family: 'Cinzel', serif; font-size: 1.6rem; letter-spacing: 5px; text-transform: uppercase; }
         
         .nav-links a { color: var(--grey); text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 0 15px; transition: 0.3s; }
@@ -68,18 +63,13 @@
 
         section { min-height: 100vh; padding: 150px 40px 60px; display: flex; flex-direction: column; align-items: center; }
         
-        /* История */
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; }
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
 
-        /* Буква "I" с гифкой */
         .i-logo { position: relative; display: inline-block; }
-        
-        /* УБРАЛ ГРЕЙСКЕЙЛ И ВЫРОВНЯЛ ПО ЦЕНТРУ БУКВЫ I */
         .i-logo img { position: absolute; bottom: 85%; left: 50%; transform: translateX(-50%); width: 0.55em; height: 0.55em; object-fit: cover; border-radius: 50%; }
 
-        /* Блоки одежды */
         .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; width: 100%; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; width: 100%; margin-bottom: 100px; }
         
@@ -90,52 +80,55 @@
         
         .badge { position: absolute; top: 20px; left: 20px; background: transparent; color: var(--fg); border: 1px solid var(--fg); padding: 5px 12px; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; z-index: 10; letter-spacing: 1px; }
 
-        .info { display: flex; justify-content: space-between; align-items: center; padding: 20px 5px; }
-        .info h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 400; }
+        .info { display: flex; justify-content: space-between; align-items: flex-end; padding: 20px 5px; }
+        .info-text h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 400; margin-bottom: 5px; }
+        .info-text p { font-size: 0.55rem; color: var(--grey); letter-spacing: 1px; }
         
-        .btn-buy { 
-            background: transparent; 
-            color: var(--fg); 
-            border: 1px solid var(--fg); 
-            padding: 10px 25px; 
-            font-weight: 500; 
-            text-transform: uppercase; 
-            font-size: 0.7rem; 
-            letter-spacing: 2px;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-buy:hover { 
-            background: var(--fg); 
-            color: var(--bg); 
-        }
+        .btn-buy { background: transparent; color: var(--fg); border: 1px solid var(--fg); padding: 10px 25px; font-weight: 500; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; }
+        .btn-buy:hover { background: var(--fg); color: var(--bg); }
 
         footer { padding: 80px 40px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; font-size: 0.75rem; color: var(--grey); background: rgba(3, 3, 3, 0.9); letter-spacing: 1px; }
         footer a { color: var(--grey); text-decoration: none; display: block; margin-bottom: 10px; text-transform: uppercase; transition: 0.3s; }
         footer a:hover { color: var(--fg); text-decoration: line-through; }
         .contact-info { text-align: right; }
 
+        /* ФОРМА ПОДПИСКИ В ФУТЕРЕ */
+        .subscribe-box { text-align: center; }
+        .subscribe-box h4 { color: var(--fg); font-size: 0.8rem; margin-bottom: 15px; letter-spacing: 2px; font-weight: 400; }
+        .sub-form { display: flex; justify-content: center; margin-top: 10px; }
+        .sub-form input { background: transparent; border: 1px solid var(--border); border-right: none; color: var(--fg); padding: 10px; font-size: 0.7rem; outline: none; width: 60%; }
+        .sub-form button { background: var(--fg); color: var(--bg); border: none; padding: 10px 15px; font-size: 0.7rem; font-weight: 600; cursor: crosshair; letter-spacing: 1px; }
+
+        /* МОДАЛКА ЗАКАЗА */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 2000; padding: 100px 20px; }
-        .modal-content { max-width: 700px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; }
-        .modal-content h1 { font-family: 'Cinzel', serif; margin-bottom: 20px; }
+        .modal-content { max-width: 500px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; }
+        .modal-content h2 { font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.5rem; text-align: center; }
+        .modal-content .item-name { text-align: center; color: var(--grey); font-size: 0.8rem; margin-bottom: 30px; letter-spacing: 2px; }
+        .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; }
+        .order-form select, .order-form input { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; font-family: 'Inter', sans-serif; cursor: crosshair; }
+        .order-form option { background: var(--bg); }
+        .order-form button { width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 15px; margin-top: 30px; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; }
+        .order-form button:hover { opacity: 0.8; }
         .close { position: fixed; top: 40px; right: 40px; font-size: 2rem; }
 
-        .cookie { position: fixed; bottom: 0; width: 100%; background: #090909; border-top: 1px solid var(--border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; z-index: 1500; letter-spacing: 1px; }
-        .cookie button { background: none; border: 1px solid #fff; color: #fff; padding: 6px 15px; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 1px; }
-        
         @media (max-width: 768px) {
             header { padding: 20px; }
             .nav-links { display: none; }
-            footer { grid-template-columns: 1fr; text-align: center; }
+            footer { grid-template-columns: 1fr; text-align: center; gap: 50px; }
             .contact-info { text-align: center; }
-            
-            /* ИЗМЕНЕНИЯ ДЛЯ МОБИЛОК: Увеличил line-height чтобы глаз не наезжал на текст сверху */
             .history h1 { font-size: 2.2rem; line-height: 1.8; letter-spacing: 5px; }
+            .sub-form input { width: 100%; }
         }
     </style>
 </head>
 <body>
+
+    <div id="preloader">
+        <div class="preloader-content">
+            <img src="eye.gif" alt="" style="width: 50px; border-radius: 50%;">
+            ZEITU
+        </div>
+    </div>
 
     <header>
         <div class="brand" onclick="window.scrollTo(0,0)">
@@ -159,7 +152,7 @@
     </header>
 
     <section class="history reveal">
-        <h1 data-t="homeTitle"></h1> <!-- Текст подставляется через JS -->
+        <h1 data-t="homeTitle"></h1>
         <p data-t="homeDesc1">ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.</p>
         <p data-t="homeDesc2">Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.</p>
     </section>
@@ -171,16 +164,22 @@
                 <span class="badge" data-t="men">MEN</span>
                 <div class="img-box"><img src="tshirt-m.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Void T-Shirt</h3>
-                    <button class="btn-buy">€ 120</button>
+                    <div class="info-text">
+                        <h3>Void T-Shirt</h3>
+                        <p data-t="cotton">100% HEAVY COTTON</p>
+                    </div>
+                    <button class="btn-buy" onclick="openOrder('Void T-Shirt', '€ 120')">€ 120</button>
                 </div>
             </div>
             <div class="card">
                 <span class="badge" data-t="women">WOMEN</span>
                 <div class="img-box"><img src="tshirt-w.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Luna T-Shirt</h3>
-                    <button class="btn-buy">€ 110</button>
+                    <div class="info-text">
+                        <h3>Luna T-Shirt</h3>
+                        <p data-t="cotton">100% HEAVY COTTON</p>
+                    </div>
+                    <button class="btn-buy" onclick="openOrder('Luna T-Shirt', '€ 110')">€ 110</button>
                 </div>
             </div>
         </div>
@@ -193,16 +192,22 @@
                 <span class="badge" data-t="men">MEN</span>
                 <div class="img-box"><img src="hoodie-m.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Shadow Hoodie</h3>
-                    <button class="btn-buy">€ 280</button>
+                    <div class="info-text">
+                        <h3>Shadow Hoodie</h3>
+                        <p data-t="cotton">100% HEAVY COTTON</p>
+                    </div>
+                    <button class="btn-buy" onclick="openOrder('Shadow Hoodie', '€ 280')">€ 280</button>
                 </div>
             </div>
             <div class="card">
                 <span class="badge" data-t="women">WOMEN</span>
                 <div class="img-box"><img src="hoodie-w.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Ghost Hoodie</h3>
-                    <button class="btn-buy">€ 260</button>
+                    <div class="info-text">
+                        <h3>Ghost Hoodie</h3>
+                        <p data-t="cotton">100% HEAVY COTTON</p>
+                    </div>
+                    <button class="btn-buy" onclick="openOrder('Ghost Hoodie', '€ 260')">€ 260</button>
                 </div>
             </div>
         </div>
@@ -215,8 +220,11 @@
                 <span class="badge">UNISEX</span>
                 <div class="img-box"><img src="jacket-1.jpg" alt=""></div>
                 <div class="info">
-                    <h3>Armor Jacket</h3>
-                    <button class="btn-buy">€ 850</button>
+                    <div class="info-text">
+                        <h3>Armor Jacket</h3>
+                        <p data-t="leather">PREMIUM VEGAN LEATHER</p>
+                    </div>
+                    <button class="btn-buy" onclick="openOrder('Armor Jacket', '€ 850')">€ 850</button>
                 </div>
             </div>
         </div>
@@ -228,10 +236,15 @@
             <a href="#" onclick="openPol('terms')" data-t="terms">Terms of Service</a>
             <p>© 2026 ZEITU</p>
         </div>
-        <div style="text-align: center;">
-            <p style="margin-bottom: 5px; color: #fff;">BERLIN / DUBAI</p>
-            <p>EYE OF THE VOID</p>
+        
+        <div class="subscribe-box">
+            <h4 data-t="joinVoid">JOIN THE VOID (EARLY ACCESS)</h4>
+            <div class="sub-form">
+                <input type="email" placeholder="EMAIL ADDRESS" required>
+                <button type="button" data-t="subBtn">ENTER</button>
+            </div>
         </div>
+
         <div class="contact-info">
             <p data-t="contact" style="margin-bottom: 5px; color: #fff;">CONTACT:</p>
             <a href="mailto:brand@zeitu.com">brand@zeitu.com</a>
@@ -240,16 +253,45 @@
     </footer>
 
     <div id="m-pol" class="modal">
-        <span class="close" onclick="closePol()">×</span>
-        <div class="modal-content" id="m-text"></div>
+        <span class="close" onclick="closePol('m-pol')">×</span>
+        <div class="modal-content" id="m-text" style="background: transparent; border: none;"></div>
     </div>
 
-    <div class="cookie" id="ck">
-        <p data-t="cookieTxt">We use cookies for a better experience.</p>
-        <button onclick="document.getElementById('ck').remove()">OK</button>
+    <div id="m-order" class="modal">
+        <span class="close" onclick="closePol('m-order')">×</span>
+        <div class="modal-content">
+            <h2 data-t="orderTitle">ORDER REQUEST</h2>
+            <div class="item-name" id="order-item-name">Item Name - € 000</div>
+            
+            <form class="order-form" onsubmit="event.preventDefault(); alert('Request sent to the Void.'); closePol('m-order');">
+                <label data-t="sizeLabel">SELECT SIZE</label>
+                <select required>
+                    <option value="s">S</option>
+                    <option value="m">M</option>
+                    <option value="l">L</option>
+                    <option value="xl">XL</option>
+                </select>
+
+                <label style="margin-top: 20px;">EMAIL</label>
+                <input type="email" required placeholder="contact@email.com">
+
+                <button type="submit" data-t="submitOrder">SUBMIT ORDER</button>
+            </form>
+        </div>
     </div>
 
     <script>
+        // Логика Прелоадера
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('preloader').style.visibility = 'hidden';
+                }, 1000);
+            }, 1200); // Экран висит 1.2 секунды
+        });
+
+        // Анимация скролла
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -264,13 +306,18 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
+        // Открытие модалок
         function openPol(type) {
             document.getElementById('m-text').innerHTML = type === 'privacy' ? '<h1>Privacy</h1><p>Your data is safe with ZEITU...</p>' : '<h1>Terms</h1><p>Terms and conditions for ZEITU era...</p>';
             document.getElementById('m-pol').style.display = 'block';
         }
-        function closePol() { document.getElementById('m-pol').style.display = 'none'; }
+        function openOrder(name, price) {
+            document.getElementById('order-item-name').innerText = `${name} — ${price}`;
+            document.getElementById('m-order').style.display = 'block';
+        }
+        function closePol(id) { document.getElementById(id).style.display = 'none'; }
 
-        // ИСПРАВЛЕНИЕ: Оборачиваем логотип в неразрывный блок (nowrap) с жестким направлением слева-направо (ltr)
+        // Переводы
         const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt=""></span>';
         const brandHTML = `<span style="display: inline-block; direction: ltr; white-space: nowrap;">ZE${logoHTML}TU</span>`;
         
@@ -279,45 +326,52 @@
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", homeTitle: `${brandHTML} ERA`, 
                 homeDesc1: "ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.",
                 homeDesc2: "Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.",
-                men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy", terms: "Terms", cookieTxt: "We use cookies." 
+                men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy", terms: "Terms",
+                cotton: "100% HEAVY COTTON", leather: "PREMIUM VEGAN LEATHER", joinVoid: "JOIN THE VOID (EARLY ACCESS)", subBtn: "ENTER",
+                orderTitle: "ORDER REQUEST", sizeLabel: "SELECT SIZE", submitOrder: "SUBMIT ORDER"
             },
             ru: { 
                 navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", homeTitle: `ЭПОХА ${brandHTML}`, 
                 homeDesc1: "ZEITU родился из поиска идеальной формы. Мы создаем визуальный язык для тех, кто ценит тишину и качество.",
                 homeDesc2: "Каждая вещь — это манифест минимализма. Никакого шума, только чистая эстетика и бескомпромиссные материалы.",
-                men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Приватность", terms: "Условия", cookieTxt: "Мы используем куки." 
+                men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Приватность", terms: "Условия",
+                cotton: "100% ПЛОТНЫЙ ХЛОПОК", leather: "ПРЕМИУМ ЭКО-КОЖА", joinVoid: "ВСТУПИТЬ В ПУСТОТУ (РАННИЙ ДОСТУП)", subBtn: "ВОЙТИ",
+                orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", sizeLabel: "ВЫБЕРИТЕ РАЗМЕР", submitOrder: "ПОДТВЕРДИТЬ ЗАКАЗ"
             },
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", homeTitle: `${brandHTML} ÄRA`, 
                 homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
-                men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB", cookieTxt: "Wir verwenden Cookies." 
+                men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutz", terms: "AGB",
+                cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
+                orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", submitOrder: "BESTELLUNG ABSCHLIESSEN"
             },
             es: { 
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", homeTitle: `ERA ${brandHTML}`, 
                 homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio y la calidad.",
                 homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y materiales sin concesiones.",
-                men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos", cookieTxt: "Usamos cookies." 
+                men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Privacidad", terms: "Términos",
+                cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETE AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
+                orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", submitOrder: "ENVIAR PEDIDO"
             },
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", homeTitle: `عصر ${brandHTML}`, 
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
-                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "الخصوصية", terms: "الشروط", cookieTxt: "نحن نستخدم ملفات تعريف الارتباط." 
+                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "الخصوصية", terms: "الشروط",
+                cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
+                orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", submitOrder: "إرسال الطلب"
             }
         };
 
         function changeLang(l) {
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
-                if(dict[l][key]) {
-                    el.innerHTML = dict[l][key]; 
-                }
+                if(dict[l][key]) { el.innerHTML = dict[l][key]; }
             });
             document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
         }
 
-        // Вызываем changeLang при загрузке страницы, чтобы сразу отрисовать нужный Title (по умолчанию EN)
         document.addEventListener('DOMContentLoaded', () => {
             changeLang(document.querySelector('.lang-select').value);
         });
