@@ -82,7 +82,7 @@
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
 
-        /* ИСПРАВЛЕНО: Глаз ровно НАД буквой I */
+        /* ИСПРАВЛЕНО: Глаз опущен ниже, чтобы сидеть ровно на букве I */
         .i-logo { 
             position: relative; 
             display: inline-block; 
@@ -92,10 +92,10 @@
             position: absolute; 
             top: 0;
             left: 50%; 
-            /* Сдвиг на 50% влево для центрирования и на 100% вверх, чтобы глаз был четко над буквой */
-            transform: translate(-50%, -100%); 
-            width: 0.4em; /* Немного уменьшил, чтобы глаз не перекрывал соседние буквы и смотрелся как точка */
-            height: 0.4em; 
+            /* Заменил -100% на -60%, чтобы глаз не улетал высоко, а касался буквы */
+            transform: translate(-50%, -60%); 
+            width: 0.45em; 
+            height: 0.45em; 
             object-fit: cover; 
             border-radius: 50%; 
         }
