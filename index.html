@@ -10,7 +10,8 @@
     <meta name="description" content="ZEITU was born from the search for the perfect form. Every piece is a statement of minimalism.">
     <meta property="og:title" content="ZEITU ERA">
     <meta property="og:description" content="Raw aesthetic and uncompromising materials.">
-    <meta property="og:image" content="eye.gif">
+    <!-- Укажите ваш реальный домен для корректного отображения превью в соцсетях -->
+    <meta property="og:image" content="https://yourdomain.com/eye.png">
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -22,22 +23,9 @@
             --border: #1a1a1a; 
         }
         
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            scroll-behavior: smooth; 
-            cursor: crosshair;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; cursor: crosshair; }
         
-        body { 
-            background-color: var(--bg); 
-            color: var(--fg); 
-            font-family: 'Inter', sans-serif; 
-            -webkit-font-smoothing: antialiased; 
-            position: relative;
-            overflow-x: hidden;
-        }
+        body { background-color: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; position: relative; overflow-x: hidden; }
 
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -48,7 +36,6 @@
 
         ::selection { background: var(--fg); color: var(--bg); }
 
-        /* ПРЕЛОАДЕР */
         #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease, visibility 1s ease; }
         .preloader-content { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 15px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
@@ -56,7 +43,6 @@
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ШАПКА */
         header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; position: absolute; width: 100%; top: 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
         .brand { display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .eye-gif { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; }
@@ -68,7 +54,6 @@
         .lang-select { background: none; color: var(--fg); border: 1px solid var(--border); padding: 5px; text-transform: uppercase; font-size: 0.7rem; outline: none; }
         .lang-select option { background: var(--bg); color: var(--fg); }
 
-        /* БУРГЕР МЕНЮ И МОБИЛЬНАЯ ШТОРКА */
         .burger-btn { display: none; font-size: 1.8rem; background: none; border: none; color: var(--fg); cursor: pointer; }
         .mobile-nav { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.98); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 40px; opacity: 0; pointer-events: none; transition: 0.4s ease; backdrop-filter: blur(10px); }
         .mobile-nav.active { opacity: 1; pointer-events: auto; }
@@ -111,7 +96,6 @@
         .btn-buy { background: transparent; color: var(--fg); border: 1px solid var(--fg); padding: 10px 25px; font-weight: 500; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; z-index: 2; position: relative;}
         .btn-buy:hover { background: var(--fg); color: var(--bg); }
 
-        /* ФУТЕР */
         footer { padding: 80px 40px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; font-size: 0.75rem; color: var(--grey); background: rgba(3, 3, 3, 0.9); letter-spacing: 1px; }
         footer a { color: var(--grey); text-decoration: none; display: block; margin-bottom: 10px; text-transform: uppercase; transition: 0.3s; }
         footer a:hover { color: var(--fg); text-decoration: line-through; }
@@ -125,7 +109,6 @@
         .sub-input-group button { background: var(--fg); color: var(--bg); border: none; padding: 10px 15px; font-size: 0.7rem; font-weight: 600; cursor: crosshair; letter-spacing: 1px; font-family: 'Inter', sans-serif; transition: 0.3s; }
         .sub-input-group button:hover { opacity: 0.8; }
         
-        /* МОДАЛКИ (ПЛАВНОЕ ПРОЯВЛЕНИЕ) */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 3000; padding: 100px 20px; opacity: 0; transition: opacity 0.4s ease; overflow-y: auto; }
         .modal.active { display: block; opacity: 1; }
         .modal-content { max-width: 500px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; position: relative; }
@@ -133,7 +116,7 @@
         .modal-content .item-name { text-align: center; color: var(--grey); font-size: 0.8rem; margin-bottom: 30px; letter-spacing: 2px; }
         
         .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; }
-        .order-form select, .order-form input[type="email"], .order-form input[type="number"] { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; font-family: 'Inter', sans-serif; cursor: crosshair; }
+        .order-form select, .order-form input[type="email"], .order-form input[type="number"], .order-form input[type="text"] { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; font-family: 'Inter', sans-serif; cursor: crosshair; }
         .order-form option { background: var(--bg); }
         .form-row { display: flex; gap: 15px; }
         .form-row > div { flex: 1; }
@@ -142,30 +125,10 @@
         .order-form button:hover { opacity: 0.8; }
         .close { position: absolute; top: 20px; right: 20px; font-size: 2.5rem; cursor: pointer; background: transparent; border: none; color: #fff; z-index: 10; width: 40px; height: 40px; line-height: 40px; text-align: center;}
 
-        /* КАСТОМНЫЙ TOAST (УВЕДОМЛЕНИЕ) */
         #toast { visibility: hidden; min-width: 250px; background-color: var(--fg); color: var(--bg); text-align: center; border-radius: 0; padding: 15px; position: fixed; z-index: 9999; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; opacity: 0; transition: opacity 0.5s ease, bottom 0.5s ease; }
         #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
 
-        /* PRIVACY BANNER */
-        #privacy-banner {
-            position: fixed;
-            bottom: -100px; /* Скрыто изначально */
-            left: 0;
-            width: 100%;
-            background: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border);
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 4000;
-            transition: bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            font-size: 0.65rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--grey);
-        }
+        #privacy-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 4000; transition: bottom 0.6s cubic-bezier(0.16, 1, 0.3, 1); font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; color: var(--grey); }
         #privacy-banner.show { bottom: 0; }
         #privacy-banner a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
         .banner-btns { display: flex; gap: 15px; }
@@ -341,9 +304,11 @@
         
         <div class="subscribe-box">
             <h4 data-t="joinVoid">JOIN THE VOID (EARLY ACCESS)</h4>
+            <!-- Форма подписки. Добавлен атрибут name и Honeypot поле -->
             <form class="sub-form" onsubmit="event.preventDefault(); showToast('Joined the early access list.'); this.reset();">
+                <input type="text" name="_honey" style="display:none"> <!-- Honeypot -->
                 <div class="sub-input-group">
-                    <input type="email" placeholder="EMAIL ADDRESS" required>
+                    <input type="email" name="email" placeholder="EMAIL ADDRESS" required>
                     <button type="submit" data-t="subBtn">ENTER</button>
                 </div>
             </form>
@@ -368,11 +333,15 @@
             <h2 data-t="orderTitle">ORDER REQUEST</h2>
             <div class="item-name" id="order-item-name">Item Name - € 000</div>
             
+            <!-- Форма заказа. Добавлены атрибуты name и Honeypot поле -->
             <form class="order-form" onsubmit="event.preventDefault(); showToast('Request sent to the Void.'); closeModal('m-order'); this.reset();">
+                <input type="text" name="_honey" style="display:none"> <!-- Honeypot -->
+                <input type="hidden" name="item" id="order-item-hidden-input"> <!-- Скрытое поле для передачи названия вещи -->
+                
                 <div class="form-row">
                     <div>
                         <label data-t="sizeLabel">SELECT SIZE</label>
-                        <select required>
+                        <select name="size" required>
                             <option value="s">S</option>
                             <option value="m">M</option>
                             <option value="l">L</option>
@@ -381,12 +350,12 @@
                     </div>
                     <div>
                         <label data-t="qtyLabel">QUANTITY</label>
-                        <input type="number" min="1" max="10" value="1" required>
+                        <input type="number" name="quantity" min="1" max="10" value="1" required>
                     </div>
                 </div>
 
                 <label style="margin-top: 20px;">EMAIL</label>
-                <input type="email" required placeholder="contact@email.com">
+                <input type="email" name="email" required placeholder="contact@email.com">
                 
                 <button type="submit" data-t="submitOrder">SUBMIT ORDER</button>
             </form>
@@ -409,7 +378,6 @@
                     document.getElementById('preloader').style.visibility = 'hidden';
                 }, 1000);
                 
-                // Вызываем баннер Privacy Policy через 1.5 сек после загрузки, если не было решения
                 setTimeout(() => {
                     if(!localStorage.getItem('zeitu_privacy')) {
                         document.getElementById('privacy-banner').classList.add('show');
@@ -419,10 +387,9 @@
             }, 1200);
         });
 
-        // Функция обработки кнопок Privacy
         function handlePrivacy(choice) {
-            localStorage.setItem('zeitu_privacy', choice); // сохраняем выбор в кэш
-            document.getElementById('privacy-banner').classList.remove('show'); // прячем баннер
+            localStorage.setItem('zeitu_privacy', choice);
+            document.getElementById('privacy-banner').classList.remove('show');
         }
 
         function toggleMenu() {
@@ -460,6 +427,7 @@
         function openOrder(name, price) {
             const modal = document.getElementById('m-order');
             document.getElementById('order-item-name').innerText = `${name} — ${price}`;
+            document.getElementById('order-item-hidden-input').value = `${name} — ${price}`; // Записываем в скрытый инпут для отправки
             modal.style.display = 'block';
             setTimeout(() => modal.classList.add('active'), 10);
         }
@@ -539,6 +507,8 @@
         };
 
         function changeLang(l) {
+            localStorage.setItem('zeitu_lang', l); // Запоминаем выбор языка
+            
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
                 if(dict[l][key]) { el.innerHTML = dict[l][key]; }
@@ -553,7 +523,10 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            changeLang(document.querySelector('.lang-select').value);
+            // При загрузке страницы проверяем память
+            const savedLang = localStorage.getItem('zeitu_lang') || document.querySelector('.lang-select').value;
+            document.querySelector('.lang-select').value = savedLang; 
+            changeLang(savedLang);
         });
     </script>
 </body>
