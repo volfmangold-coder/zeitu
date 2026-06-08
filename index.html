@@ -10,7 +10,7 @@
     <meta name="description" content="ZEITU was born from the search for the perfect form. Every piece is a statement of minimalism.">
     <meta property="og:title" content="ZEITU ERA">
     <meta property="og:description" content="Raw aesthetic and uncompromising materials.">
-    <!-- Укажите ваш реальный домен для корректного отображения превью в соцсетях -->
+    <!-- реальный домен для соцсетей -->
     <meta property="og:image" content="https://yourdomain.com/eye.png">
     <meta property="og:type" content="website">
 
@@ -304,7 +304,7 @@
         
         <div class="subscribe-box">
             <h4 data-t="joinVoid">JOIN THE VOID (EARLY ACCESS)</h4>
-            <!-- Форма подписки. Добавлен атрибут name и Honeypot поле -->
+            <!-- Форма Honeypot -->
             <form class="sub-form" onsubmit="event.preventDefault(); showToast('Joined the early access list.'); this.reset();">
                 <input type="text" name="_honey" style="display:none"> <!-- Honeypot -->
                 <div class="sub-input-group">
@@ -333,7 +333,7 @@
             <h2 data-t="orderTitle">ORDER REQUEST</h2>
             <div class="item-name" id="order-item-name">Item Name - € 000</div>
             
-            <!-- Форма заказа. Добавлены атрибуты name и Honeypot поле -->
+            <!-- Форма заказа и Honeypot поле -->
             <form class="order-form" onsubmit="event.preventDefault(); showToast('Request sent to the Void.'); closeModal('m-order'); this.reset();">
                 <input type="text" name="_honey" style="display:none"> <!-- Honeypot -->
                 <input type="hidden" name="item" id="order-item-hidden-input"> <!-- Скрытое поле для передачи названия вещи -->
