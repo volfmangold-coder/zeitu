@@ -33,7 +33,7 @@
             overflow-x: hidden; 
         }
 
-        /* Канвас для сигаретного дыма */
+        /* Канвас для сигаретного дыма - убрал прозрачность, чтобы был ярче */
         #smokeCanvas {
             position: fixed;
             top: 0;
@@ -42,7 +42,6 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            opacity: 0.8; /* Регулировка яркости дыма */
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
@@ -318,7 +317,8 @@
         <div class="subscribe-box">
             <h4 data-t="joinVoid">JOIN THE VOID (EARLY ACCESS)</h4>
             <form class="sub-form" onsubmit="event.preventDefault(); showToast('Joined the early access list.'); this.reset();">
-                <input type="text" name="_honey" style="display:none"> <div class="sub-input-group">
+                <input type="text" name="_honey" style="display:none">
+                <div class="sub-input-group">
                     <input type="email" name="email" placeholder="EMAIL ADDRESS" required>
                     <button type="submit" data-t="subBtn">ENTER</button>
                 </div>
@@ -345,7 +345,10 @@
             <div class="item-name" id="order-item-name">Item Name - € 000</div>
             
             <form class="order-form" onsubmit="event.preventDefault(); showToast('Request sent to the Void.'); closeModal('m-order'); this.reset();">
-                <input type="text" name="_honey" style="display:none"> <input type="hidden" name="item" id="order-item-hidden-input"> <div class="form-row">
+                <input type="text" name="_honey" style="display:none">
+                <input type="hidden" name="item" id="order-item-hidden-input">
+                
+                <div class="form-row">
                     <div>
                         <label data-t="sizeLabel">SELECT SIZE</label>
                         <select name="size" required>
@@ -370,19 +373,30 @@
     </div>
 
     <script>
-        // --- CIGARETTE SMOKE CANVAS WITH SCROLL PARALLAX ---
+        // --- HD CIGARETTE SMOKE CANVAS WITH PARALLAX ---
         const canvas = document.getElementById('smokeCanvas');
         const ctx = canvas.getContext('2d');
         
+        let dpr = window.devicePixelRatio || 1; // Учитываем плотность пикселей экрана для 2K/Retina
+
         function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            dpr = window.devicePixelRatio || 1;
+            // Устанавливаем физический размер канваса (больше пикселей)
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            
+            // Задаем CSS размер (виртуальный размер на экране)
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
+            
+            // Масштабируем контекст, чтобы координаты в коде работали как обычно
+            ctx.scale(dpr, dpr);
         }
         window.addEventListener('resize', resize);
         resize();
 
         const particles = [];
-        const maxParticles = 90;
+        const maxParticles = 140; // Увеличили количество частиц для густоты
 
         class SmokeParticle {
             constructor() {
@@ -390,29 +404,26 @@
             }
             
             reset(initial = false) {
-                // Центрируем источник дыма
-                this.x = canvas.width / 2 + (Math.random() - 0.5) * 40; 
-                // Если первая загрузка, раскидываем дым по экрану, иначе спавним снизу
-                this.y = initial ? Math.random() * canvas.height : canvas.height + 100; 
-                this.size = Math.random() * 50 + 30;
-                this.speedX = (Math.random() - 0.5) * 0.3;
-                this.speedY = -(Math.random() * 1.5 + 0.5); // Медленно поднимается
+                this.x = window.innerWidth / 2 + (Math.random() - 0.5) * 60; 
+                this.y = initial ? Math.random() * window.innerHeight : window.innerHeight + 100; 
+                this.size = Math.random() * 60 + 40; // Немного увеличили размер
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = -(Math.random() * 1.8 + 0.8); 
                 this.life = initial ? Math.random() * 300 : 0;
                 this.maxLife = Math.random() * 400 + 300;
-                this.alpha = Math.random() * 0.08 + 0.02; // Полупрозрачность для реалистичности
+                
+                // Делаем дым заметнее (поднял альфа-канал)
+                this.alpha = Math.random() * 0.15 + 0.05; 
                 this.sway = Math.random() * Math.PI * 2;
-                this.swaySpeed = Math.random() * 0.01 + 0.005;
+                this.swaySpeed = Math.random() * 0.015 + 0.005;
             }
 
             update(scrollDelta) {
-                // Синусоидальное движение для имитации струйки дыма
-                this.x += this.speedX + Math.sin(this.sway) * 0.6;
-                
-                // Параллакс эффект при скролле. Дым тянется за экраном.
+                this.x += this.speedX + Math.sin(this.sway) * 0.8;
                 this.y += this.speedY + (scrollDelta * 0.6); 
                 
                 this.sway += this.swaySpeed;
-                this.size += 0.15; // Дым рассеивается и увеличивается
+                this.size += 0.2; 
                 this.life++;
 
                 if (this.life >= this.maxLife || this.y < -150) {
@@ -424,14 +435,14 @@
                 const progress = this.life / this.maxLife;
                 let currentAlpha = this.alpha;
                 
-                // Плавное появление и исчезновение
                 if (progress < 0.1) currentAlpha = this.alpha * (progress * 10);
                 else if (progress > 0.8) currentAlpha = this.alpha * (1 - (progress - 0.8) * 5);
 
                 ctx.beginPath();
                 const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-                gradient.addColorStop(0, `rgba(220, 220, 220, ${currentAlpha})`);
-                gradient.addColorStop(1, `rgba(220, 220, 220, 0)`);
+                // Делаем цвет чуть ярче для контраста с черным фоном
+                gradient.addColorStop(0, `rgba(235, 235, 235, ${currentAlpha})`);
+                gradient.addColorStop(1, `rgba(235, 235, 235, 0)`);
                 ctx.fillStyle = gradient;
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -445,7 +456,8 @@
         let lastScrollY = window.scrollY;
 
         function animateSmoke() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Очищаем канвас с учетом devicePixelRatio
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
             
             let currentScrollY = window.scrollY;
             let scrollDelta = currentScrollY - lastScrollY;
