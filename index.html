@@ -33,19 +33,18 @@
             overflow-x: hidden; 
         }
 
-        /* HD Канвас для сигаретного дыма с размытием */
+        /* Обновленный канвас для резкого и текстурного сигаретного дыма */
         #smokeCanvas {
             position: fixed;
-            /* Делаем канвас чуть больше экрана, чтобы размытие не обрезалось по краям */
             top: -5vh;
             left: -5vw;
             width: 110vw;
             height: 110vh;
             z-index: -1;
             pointer-events: none;
-            /* Секрет идеальной гладкости: аппаратный blur сглаживает любые пиксели */
-            filter: blur(8px);
-            opacity: 0.9;
+            /* Комбинация малого блюра и высокого контраста убирает мыло и делает струи четкими */
+            filter: blur(4px) contrast(220%);
+            opacity: 0.85;
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
@@ -80,14 +79,15 @@
         
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
-        /* Изменили цвет текста на чистый белый и добавили тень для читаемости на дыме */
+        
+        /* Текст истории бренда: чистый белый, плотный шрифт и мягкая тень для идеального контраста */
         .history p { 
             color: #ffffff; 
             line-height: 2; 
             font-size: 1.1rem; 
             margin-bottom: 20px; 
             letter-spacing: 1px; 
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 12px rgba(0,0,0,0.9);
             font-weight: 400;
         }
 
@@ -386,7 +386,7 @@
     </div>
 
     <script>
-        // --- HD CIGARETTE SMOKE CANVAS WITH PARALLAX ---
+        // --- ТЕКСТУРНЫЙ HD ДЫМ С СИГАРЕТНЫМ ЭФФЕКТОМ (BLUR + CONTRAST) ---
         const canvas = document.getElementById('smokeCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -394,7 +394,6 @@
 
         function resize() {
             dpr = window.devicePixelRatio || 1;
-            // Делаем канвас чуть шире, чтобы размытие не выдавало края экрана
             const expandedWidth = window.innerWidth * 1.1;
             const expandedHeight = window.innerHeight * 1.1;
 
@@ -415,26 +414,33 @@
             }
             
             reset(initial = false) {
-                // Спавним немного правее центра, чтобы компенсировать расширенный канвас
-                this.x = (window.innerWidth * 1.1) / 2 + (Math.random() - 0.5) * 60; 
+                // Источник дыма кучно по центру виртуального экрана
+                this.x = (window.innerWidth * 1.1) / 2 + (Math.random() - 0.5) * 30; 
                 this.y = initial ? Math.random() * window.innerHeight : window.innerHeight + 150; 
-                this.size = Math.random() * 70 + 50; 
-                this.speedX = (Math.random() - 0.5) * 0.4;
-                this.speedY = -(Math.random() * 1.5 + 0.5); 
-                this.life = initial ? Math.random() * 300 : 0;
-                this.maxLife = Math.random() * 400 + 300;
                 
-                this.alpha = Math.random() * 0.15 + 0.05; 
+                // Уменьшенный размер для сигаретных тонких струй
+                this.size = Math.random() * 25 + 20; 
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                // Более быстрый подъем, чтобы струи извивались динамичнее
+                this.speedY = -(Math.random() * 2.0 + 1.2); 
+                this.life = initial ? Math.random() * 300 : 0;
+                this.maxLife = Math.random() * 350 + 250;
+                
+                // Насыщенный базовый цвет, излишки которого отсечет CSS-контраст
+                this.alpha = Math.random() * 0.3 + 0.15; 
                 this.sway = Math.random() * Math.PI * 2;
-                this.swaySpeed = Math.random() * 0.015 + 0.005;
+                // Увеличенная скорость изменения направления
+                this.swaySpeed = Math.random() * 0.03 + 0.015;
             }
 
             update(scrollDelta) {
-                this.x += this.speedX + Math.sin(this.sway) * 0.8;
+                // Увеличенная амплитуда колыхания по горизонтали
+                this.x += this.speedX + Math.sin(this.sway) * 1.2;
                 this.y += this.speedY + (scrollDelta * 0.6); 
                 
                 this.sway += this.swaySpeed;
-                this.size += 0.25; 
+                // Замедленный рост размера частицы, чтобы струя дольше держала текстуру
+                this.size += 0.12; 
                 this.life++;
 
                 if (this.life >= this.maxLife || this.y < -200) {
@@ -597,7 +603,7 @@
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
                 homeTitle: `ZEITU ÄRA`,
-                homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
+                homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache для тех, кто ценит тишину и качество.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
