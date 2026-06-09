@@ -33,18 +33,16 @@
             overflow-x: hidden; 
         }
 
+        /* НАСТРОЙКА ХОЛСТА: Полностью убран размывающий фильтр для идеальной четкости */
         #smokeCanvas {
             position: fixed;
-            top: -5vh;
-            left: -5vw;
-            width: 110vw;
-            height: 110vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
             pointer-events: none;
-            /* ИЗМЕНЕНО: уменьшен blur до 1px и скорректирован контраст для четкости */
-            filter: blur(1px) contrast(140%);
-            /* ИЗМЕНЕНО: немного снижена прозрачность, так как четкие частицы стали ярче */
-            opacity: 0.55;
+            opacity: 0.6; /* Оптимальная яркость для тонких четких линий */
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
@@ -514,62 +512,82 @@
             updateCartButtonText();
         }
 
-        // --- ИЗМЕНЕННЫЙ CANVAS С ЧЕТКИМ ДЫМОМ ---
+        // --- ОБНОВЛЕННАЯ СИСТЕМА УЛЬТРА-ЧЕТКОГО СИГАРЕТНОГО ДЫМА (2K/4K АДАПТИВНАЯ) ---
         const canvas = document.getElementById('smokeCanvas');
         const ctx = canvas.getContext('2d');
         let dpr = window.devicePixelRatio || 1;
 
         function resize() {
             dpr = window.devicePixelRatio || 1;
-            const expandedWidth = window.innerWidth * 1.1;
-            const expandedHeight = window.innerHeight * 1.1;
-            canvas.width = expandedWidth * dpr;
-            canvas.height = expandedHeight * dpr;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
             ctx.scale(dpr, dpr);
         }
         window.addEventListener('resize', resize);
         resize();
 
         const particles = [];
-        // ИЗМЕНЕНО: Немного увеличено количество частиц для сохранения плотности тонких линий
-        const maxParticles = 180; 
+        const maxParticles = 350; // Больше мелких частиц создает плотную шелковую нить дыма
 
         class SmokeParticle {
             constructor() { this.reset(true); }
             reset(initial = false) {
-                this.x = (window.innerWidth * 1.1) / 2 + (Math.random() - 0.5) * 40; 
-                this.y = initial ? Math.random() * window.innerHeight : window.innerHeight + 150; 
-                // ИЗМЕНЕНО: Базовый размер частиц уменьшен, чтобы они выглядели как тонкие струи
-                this.size = Math.random() * 12 + 8; 
-                this.speedX = (Math.random() - 0.5) * 0.6;
-                this.speedY = -(Math.random() * 1.8 + 1.0); 
-                this.life = initial ? Math.random() * 300 : 0;
-                this.maxLife = Math.random() * 350 + 250;
-                this.alpha = Math.random() * 0.4 + 0.2; 
+                // Спавн строго внизу, создавая 3 тонкие независимые сигаретные струи
+                const streams = [0.35, 0.5, 0.65];
+                const chosenStream = streams[Math.floor(Math.random() * streams.length)];
+                
+                this.x = window.innerWidth * chosenStream + (Math.random() - 0.5) * 6;
+                this.y = initial ? Math.random() * window.innerHeight : window.innerHeight + Math.random() * 40;
+                
+                // ИЗМЕНЕНО: Изначально ультра-тонкий размер (сигаретная нить)
+                this.size = Math.random() * 1.5 + 1.0; 
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = -(Math.random() * 1.2 + 0.9); // Плавный подъем вверх
+                this.life = initial ? Math.random() * 400 : 0;
+                this.maxLife = Math.random() * 300 + 300;
+                this.alpha = Math.random() * 0.25 + 0.15;
+                
+                // Математика завихрений (турбулентность сигаретного дыма)
                 this.sway = Math.random() * Math.PI * 2;
                 this.swaySpeed = Math.random() * 0.02 + 0.01;
+                this.chaosStart = Math.random() * 0.3 + 0.2; // Точка, где струя начинает красиво извиваться
             }
             update(scrollDelta) {
-                this.x += this.speedX + Math.sin(this.sway) * 1.0;
-                this.y += this.speedY + (scrollDelta * 0.6); 
+                const ageRatio = this.life / this.maxLife;
+                
+                // В начале дым идет ровно, затем начинает извиваться (как от сигареты)
+                if (ageRatio > this.chaosStart) {
+                    const chaosFactor = (ageRatio - this.chaosStart) * 3.5;
+                    this.x += this.speedX + Math.sin(this.sway) * chaosFactor;
+                    this.size += 0.08; // Медленное расширение к верху
+                } else {
+                    this.x += this.speedX + Math.sin(this.sway) * 0.2;
+                    this.size += 0.02; // Внизу нить остается идеально острой
+                }
+                
+                this.y += this.speedY + (scrollDelta * 0.5); 
                 this.sway += this.swaySpeed;
-                // ИЗМЕНЕНО: Скорость расширения снижена (0.05 вместо 0.12), чтобы дым не размывался в туман слишком быстро
-                this.size += 0.05; 
                 this.life++;
-                if (this.life >= this.maxLife || this.y < -200) { this.reset(); }
+                
+                if (this.life >= this.maxLife || this.y < -50 || this.x < -50 || this.x > window.innerWidth + 50) { 
+                    this.reset(); 
+                }
             }
             draw() {
                 const progress = this.life / this.maxLife;
                 let currentAlpha = this.alpha;
-                if (progress < 0.1) currentAlpha = this.alpha * (progress * 10);
-                else if (progress > 0.8) currentAlpha = this.alpha * (1 - (progress - 0.8) * 5);
-                ctx.beginPath();
-                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                 
-                // ИЗМЕНЕНО: Добавлена точка 0.85, заставляющая цвет сохранять плотность почти до самых краев частицы
-                gradient.addColorStop(0, `rgba(235, 235, 235, ${currentAlpha})`);
-                gradient.addColorStop(0.85, `rgba(235, 235, 235, ${currentAlpha * 0.85})`);
-                gradient.addColorStop(1, `rgba(235, 235, 235, 0)`);
+                // Мягкое проявление снизу и растворение вверху
+                if (progress < 0.08) currentAlpha = this.alpha * (progress * 12.5);
+                else if (progress > 0.75) currentAlpha = this.alpha * (1 - (progress - 0.75) * 4);
+                
+                ctx.beginPath();
+                
+                // ИЗМЕНЕНО: Градиент заменен на ультра-резкий, жесткие края без размытия по краям
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                gradient.addColorStop(0, `rgba(240, 240, 240, ${currentAlpha})`);
+                gradient.addColorStop(0.9, `rgba(240, 240, 240, ${currentAlpha * 0.85})`); // Удержание плотности до краев
+                gradient.addColorStop(1, `rgba(240, 240, 240, 0)`);
                 
                 ctx.fillStyle = gradient;
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -697,7 +715,7 @@
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
                 homeTitle: `عصر ZEITU`,
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
-                homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
+                homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، только جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
