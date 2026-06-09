@@ -24,13 +24,25 @@
         
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; cursor: crosshair; }
         
-        body { background-color: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; position: relative; overflow-x: hidden; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--fg); 
+            font-family: 'Inter', sans-serif; 
+            -webkit-font-smoothing: antialiased; 
+            position: relative; 
+            overflow-x: hidden; 
+        }
 
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('eye.gif'); 
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-            opacity: 0.12; z-index: -1; pointer-events: none; 
+        /* Канвас для сигаретного дыма */
+        #smokeCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.8; /* Регулировка яркости дыма */
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
@@ -66,16 +78,6 @@
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; }
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
-
-        /* --- MYSTIC EYE ANIMATION STYLES --- */
-        .mystic-container { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 250px; margin-bottom: 30px; }
-        .mystic-eye { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; position: relative; z-index: 10; margin-top: 80px; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-        .smoke-container { position: absolute; bottom: 50%; width: 100px; height: 200px; z-index: 5; pointer-events: none; }
-        .smoke { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(200, 200, 200, 0.15); border-radius: 50%; filter: blur(10px); animation: rise linear forwards; }
-        @keyframes rise { 0% { transform: translate(-50%, 0) scale(1); opacity: 0.7; } 100% { transform: translate(calc(-50% + var(--spread)), -150px) scale(4); opacity: 0; } }
-        .mystic-zeitu-text { position: absolute; top: -30px; font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--fg); letter-spacing: 15px; text-transform: uppercase; opacity: 0; animation: revealText 4s forwards; animation-delay: 1.5s; z-index: 15; pointer-events: none;}
-        @keyframes revealText { 0% { opacity: 0; filter: blur(15px); transform: translateY(20px); } 100% { opacity: 1; filter: blur(0); transform: translateY(0); } }
-        /* ---------------------------------- */
 
         .i-logo { position: relative; display: inline-block; vertical-align: baseline; }
         .i-logo img { position: absolute; top: 0; left: 40%; transform: translate(-50%, -60%); width: 0.45em; height: 0.45em; object-fit: cover; border-radius: 50%; }
@@ -154,11 +156,12 @@
             .sub-input-group input[type="email"] { width: 100%; }
             #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
             .banner-btns { width: 100%; justify-content: center;}
-            .mystic-container { height: 200px; }
         }
     </style>
 </head>
 <body>
+
+    <canvas id="smokeCanvas"></canvas>
 
     <div id="toast">Message</div>
 
@@ -212,13 +215,6 @@
     </header>
 
     <section class="history reveal">
-        
-        <div class="mystic-container">
-            <div class="mystic-zeitu-text" data-t="mysticText">ZEITU</div>
-            <img src="eye.gif" alt="Mystic Eye" class="mystic-eye">
-            <div class="smoke-container"></div>
-        </div>
-
         <h1 data-t="homeTitle">ZEITU ERA</h1>
         <p data-t="homeDesc1">ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.</p>
         <p data-t="homeDesc2">Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.</p>
@@ -374,6 +370,98 @@
     </div>
 
     <script>
+        // --- CIGARETTE SMOKE CANVAS WITH SCROLL PARALLAX ---
+        const canvas = document.getElementById('smokeCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const particles = [];
+        const maxParticles = 90;
+
+        class SmokeParticle {
+            constructor() {
+                this.reset(true);
+            }
+            
+            reset(initial = false) {
+                // Центрируем источник дыма
+                this.x = canvas.width / 2 + (Math.random() - 0.5) * 40; 
+                // Если первая загрузка, раскидываем дым по экрану, иначе спавним снизу
+                this.y = initial ? Math.random() * canvas.height : canvas.height + 100; 
+                this.size = Math.random() * 50 + 30;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = -(Math.random() * 1.5 + 0.5); // Медленно поднимается
+                this.life = initial ? Math.random() * 300 : 0;
+                this.maxLife = Math.random() * 400 + 300;
+                this.alpha = Math.random() * 0.08 + 0.02; // Полупрозрачность для реалистичности
+                this.sway = Math.random() * Math.PI * 2;
+                this.swaySpeed = Math.random() * 0.01 + 0.005;
+            }
+
+            update(scrollDelta) {
+                // Синусоидальное движение для имитации струйки дыма
+                this.x += this.speedX + Math.sin(this.sway) * 0.6;
+                
+                // Параллакс эффект при скролле. Дым тянется за экраном.
+                this.y += this.speedY + (scrollDelta * 0.6); 
+                
+                this.sway += this.swaySpeed;
+                this.size += 0.15; // Дым рассеивается и увеличивается
+                this.life++;
+
+                if (this.life >= this.maxLife || this.y < -150) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                const progress = this.life / this.maxLife;
+                let currentAlpha = this.alpha;
+                
+                // Плавное появление и исчезновение
+                if (progress < 0.1) currentAlpha = this.alpha * (progress * 10);
+                else if (progress > 0.8) currentAlpha = this.alpha * (1 - (progress - 0.8) * 5);
+
+                ctx.beginPath();
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                gradient.addColorStop(0, `rgba(220, 220, 220, ${currentAlpha})`);
+                gradient.addColorStop(1, `rgba(220, 220, 220, 0)`);
+                ctx.fillStyle = gradient;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new SmokeParticle());
+        }
+
+        let lastScrollY = window.scrollY;
+
+        function animateSmoke() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            let currentScrollY = window.scrollY;
+            let scrollDelta = currentScrollY - lastScrollY;
+            lastScrollY = currentScrollY;
+
+            particles.forEach(p => {
+                p.update(scrollDelta);
+                p.draw();
+            });
+
+            requestAnimationFrame(animateSmoke);
+        }
+        
+        animateSmoke();
+        // ---------------------------------------------------
+
         function scrollToSec(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
@@ -397,32 +485,6 @@
 
             }, 1200);
         });
-
-        // --- MYSTIC SMOKE GENERATOR LOGIC ---
-        document.addEventListener("DOMContentLoaded", () => {
-            const smokeContainer = document.querySelector('.smoke-container');
-            if(smokeContainer) {
-                function createSmoke() {
-                    const smoke = document.createElement('div');
-                    smoke.classList.add('smoke');
-                    
-                    const spread = (Math.random() - 0.5) * 80; 
-                    smoke.style.setProperty('--spread', `${spread}px`);
-                    
-                    const size = Math.random() * 15 + 10;
-                    smoke.style.width = `${size}px`;
-                    smoke.style.height = `${size}px`;
-                    
-                    smoke.style.animationDuration = `${Math.random() * 1 + 2}s`;
-                    
-                    smokeContainer.appendChild(smoke);
-                    
-                    setTimeout(() => { smoke.remove(); }, 3000);
-                }
-                setInterval(createSmoke, 200);
-            }
-        });
-        // ------------------------------------
 
         function handlePrivacy(choice) {
             localStorage.setItem('zeitu_privacy', choice);
@@ -499,8 +561,7 @@
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy Policy", terms: "Terms of Service",
                 cotton: "100% HEAVY COTTON", leather: "PREMIUM VEGAN LEATHER", joinVoid: "JOIN THE VOID (EARLY ACCESS)", subBtn: "ENTER",
                 orderTitle: "ORDER REQUEST", sizeLabel: "SELECT SIZE", qtyLabel: "QUANTITY", submitOrder: "SUBMIT ORDER",
-                bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE",
-                mysticText: "ZEITU"
+                bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE"
             },
             ru: { 
                 navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", 
@@ -510,8 +571,7 @@
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Политика конфиденциальности", terms: "Условия использования",
                 cotton: "100% ПЛОТНЫЙ ХЛОПОК", leather: "ПРЕМИУМ ЭКО-КОЖА", joinVoid: "ВСТУПИТЬ В ПУСТОТУ (РАННИЙ ДОСТУП)", subBtn: "ВОЙТИ",
                 orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", sizeLabel: "ВЫБЕРИТЕ РАЗМЕР", qtyLabel: "КОЛИЧЕСТВО", submitOrder: "ПОДТВЕРДИТЬ ЗАКАЗ",
-                bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ",
-                mysticText: "ZEITU"
+                bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ"
             },
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
@@ -521,8 +581,7 @@
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
                 orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", qtyLabel: "MENGE", submitOrder: "BESTELLUNG ABSCHLIESSEN",
-                bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN",
-                mysticText: "ZEITU"
+                bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN"
             },
             es: { 
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
@@ -532,8 +591,7 @@
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
-                bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR",
-                mysticText: "ZEITU"
+                bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR"
             },
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
@@ -543,8 +601,7 @@
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
-                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
-                mysticText: "ZEITU"
+                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض"
             }
         };
 
