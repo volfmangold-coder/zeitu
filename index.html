@@ -33,7 +33,6 @@
             overflow-x: hidden; 
         }
 
-        /* Обновленный канвас для резкого и текстурного сигаретного дыма */
         #smokeCanvas {
             position: fixed;
             top: -5vh;
@@ -42,7 +41,6 @@
             height: 110vh;
             z-index: -1;
             pointer-events: none;
-            /* Комбинация малого блюра и высокого контраста убирает мыло и делает струи четкими */
             filter: blur(4px) contrast(220%);
             opacity: 0.85;
         }
@@ -64,6 +62,10 @@
         .nav-links a { color: var(--grey); text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 0 15px; transition: 0.3s; }
         .nav-links a:hover { color: var(--fg); text-decoration: line-through; }
 
+        /* Кнопка Корзины в шапке */
+        .cart-btn { background: none; border: 1px solid var(--border); color: var(--fg); padding: 5px 12px; font-size: 0.7rem; letter-spacing: 1px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; }
+        .cart-btn:hover { border-color: var(--fg); }
+
         .lang-select { background: none; color: var(--fg); border: 1px solid var(--border); padding: 5px; text-transform: uppercase; font-size: 0.7rem; outline: none; }
         .lang-select option { background: var(--bg); color: var(--fg); }
 
@@ -79,8 +81,6 @@
         
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
-        
-        /* Текст истории бренда: чистый белый, плотный шрифт и мягкая тень для идеального контраста */
         .history p { 
             color: #ffffff; 
             line-height: 2; 
@@ -124,6 +124,10 @@
         footer a:hover { color: var(--fg); text-decoration: line-through; }
         .contact-info { text-align: right; }
 
+        /* Пункт 3: Стили для блока соцсетей в футере */
+        .social-links { margin-top: 15px; display: flex; gap: 20px; }
+        .social-links a { display: inline-block; margin-bottom: 0; font-size: 0.7rem; letter-spacing: 1px; }
+
         .subscribe-box { text-align: center; }
         .subscribe-box h4 { color: var(--fg); font-size: 0.8rem; margin-bottom: 15px; letter-spacing: 2px; font-weight: 400; }
         .sub-form { display: flex; justify-content: center; margin-top: 10px; flex-direction: column; align-items: center; gap: 15px;}
@@ -138,11 +142,20 @@
         .modal-content h2 { font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.5rem; text-align: center; }
         .modal-content .item-name { text-align: center; color: var(--grey); font-size: 0.8rem; margin-bottom: 30px; letter-spacing: 2px; }
         
+        /* Стили для элементов Корзины внутри модалки */
+        .cart-items-list { margin-bottom: 25px; border-bottom: 1px solid var(--border); max-height: 240px; overflow-y: auto; }
+        .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.8rem; }
+        .cart-item-details { display: flex; flex-direction: column; gap: 40px; }
+        .cart-item-details select { background: transparent; color: var(--fg); border: 1px solid var(--border); padding: 3px; font-size: 0.65rem; }
+        .cart-item-qty { display: flex; align-items: center; gap: 8px; }
+        .cart-item-qty button { background: transparent; border: 1px solid var(--border); color: var(--fg); width: 22px; height: 22px; cursor: pointer; font-size: 0.7rem; }
+        .cart-item-remove { background: none; border: none; color: var(--grey); cursor: pointer; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .cart-item-remove:hover { color: var(--fg); text-decoration: line-through; }
+        .cart-total-price { text-align: right; font-family: 'Cinzel', serif; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
+
         .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; }
         .order-form select, .order-form input[type="email"], .order-form input[type="number"], .order-form input[type="text"] { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; font-family: 'Inter', sans-serif; cursor: crosshair; }
         .order-form option { background: var(--bg); }
-        .form-row { display: flex; gap: 15px; }
-        .form-row > div { flex: 1; }
 
         .order-form button { width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 15px; margin-top: 30px; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; font-family: 'Inter', sans-serif; }
         .order-form button:hover { opacity: 0.8; }
@@ -164,6 +177,7 @@
             .burger-btn { display: block; } 
             footer { grid-template-columns: 1fr; text-align: center; gap: 50px; padding: 60px 20px;}
             .contact-info { text-align: center; }
+            .social-links { justify-content: center; }
             .history h1 { font-size: 2.2rem; line-height: 1.8; letter-spacing: 5px; }
             .sub-input-group input[type="email"] { width: 100%; }
             #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
@@ -215,6 +229,8 @@
         </nav>
 
         <div style="display: flex; align-items: center; gap: 15px;">
+            <button class="cart-btn" onclick="openCartOverlay()" data-t="cartBtn">CART (0)</button>
+            
             <select class="lang-select" onchange="changeLang(this.value)">
                 <option value="en">EN</option>
                 <option value="ru">RU</option>
@@ -246,7 +262,7 @@
                         <h3>Void T-Shirt</h3>
                         <p data-t="cotton">100% HEAVY COTTON</p>
                     </div>
-                    <button class="btn-buy" onclick="event.stopPropagation(); openOrder('Void T-Shirt', '€ 120')">€ 120</button>
+                    <button class="btn-buy" onclick="event.stopPropagation(); addToCart('Void T-Shirt', 120)">€ 120</button>
                 </div>
             </div>
             <div class="card" onclick="this.classList.toggle('active-mobile')">
@@ -260,7 +276,7 @@
                         <h3>Luna T-Shirt</h3>
                         <p data-t="cotton">100% HEAVY COTTON</p>
                     </div>
-                    <button class="btn-buy" onclick="event.stopPropagation(); openOrder('Luna T-Shirt', '€ 110')">€ 110</button>
+                    <button class="btn-buy" onclick="event.stopPropagation(); addToCart('Luna T-Shirt', 110)">€ 110</button>
                 </div>
             </div>
         </div>
@@ -280,7 +296,7 @@
                         <h3>Shadow Hoodie</h3>
                         <p data-t="cotton">100% HEAVY COTTON</p>
                     </div>
-                    <button class="btn-buy" onclick="event.stopPropagation(); openOrder('Shadow Hoodie', '€ 280')">€ 280</button>
+                    <button class="btn-buy" onclick="event.stopPropagation(); addToCart('Shadow Hoodie', 280)">€ 280</button>
                 </div>
             </div>
             <div class="card" onclick="this.classList.toggle('active-mobile')">
@@ -294,7 +310,7 @@
                         <h3>Ghost Hoodie</h3>
                         <p data-t="cotton">100% HEAVY COTTON</p>
                     </div>
-                    <button class="btn-buy" onclick="event.stopPropagation(); openOrder('Ghost Hoodie', '€ 260')">€ 260</button>
+                    <button class="btn-buy" onclick="event.stopPropagation(); addToCart('Ghost Hoodie', 260)">€ 260</button>
                 </div>
             </div>
         </div>
@@ -314,7 +330,7 @@
                         <h3>Armor Jacket</h3>
                         <p data-t="leather">PREMIUM VEGAN LEATHER</p>
                     </div>
-                    <button class="btn-buy" onclick="event.stopPropagation(); openOrder('Armor Jacket', '€ 850')">€ 850</button>
+                    <button class="btn-buy" onclick="event.stopPropagation(); addToCart('Armor Jacket', 850)">€ 850</button>
                 </div>
             </div>
         </div>
@@ -325,6 +341,11 @@
             <a href="javascript:void(0)" onclick="openPol('privacy')" data-t="privacy">Privacy Policy</a>
             <a href="javascript:void(0)" onclick="openPol('terms')" data-t="terms">Terms of Service</a>
             <p>© 2026 ZEITU</p>
+            
+            <div class="social-links">
+                <a href="https://instagram.com/your_zeitu_profile" target="_blank">INSTAGRAM</a>
+                <a href="https://tiktok.com/@your_zeitu_profile" target="_blank">TIKTOK</a>
+            </div>
         </div>
         
         <div class="subscribe-box">
@@ -351,32 +372,30 @@
         </div>
     </div>
 
+    <div id="m-cart" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('m-cart')">×</span>
+            <h2 data-t="cartTitle">YOUR CART</h2>
+            <div style="height:20px"></div>
+            
+            <div class="cart-items-list" id="cart-items-container">
+                </div>
+            
+            <div class="cart-total-price" id="cart-total-sum">TOTAL: € 0</div>
+            <button class="btn-buy" style="width:100%; padding:15px;" onclick="proceedToCheckout()" data-t="checkoutBtn">PROCEED TO CHECKOUT</button>
+        </div>
+    </div>
+
     <div id="m-order" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('m-order')">×</span>
             <h2 data-t="orderTitle">ORDER REQUEST</h2>
-            <div class="item-name" id="order-item-name">Item Name - € 000</div>
+            <div class="item-name" id="order-items-summary">Items summary</div>
             
-            <form class="order-form" onsubmit="event.preventDefault(); showToast('Request sent to the Void.'); closeModal('m-order'); this.reset();">
+            <form class="order-form" onsubmit="event.preventDefault(); clearCart(); showToast('Request sent to the Void.'); closeModal('m-order'); this.reset();">
                 <input type="text" name="_honey" style="display:none">
-                <input type="hidden" name="item" id="order-item-hidden-input">
+                <input type="hidden" name="cart_data" id="order-cart-hidden-input"> 
                 
-                <div class="form-row">
-                    <div>
-                        <label data-t="sizeLabel">SELECT SIZE</label>
-                        <select name="size" required>
-                            <option value="s">S</option>
-                            <option value="m">M</option>
-                            <option value="l">L</option>
-                            <option value="xl">XL</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label data-t="qtyLabel">QUANTITY</label>
-                        <input type="number" name="quantity" min="1" max="10" value="1" required>
-                    </div>
-                </div>
-
                 <label style="margin-top: 20px;">EMAIL</label>
                 <input type="email" name="email" required placeholder="contact@email.com">
                 
@@ -386,20 +405,128 @@
     </div>
 
     <script>
-        // --- ТЕКСТУРНЫЙ HD ДЫМ С СИГАРЕТНЫМ ЭФФЕКТОМ (BLUR + CONTRAST) ---
+        // --- СИСТЕМА КОРЗИНЫ (ИНТЕРАКТИВНЫЙ МАССИВ ДАННЫХ) ---
+        let cart = [];
+
+        function updateCartButtonText() {
+            const count = cart.reduce((total, item) => total + item.qty, 0);
+            const savedLang = localStorage.getItem('zeitu_lang') || 'en';
+            const baseText = savedLang === 'ru' ? 'КОРЗИНА' : (savedLang === 'de' ? 'WARENKORB' : (savedLang === 'es' ? 'CARRITO' : 'CART'));
+            document.querySelector('.cart-btn').innerText = `${baseText} (${count})`;
+        }
+
+        function addToCart(name, price) {
+            // Ищем, есть ли товар уже в корзине с дефолтным размером 'S'
+            const existingItem = cart.find(item => item.name === name && item.size === 'M');
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name: name, price: price, size: 'M', qty: 1 });
+            }
+            updateCartButtonText();
+            showToast(`${name} added to cart.`);
+        }
+
+        function changeItemQty(index, change) {
+            cart[index].qty += change;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            renderCartItems();
+            updateCartButtonText();
+        }
+
+        function changeItemSize(index, size) {
+            cart[index].size = size;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCartItems();
+            updateCartButtonText();
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items-container');
+            const totalSumEl = document.getElementById('cart-total-sum');
+            container.innerHTML = '';
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding: 20px; color:var(--grey)">THE CART IS EMPTY</div>';
+                totalSumEl.innerText = 'TOTAL: € 0';
+                return;
+            }
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.qty;
+                const row = document.createElement('div');
+                row.classList.add('cart-item-row');
+                row.innerHTML = `
+                    <div class="cart-item-details">
+                        <div><strong>${item.name}</strong></div>
+                        <div style="margin-top:5px">
+                            <select onchange="changeItemSize(${index}, this.value)">
+                                <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
+                                <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
+                                <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
+                                <option value="XL" ${item.size === 'XL' ? 'selected' : ''}>XL</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="cart-item-qty">
+                        <button onclick="changeItemQty(${index}, -1)">-</button>
+                        <span>${item.qty}</span>
+                        <button onclick="changeItemQty(${index}, 1)">+</button>
+                    </div>
+                    <div>€ ${item.price * item.qty}</div>
+                    <button class="cart-item-remove" onclick="removeFromCart(${index})">×</button>
+                `;
+                container.appendChild(row);
+            });
+            totalSumEl.innerText = `TOTAL: € ${total}`;
+        }
+
+        function openCartOverlay() {
+            renderCartItems();
+            const modal = document.getElementById('m-cart');
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) return;
+            closeModal('m-cart');
+            
+            const modal = document.getElementById('m-order');
+            let summaryText = cart.map(item => `${item.name} (${item.size}) x${item.qty}`).join(', ');
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            document.getElementById('order-items-summary').innerText = `${summaryText} — TOTAL: € ${total}`;
+            document.getElementById('order-cart-hidden-input').value = JSON.stringify(cart);
+            
+            setTimeout(() => {
+                modal.style.display = 'block';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }, 450);
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartButtonText();
+        }
+
+        // --- HD CIGARETTE SMOKE CANVAS WITH PARALLAX ---
         const canvas = document.getElementById('smokeCanvas');
         const ctx = canvas.getContext('2d');
-        
         let dpr = window.devicePixelRatio || 1;
 
         function resize() {
             dpr = window.devicePixelRatio || 1;
             const expandedWidth = window.innerWidth * 1.1;
             const expandedHeight = window.innerHeight * 1.1;
-
             canvas.width = expandedWidth * dpr;
             canvas.height = expandedHeight * dpr;
-            
             ctx.scale(dpr, dpr);
         }
         window.addEventListener('resize', resize);
@@ -409,52 +536,32 @@
         const maxParticles = 140;
 
         class SmokeParticle {
-            constructor() {
-                this.reset(true);
-            }
-            
+            constructor() { this.reset(true); }
             reset(initial = false) {
-                // Источник дыма кучно по центру виртуального экрана
                 this.x = (window.innerWidth * 1.1) / 2 + (Math.random() - 0.5) * 30; 
                 this.y = initial ? Math.random() * window.innerHeight : window.innerHeight + 150; 
-                
-                // Уменьшенный размер для сигаретных тонких струй
                 this.size = Math.random() * 25 + 20; 
                 this.speedX = (Math.random() - 0.5) * 0.5;
-                // Более быстрый подъем, чтобы струи извивались динамичнее
                 this.speedY = -(Math.random() * 2.0 + 1.2); 
                 this.life = initial ? Math.random() * 300 : 0;
                 this.maxLife = Math.random() * 350 + 250;
-                
-                // Насыщенный базовый цвет, излишки которого отсечет CSS-контраст
                 this.alpha = Math.random() * 0.3 + 0.15; 
                 this.sway = Math.random() * Math.PI * 2;
-                // Увеличенная скорость изменения направления
                 this.swaySpeed = Math.random() * 0.03 + 0.015;
             }
-
             update(scrollDelta) {
-                // Увеличенная амплитуда колыхания по горизонтали
                 this.x += this.speedX + Math.sin(this.sway) * 1.2;
                 this.y += this.speedY + (scrollDelta * 0.6); 
-                
                 this.sway += this.swaySpeed;
-                // Замедленный рост размера частицы, чтобы струя дольше держала текстуру
                 this.size += 0.12; 
                 this.life++;
-
-                if (this.life >= this.maxLife || this.y < -200) {
-                    this.reset();
-                }
+                if (this.life >= this.maxLife || this.y < -200) { this.reset(); }
             }
-
             draw() {
                 const progress = this.life / this.maxLife;
                 let currentAlpha = this.alpha;
-                
                 if (progress < 0.1) currentAlpha = this.alpha * (progress * 10);
                 else if (progress > 0.8) currentAlpha = this.alpha * (1 - (progress - 0.8) * 5);
-
                 ctx.beginPath();
                 const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
                 gradient.addColorStop(0, `rgba(235, 235, 235, ${currentAlpha})`);
@@ -465,51 +572,28 @@
             }
         }
 
-        for (let i = 0; i < maxParticles; i++) {
-            particles.push(new SmokeParticle());
-        }
-
+        for (let i = 0; i < maxParticles; i++) { particles.push(new SmokeParticle()); }
         let lastScrollY = window.scrollY;
 
         function animateSmoke() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             let currentScrollY = window.scrollY;
             let scrollDelta = currentScrollY - lastScrollY;
             lastScrollY = currentScrollY;
-
-            particles.forEach(p => {
-                p.update(scrollDelta);
-                p.draw();
-            });
-
+            particles.forEach(p => { p.update(scrollDelta); p.draw(); });
             requestAnimationFrame(animateSmoke);
         }
-        
         animateSmoke();
-        // ---------------------------------------------------
 
-        function scrollToSec(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        if (window.location.hash) {
-            history.replaceState(null, null, window.location.pathname);
-        }
+        // --- ДЕФОЛТНАЯ ЛОГИКА САЙТА ---
+        function scrollToSec(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+        if (window.location.hash) { history.replaceState(null, null, window.location.pathname); }
 
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('preloader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('preloader').style.visibility = 'hidden';
-                }, 1000);
-                
-                setTimeout(() => {
-                    if(!localStorage.getItem('zeitu_privacy')) {
-                        document.getElementById('privacy-banner').classList.add('show');
-                    }
-                }, 1500);
-
+                setTimeout(() => { document.getElementById('preloader').style.visibility = 'hidden'; }, 1000);
+                setTimeout(() => { if(!localStorage.getItem('zeitu_privacy')) { document.getElementById('privacy-banner').classList.add('show'); } }, 1500);
             }, 1200);
         });
 
@@ -518,20 +602,14 @@
             document.getElementById('privacy-banner').classList.remove('show');
         }
 
-        function toggleMenu() {
-            const menu = document.getElementById('mob-menu');
-            menu.classList.toggle('active');
-        }
+        function toggleMenu() { document.getElementById('mob-menu').classList.toggle('active'); }
 
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
+                if (elementTop < windowHeight - 150) { reveals[i].classList.add("active"); }
             }
         }
         window.addEventListener("scroll", reveal);
@@ -541,19 +619,9 @@
             const modal = document.getElementById('m-pol');
             const innerContainer = document.getElementById('m-text');
             const closeBtn = '<span class="close" onclick="closeModal(\'m-pol\')">×</span>';
-            
             innerContainer.innerHTML = closeBtn + (type === 'privacy' 
                 ? '<h1>Privacy Policy</h1><p>Your data is safe with ZEITU. We process data according to strict minimalism.</p>' 
                 : '<h1>Terms of Service</h1><p>Terms and conditions for ZEITU era. No compromises.</p>');
-            
-            modal.style.display = 'block';
-            setTimeout(() => modal.classList.add('active'), 10);
-        }
-
-        function openOrder(name, price) {
-            const modal = document.getElementById('m-order');
-            document.getElementById('order-item-name').innerText = `${name} — ${price}`;
-            document.getElementById('order-item-hidden-input').value = `${name} — ${price}`; 
             modal.style.display = 'block';
             setTimeout(() => modal.classList.add('active'), 10);
         }
@@ -564,11 +632,7 @@
             setTimeout(() => modal.style.display = 'none', 400); 
         }
 
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal')) {
-                closeModal(event.target.id);
-            }
-        });
+        window.addEventListener('click', function(event) { if (event.target.classList.contains('modal')) { closeModal(event.target.id); } });
 
         function showToast(message) {
             const toast = document.getElementById("toast");
@@ -588,7 +652,8 @@
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy Policy", terms: "Terms of Service",
                 cotton: "100% HEAVY COTTON", leather: "PREMIUM VEGAN LEATHER", joinVoid: "JOIN THE VOID (EARLY ACCESS)", subBtn: "ENTER",
                 orderTitle: "ORDER REQUEST", sizeLabel: "SELECT SIZE", qtyLabel: "QUANTITY", submitOrder: "SUBMIT ORDER",
-                bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE"
+                bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE",
+                cartTitle: "YOUR CART", checkoutBtn: "PROCEED TO CHECKOUT"
             },
             ru: { 
                 navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", 
@@ -598,17 +663,19 @@
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Политика конфиденциальности", terms: "Условия использования",
                 cotton: "100% ПЛОТНЫЙ ХЛОПОК", leather: "ПРЕМИУМ ЭКО-КОЖА", joinVoid: "ВСТУПИТЬ В ПУСТОТУ (РАННИЙ ДОСТУП)", subBtn: "ВОЙТИ",
                 orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", sizeLabel: "ВЫБЕРИТЕ РАЗМЕР", qtyLabel: "КОЛИЧЕСТВО", submitOrder: "ПОДТВЕРДИТЬ ЗАКАЗ",
-                bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ"
+                bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ",
+                cartTitle: "ВАША КОРЗИНА", checkoutBtn: "ПЕРЕЙТИ К ОФОРМЛЕНИЮ"
             },
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
                 homeTitle: `ZEITU ÄRA`,
-                homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache для тех, кто ценит тишину и качество.",
+                homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
                 orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", qtyLabel: "MENGE", submitOrder: "BESTELLUNG ABSCHLIESSEN",
-                bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN"
+                bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN",
+                cartTitle: "IHR WARENKORB", checkoutBtn: "ZUR KASSE GEHEN"
             },
             es: { 
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
@@ -618,34 +685,33 @@
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
-                bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR"
+                bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR",
+                cartTitle: "SU CARRITO", checkoutBtn: "PROCEDER AL PAGO"
             },
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
                 homeTitle: `عصر ZEITU`,
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
-                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
+                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمะ",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
-                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض"
+                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
+                cartTitle: "حقيبتك", checkoutBtn: "المتابعة لإتمام الطلب"
             }
         };
 
         function changeLang(l) {
             localStorage.setItem('zeitu_lang', l); 
-            
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
                 if(dict[l][key]) { el.innerHTML = dict[l][key]; }
             });
             document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
-            
+            updateCartButtonText();
             const homeTitleH1 = document.querySelector('.history h1');
             const currentTitleText = homeTitleH1.innerText;
-            if (currentTitleText.includes('ZEITU')) {
-                homeTitleH1.innerHTML = currentTitleText.replace('I', logoHTML);
-            }
+            if (currentTitleText.includes('ZEITU')) { homeTitleH1.innerHTML = currentTitleText.replace('I', logoHTML); }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
