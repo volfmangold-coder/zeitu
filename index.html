@@ -10,7 +10,6 @@
     <meta name="description" content="ZEITU was born from the search for the perfect form. Every piece is a statement of minimalism.">
     <meta property="og:title" content="ZEITU ERA">
     <meta property="og:description" content="Raw aesthetic and uncompromising materials.">
-    <!-- реальный домен для соцсетей -->
     <meta property="og:image" content="https://yourdomain.com/eye.png">
     <meta property="og:type" content="website">
 
@@ -67,6 +66,16 @@
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; }
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: var(--grey); line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; }
+
+        /* --- MYSTIC EYE ANIMATION STYLES --- */
+        .mystic-container { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 250px; margin-bottom: 30px; }
+        .mystic-eye { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; position: relative; z-index: 10; margin-top: 80px; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .smoke-container { position: absolute; bottom: 50%; width: 100px; height: 200px; z-index: 5; pointer-events: none; }
+        .smoke { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); background-color: rgba(200, 200, 200, 0.15); border-radius: 50%; filter: blur(10px); animation: rise linear forwards; }
+        @keyframes rise { 0% { transform: translate(-50%, 0) scale(1); opacity: 0.7; } 100% { transform: translate(calc(-50% + var(--spread)), -150px) scale(4); opacity: 0; } }
+        .mystic-zeitu-text { position: absolute; top: -30px; font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--fg); letter-spacing: 15px; text-transform: uppercase; opacity: 0; animation: revealText 4s forwards; animation-delay: 1.5s; z-index: 15; pointer-events: none;}
+        @keyframes revealText { 0% { opacity: 0; filter: blur(15px); transform: translateY(20px); } 100% { opacity: 1; filter: blur(0); transform: translateY(0); } }
+        /* ---------------------------------- */
 
         .i-logo { position: relative; display: inline-block; vertical-align: baseline; }
         .i-logo img { position: absolute; top: 0; left: 40%; transform: translate(-50%, -60%); width: 0.45em; height: 0.45em; object-fit: cover; border-radius: 50%; }
@@ -145,6 +154,7 @@
             .sub-input-group input[type="email"] { width: 100%; }
             #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
             .banner-btns { width: 100%; justify-content: center;}
+            .mystic-container { height: 200px; }
         }
     </style>
 </head>
@@ -202,6 +212,13 @@
     </header>
 
     <section class="history reveal">
+        
+        <div class="mystic-container">
+            <div class="mystic-zeitu-text" data-t="mysticText">ZEITU</div>
+            <img src="eye.gif" alt="Mystic Eye" class="mystic-eye">
+            <div class="smoke-container"></div>
+        </div>
+
         <h1 data-t="homeTitle">ZEITU ERA</h1>
         <p data-t="homeDesc1">ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.</p>
         <p data-t="homeDesc2">Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.</p>
@@ -304,10 +321,8 @@
         
         <div class="subscribe-box">
             <h4 data-t="joinVoid">JOIN THE VOID (EARLY ACCESS)</h4>
-            <!-- Форма Honeypot -->
             <form class="sub-form" onsubmit="event.preventDefault(); showToast('Joined the early access list.'); this.reset();">
-                <input type="text" name="_honey" style="display:none"> <!-- Honeypot -->
-                <div class="sub-input-group">
+                <input type="text" name="_honey" style="display:none"> <div class="sub-input-group">
                     <input type="email" name="email" placeholder="EMAIL ADDRESS" required>
                     <button type="submit" data-t="subBtn">ENTER</button>
                 </div>
@@ -333,12 +348,8 @@
             <h2 data-t="orderTitle">ORDER REQUEST</h2>
             <div class="item-name" id="order-item-name">Item Name - € 000</div>
             
-            <!-- Форма заказа и Honeypot поле -->
             <form class="order-form" onsubmit="event.preventDefault(); showToast('Request sent to the Void.'); closeModal('m-order'); this.reset();">
-                <input type="text" name="_honey" style="display:none"> <!-- Honeypot -->
-                <input type="hidden" name="item" id="order-item-hidden-input"> <!-- Скрытое поле для передачи названия вещи -->
-                
-                <div class="form-row">
+                <input type="text" name="_honey" style="display:none"> <input type="hidden" name="item" id="order-item-hidden-input"> <div class="form-row">
                     <div>
                         <label data-t="sizeLabel">SELECT SIZE</label>
                         <select name="size" required>
@@ -387,6 +398,32 @@
             }, 1200);
         });
 
+        // --- MYSTIC SMOKE GENERATOR LOGIC ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const smokeContainer = document.querySelector('.smoke-container');
+            if(smokeContainer) {
+                function createSmoke() {
+                    const smoke = document.createElement('div');
+                    smoke.classList.add('smoke');
+                    
+                    const spread = (Math.random() - 0.5) * 80; 
+                    smoke.style.setProperty('--spread', `${spread}px`);
+                    
+                    const size = Math.random() * 15 + 10;
+                    smoke.style.width = `${size}px`;
+                    smoke.style.height = `${size}px`;
+                    
+                    smoke.style.animationDuration = `${Math.random() * 1 + 2}s`;
+                    
+                    smokeContainer.appendChild(smoke);
+                    
+                    setTimeout(() => { smoke.remove(); }, 3000);
+                }
+                setInterval(createSmoke, 200);
+            }
+        });
+        // ------------------------------------
+
         function handlePrivacy(choice) {
             localStorage.setItem('zeitu_privacy', choice);
             document.getElementById('privacy-banner').classList.remove('show');
@@ -427,7 +464,7 @@
         function openOrder(name, price) {
             const modal = document.getElementById('m-order');
             document.getElementById('order-item-name').innerText = `${name} — ${price}`;
-            document.getElementById('order-item-hidden-input').value = `${name} — ${price}`; // Записываем в скрытый инпут для отправки
+            document.getElementById('order-item-hidden-input').value = `${name} — ${price}`; 
             modal.style.display = 'block';
             setTimeout(() => modal.classList.add('active'), 10);
         }
@@ -462,7 +499,8 @@
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy Policy", terms: "Terms of Service",
                 cotton: "100% HEAVY COTTON", leather: "PREMIUM VEGAN LEATHER", joinVoid: "JOIN THE VOID (EARLY ACCESS)", subBtn: "ENTER",
                 orderTitle: "ORDER REQUEST", sizeLabel: "SELECT SIZE", qtyLabel: "QUANTITY", submitOrder: "SUBMIT ORDER",
-                bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE"
+                bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE",
+                mysticText: "ZEITU"
             },
             ru: { 
                 navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", 
@@ -472,7 +510,8 @@
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Политика конфиденциальности", terms: "Условия использования",
                 cotton: "100% ПЛОТНЫЙ ХЛОПОК", leather: "ПРЕМИУМ ЭКО-КОЖА", joinVoid: "ВСТУПИТЬ В ПУСТОТУ (РАННИЙ ДОСТУП)", subBtn: "ВОЙТИ",
                 orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", sizeLabel: "ВЫБЕРИТЕ РАЗМЕР", qtyLabel: "КОЛИЧЕСТВО", submitOrder: "ПОДТВЕРДИТЬ ЗАКАЗ",
-                bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ"
+                bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ",
+                mysticText: "ZEITU"
             },
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
@@ -482,7 +521,8 @@
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
                 orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", qtyLabel: "MENGE", submitOrder: "BESTELLUNG ABSCHLIESSEN",
-                bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN"
+                bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN",
+                mysticText: "ZEITU"
             },
             es: { 
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
@@ -492,7 +532,8 @@
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
-                bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR"
+                bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR",
+                mysticText: "ZEITU"
             },
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
@@ -502,12 +543,13 @@
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
-                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض"
+                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
+                mysticText: "ZEITU"
             }
         };
 
         function changeLang(l) {
-            localStorage.setItem('zeitu_lang', l); // Запоминаем выбор языка
+            localStorage.setItem('zeitu_lang', l); 
             
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
@@ -523,7 +565,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // При загрузке страницы проверяем память
             const savedLang = localStorage.getItem('zeitu_lang') || document.querySelector('.lang-select').value;
             document.querySelector('.lang-select').value = savedLang; 
             changeLang(savedLang);
