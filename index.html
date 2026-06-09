@@ -33,12 +33,11 @@
             overflow-x: hidden; 
         }
 
-        /* НАСТРОЙКА НАСТОЯЩЕГО СИГАРЕТНОГО ДЫМА (ГИФКА / ФОН) */
+        /* НАСТРОЙКА НАСТОЯЩЕГО СИГАРЕТНОГО ДЫМА (ГИФКА РАСТЯНУТА НА ВЕСЬ ЭКРАН) */
         .smoke-bg {
             position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 0;
             width: 100vw;
             height: 100vh;
             z-index: -1;
@@ -46,9 +45,11 @@
             
             /* Путь к твоей гифке. Центрируем снизу */
             background: url('smoke.gif') center bottom no-repeat;
-            background-size: contain; 
             
-            /* Магия: screen убирает черный фон у гифки, делая дым идеально чистым */
+            /* ИЗМЕНЕНО: cover растягивает гифку на весь экран без обрезки на половине */
+            background-size: cover; 
+            
+            /* Магия: screen полностью убирает черный фон у гифки, оставляя дым чистым */
             mix-blend-mode: screen; 
             opacity: 0.35; /* Регулируй видимость дыма здесь */
 
@@ -59,13 +60,13 @@
         /* ЭФФЕКТ SLOW MOVE: Ленивое, органичное покачивание дыма в воздухе */
         @keyframes slowMove {
             0%, 100% {
-                transform: translateX(-50%) translateY(0) scale(1) rotate(0deg);
+                transform: scale(1) translateY(0) translateX(0) rotate(0deg);
             }
             33% {
-                transform: translateX(-48%) translateY(-15px) scale(1.04) rotate(1deg);
+                transform: scale(1.04) translateY(-15px) translateX(10px) rotate(1deg);
             }
             66% {
-                transform: translateX(-52%) translateY(-5px) scale(0.98) rotate(-1deg);
+                transform: scale(0.98) translateY(-5px) translateX(-10px) rotate(-1deg);
             }
         }
 
@@ -553,7 +554,6 @@
             document.getElementById('privacy-banner').classList.remove('show');
         }
 
-        // КОРРЕКТНЫЙ ФИКС ДЛЯ ОКНА ПОЛИТИКИ
         function openPol(type) {
             const modal = document.getElementById('m-pol');
             const innerContainer = document.getElementById('m-text');
@@ -633,7 +633,7 @@
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
                 homeTitle: `ERA ZEITU`,
                 homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio y la calidad.",
-                homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y материалы sin compromisos.",
+                homeDesc2: "Cada pieza es una declaración de minimalism. Sin ruido, solo estética pura y materiales sin compromisos.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
@@ -646,8 +646,8 @@
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، только جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
-                cotton: "100% قطн ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
-                orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
+                cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفраг (وصول مبكر)", subBtn: "أدخل",
+                orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلб",
                 bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
                 cartTitle: "حقيبتك", checkoutBtn: "المتابعة لإتمام الطلب"
             }
