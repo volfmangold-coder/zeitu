@@ -33,7 +33,7 @@
             overflow-x: hidden; 
         }
 
-        /* НАСТРОЙКА ХОЛСТА: Фильтры blur полностью удалены для безупречной 2K/4K четкости линий */
+        /* НАСТРОЙКА ХОЛСТА: Оставляем резким для 2K/4K. Увеличиваем прозрачность, чтобы пышный дым был лучше виден. */
         #smokeCanvas {
             position: fixed;
             top: 0;
@@ -43,7 +43,7 @@
             z-index: -1;
             pointer-events: none;
             filter: none; 
-            opacity: 0.75;
+            opacity: 0.8; /* Пышный дым делаем чуть ярче */
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
@@ -366,7 +366,7 @@
 
     <div id="m-pol" class="modal">
         <div class="modal-content" id="m-text" style="background: transparent; border: none; padding-top: 60px;">
-            <span class="close" onclick="closeModal(\'m-pol\')">×</span>
+            <span class="close" onclick="closeModal('m-pol')">×</span>
         </div>
     </div>
 
@@ -513,7 +513,7 @@
             updateCartButtonText();
         }
 
-        // --- НОВАЯ СИСТЕМА НЕПРЕРЫВНЫХ СИГАРЕТНЫХ СТРУЙ ДЫМА (БЕЗ ШАРИКОВ) ---
+        // --- НОВАЯ СИСТЕМА ПЫШНОГО РАЗЛЕТАЮЩЕГОСЯ ДЫМА (ИЗ ОДНОГО ИСТОЧНИКА) ---
         const canvas = document.getElementById('smokeCanvas');
         const ctx = canvas.getContext('2d');
         let dpr = window.devicePixelRatio || 1;
@@ -527,87 +527,97 @@
         window.addEventListener('resize', resize);
         resize();
 
-        class SmokeStream {
-            constructor(pctX) {
-                this.pctX = pctX; // Позиция струи по горизонтали (в % от ширины экрана)
+        class SmokeThread {
+            constructor(originPctX) {
+                this.originPctX = originPctX; // ONE center source pct (0.5)
                 this.nodes = [];
-                this.maxNodes = 160; // Длина шлейфа струи дыма
-                this.time = Math.random() * 500;
+                // ИЗМЕНЕНО: Увеличен шлейф, чтобы дым поднимался выше
+                this.maxNodes = 250; 
+                this.time = Math.random() * 1000;
+                
+                // ИЗМЕНЕНО: Каждая нить имеет свой уникальный профиль "разлета"
+                // Это импульс горизонтальной скорости (left/right) сразу при спавне
+                this.divergenceProfileX = (Math.random() - 0.5) * 4.5; // Значительный разлет веером
+                this.speedY = -(Math.random() * 1.5 + 1.2); // скорость течения дыма вверх
+                this.baseAlpha = Math.random() * 0.15 + 0.1; // Базовая прозрачность нити
             }
             
             update(scrollDelta) {
-                this.time += 0.012;
-                let currentX = window.innerWidth * this.pctX;
+                this.time += 0.01;
+                let currentOriginX = window.innerWidth * this.originPctX;
                 
-                // Добавляем новую опорную точку струи в самый низ экрана
+                // НОВАЯ опорная точка источника (всегда одна внизу по центру)
+                // Спавнится ультра-тонкой с микро-завихрениями у самого основания
+                const headX = currentOriginX + (Math.random() - 0.5) * 10;
+                const headY = window.innerHeight + 10;
+                
                 this.nodes.unshift({
-                    x: currentX,
-                    y: window.innerHeight + 30,
+                    x: headX,
+                    y: headY,
                     timeSeed: this.time,
-                    baseAlpha: Math.random() * 0.2 + 0.15
+                    alphaFactor: this.baseAlpha
                 });
                 
-                // Если шлейф слишком длинный, удаляем старые верхние участки
                 if (this.nodes.length > this.maxNodes) {
                     this.nodes.pop();
                 }
                 
-                // Просчитываем изгибы и подъем нитей вверх
+                // ИЗМЕНЕНО: Просчитываем разлет и подъем каждой точки
                 for (let i = 0; i < this.nodes.length; i++) {
-                    let n = this.nodes[i];
-                    let ratio = i / this.nodes.length; // 0 у источника (внизу), 1 на конце (вверху)
+                    const n = this.nodes[i];
+                    // i=0 - голова (низ), i=last - хвост (верх)
+                    const ageRatio = i / this.nodes.length; // 0 внизу, 1 вверху
                     
-                    // Скорость течения дыма вверх
-                    n.y -= 1.6 + (scrollDelta * 0.4);
+                    // 1. Течение вверх (speedY)
+                    n.y += this.speedY + (scrollDelta * 0.5);
                     
-                    // Формула завихрений сигаретного дыма: внизу нить идет прямо, выше — извивается сильнее
-                    let wave = Math.sin(n.timeSeed + n.y * 0.007) * (ratio * 40);
-                    let microCurl = Math.cos(n.y * 0.025 - n.timeSeed) * (ratio * 8);
+                    // 2. ИЗМЕНЕНО: Логика разлета (Divergence force)
+                    // Это КЛЮЧ к "разлетающемуся" дыму. Нить получает импульс AWAY от центра.
+                    // Сила разлета увеличивается с возрастом точки (чем выше она, тем больше разлет).
+                    n.x += this.divergenceProfileX * ageRatio; // Чем выше/старше, тем дальше от центра
                     
-                    n.x = currentX + wave + microCurl;
+                    // 3. Общая турбулентность (chaos) для красоты
+                    // Также увеличивается к верху, создавая пышные завихрения
+                    n.x += Math.sin(this.time + n.y * 0.008) * (ageRatio * 20); 
                 }
             }
             
             draw() {
                 if (this.nodes.length < 2) return;
                 
-                // Рисуем 2 переплетающиеся ультра-тонкие нити для создания объема струи
-                for (let strand = 0; strand < 2; strand++) {
-                    for (let i = 0; i < this.nodes.length - 1; i++) {
-                        let n1 = this.nodes[i];
-                        let n2 = this.nodes[i + 1];
-                        let ratio = i / this.nodes.length;
-                        
-                        // Смещение нитей друг относительно друга, создающее эффект скрученной струйки воды/дыма
-                        let twist1 = Math.sin(n1.y * 0.035 + (strand * Math.PI)) * (ratio * 3);
-                        let twist2 = Math.sin(n2.y * 0.035 + (strand * Math.PI)) * (((i + 1) / this.nodes.length) * 3);
-                        
-                        ctx.beginPath();
-                        ctx.moveTo(n1.x + twist1, n1.y);
-                        ctx.lineTo(n2.x + twist2, n2.y);
-                        
-                        // У основания струйка острая (0.8px), кверху она плавно расширяется (до 3px)
-                        ctx.lineWidth = 0.8 + (ratio * 2.2);
-                        
-                        // Управление прозрачностью нити дыма
-                        let alpha = (1 - ratio) * n1.baseAlpha;
-                        if (ratio < 0.08) {
-                            alpha = n1.baseAlpha * (ratio * 12.5); // Мягкое проявление у самого источника
-                        }
-                        
-                        ctx.strokeStyle = `rgba(245, 245, 245, ${alpha})`;
-                        ctx.stroke();
+                // Отрисовываем одну цельную изящную струнную нить
+                for (let i = 0; i < this.nodes.length - 1; i++) {
+                    let n1 = this.nodes[i];
+                    let n2 = this.nodes[i + 1];
+                    let ageRatio1 = i / this.nodes.length;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(n1.x, n1.y);
+                    ctx.lineTo(n2.x, n2.y);
+                    
+                    // У основания нить ультра-тонкая (0.8px), кверху она плавно расширяется (до 3.5px)
+                    ctx.lineWidth = 0.8 + (ageRatio1 * 2.7);
+                    
+                    // Управление прозрачностью: растворение к верху
+                    let alpha = (1 - ageRatio1) * n1.alphaFactor;
+                    if (ageRatio1 < 0.08) {
+                        alpha = n1.alphaFactor * (ageRatio1 * 12.5); // Мягкое проявление снизу
                     }
+                    
+                    ctx.strokeStyle = `rgba(245, 245, 245, ${alpha})`;
+                    ctx.stroke();
                 }
             }
         }
 
-        // Создаем 3 независимые изящные сигаретные струи, распределенные по ширине сайта
-        const streams = [
-            new SmokeStream(0.25),
-            new SmokeStream(0.50),
-            new SmokeStream(0.75)
-        ];
+        // ИЗМЕНЕНО: Создаем МНОГО уникальных нитей, чтобы Plume (шлейф) был пышным и большим
+        // Все они спавнятся из одного центра (0.5), но имеют разные divergenceProfileX
+        const threads = [];
+        const threadCount = 25; // 25 нитей создают один густой, пышный, разлетающийся шлейф
+
+        for (let t = 0; t < threadCount; t++) {
+            threads.push(new SmokeThread(0.50)); // One single center source
+        }
 
         let lastScrollY = window.scrollY;
 
@@ -617,9 +627,9 @@
             let scrollDelta = currentScrollY - lastScrollY;
             lastScrollY = currentScrollY;
             
-            streams.forEach(s => { 
-                s.update(scrollDelta); 
-                s.draw(); 
+            threads.forEach(t => { 
+                t.update(scrollDelta); 
+                t.draw(); 
             });
             
             requestAnimationFrame(animateSmoke);
@@ -710,7 +720,7 @@
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
                 homeTitle: `ZEITU ÄRA`,
-                homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
+                homeDesc1: "ZEITU entstand aus der Suche nach der перфектен Форм. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
@@ -722,7 +732,7 @@
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
                 homeTitle: `ERA ZEITU`,
                 homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio y la calidad.",
-                homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y materiales sin compromisos.",
+                homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura и материалы sin compromisos.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
@@ -735,7 +745,7 @@
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، только جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
-                cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
+                cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفраг (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
                 bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
                 cartTitle: "حقيبتك", checkoutBtn: "المتابعة لإتمام الطلب"
