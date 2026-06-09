@@ -41,8 +41,10 @@
             height: 110vh;
             z-index: -1;
             pointer-events: none;
-            filter: blur(4px) contrast(220%);
-            opacity: 0.85;
+            /* ИЗМЕНЕНО: уменьшен blur до 1px и скорректирован контраст для четкости */
+            filter: blur(1px) contrast(140%);
+            /* ИЗМЕНЕНО: немного снижена прозрачность, так как четкие частицы стали ярче */
+            opacity: 0.55;
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
@@ -62,7 +64,6 @@
         .nav-links a { color: var(--grey); text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 0 15px; transition: 0.3s; }
         .nav-links a:hover { color: var(--fg); text-decoration: line-through; }
 
-        /* Кнопка Корзины в шапке */
         .cart-btn { background: none; border: 1px solid var(--border); color: var(--fg); padding: 5px 12px; font-size: 0.7rem; letter-spacing: 1px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; }
         .cart-btn:hover { border-color: var(--fg); }
 
@@ -124,7 +125,6 @@
         footer a:hover { color: var(--fg); text-decoration: line-through; }
         .contact-info { text-align: right; }
 
-        /* Пункт 3: Стили для блока соцсетей в футере */
         .social-links { margin-top: 15px; display: flex; gap: 20px; }
         .social-links a { display: inline-block; margin-bottom: 0; font-size: 0.7rem; letter-spacing: 1px; }
 
@@ -142,7 +142,6 @@
         .modal-content h2 { font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.5rem; text-align: center; }
         .modal-content .item-name { text-align: center; color: var(--grey); font-size: 0.8rem; margin-bottom: 30px; letter-spacing: 2px; }
         
-        /* Стили для элементов Корзины внутри модалки */
         .cart-items-list { margin-bottom: 25px; border-bottom: 1px solid var(--border); max-height: 240px; overflow-y: auto; }
         .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.8rem; }
         .cart-item-details { display: flex; flex-direction: column; gap: 40px; }
@@ -405,7 +404,7 @@
     </div>
 
     <script>
-        // --- СИСТЕМА КОРЗИНЫ (ИНТЕРАКТИВНЫЙ МАССИВ ДАННЫХ) ---
+        // --- СИСТЕМА КОРЗИНЫ ---
         let cart = [];
 
         function updateCartButtonText() {
@@ -416,7 +415,6 @@
         }
 
         function addToCart(name, price) {
-            // Ищем, есть ли товар уже в корзине с дефолтным размером 'S'
             const existingItem = cart.find(item => item.name === name && item.size === 'M');
             if (existingItem) {
                 existingItem.qty += 1;
@@ -516,7 +514,7 @@
             updateCartButtonText();
         }
 
-        // --- HD CIGARETTE SMOKE CANVAS WITH PARALLAX ---
+        // --- ИЗМЕНЕННЫЙ CANVAS С ЧЕТКИМ ДЫМОМ ---
         const canvas = document.getElementById('smokeCanvas');
         const ctx = canvas.getContext('2d');
         let dpr = window.devicePixelRatio || 1;
@@ -533,27 +531,30 @@
         resize();
 
         const particles = [];
-        const maxParticles = 140;
+        // ИЗМЕНЕНО: Немного увеличено количество частиц для сохранения плотности тонких линий
+        const maxParticles = 180; 
 
         class SmokeParticle {
             constructor() { this.reset(true); }
             reset(initial = false) {
-                this.x = (window.innerWidth * 1.1) / 2 + (Math.random() - 0.5) * 30; 
+                this.x = (window.innerWidth * 1.1) / 2 + (Math.random() - 0.5) * 40; 
                 this.y = initial ? Math.random() * window.innerHeight : window.innerHeight + 150; 
-                this.size = Math.random() * 25 + 20; 
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = -(Math.random() * 2.0 + 1.2); 
+                // ИЗМЕНЕНО: Базовый размер частиц уменьшен, чтобы они выглядели как тонкие струи
+                this.size = Math.random() * 12 + 8; 
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = -(Math.random() * 1.8 + 1.0); 
                 this.life = initial ? Math.random() * 300 : 0;
                 this.maxLife = Math.random() * 350 + 250;
-                this.alpha = Math.random() * 0.3 + 0.15; 
+                this.alpha = Math.random() * 0.4 + 0.2; 
                 this.sway = Math.random() * Math.PI * 2;
-                this.swaySpeed = Math.random() * 0.03 + 0.015;
+                this.swaySpeed = Math.random() * 0.02 + 0.01;
             }
             update(scrollDelta) {
-                this.x += this.speedX + Math.sin(this.sway) * 1.2;
+                this.x += this.speedX + Math.sin(this.sway) * 1.0;
                 this.y += this.speedY + (scrollDelta * 0.6); 
                 this.sway += this.swaySpeed;
-                this.size += 0.12; 
+                // ИЗМЕНЕНО: Скорость расширения снижена (0.05 вместо 0.12), чтобы дым не размывался в туман слишком быстро
+                this.size += 0.05; 
                 this.life++;
                 if (this.life >= this.maxLife || this.y < -200) { this.reset(); }
             }
@@ -564,8 +565,12 @@
                 else if (progress > 0.8) currentAlpha = this.alpha * (1 - (progress - 0.8) * 5);
                 ctx.beginPath();
                 const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                
+                // ИЗМЕНЕНО: Добавлена точка 0.85, заставляющая цвет сохранять плотность почти до самых краев частицы
                 gradient.addColorStop(0, `rgba(235, 235, 235, ${currentAlpha})`);
+                gradient.addColorStop(0.85, `rgba(235, 235, 235, ${currentAlpha * 0.85})`);
                 gradient.addColorStop(1, `rgba(235, 235, 235, 0)`);
+                
                 ctx.fillStyle = gradient;
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -693,7 +698,7 @@
                 homeTitle: `عصر ZEITU`,
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
-                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمะ",
+                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
                 bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
