@@ -33,18 +33,17 @@
             overflow-x: hidden; 
         }
 
-        /* НАСТРОЙКА ХОЛСТА: Ограничиваем ширину до 600px и центрируем, чтобы дым не лез в бока */
+        /* НАСТРОЙКА ХОЛСТА: Сделан на весь экран (100vw), чтобы дать дыму простор для масштабного разлёта */
         #smokeCanvas {
             position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 600px;
+            top: 0;
+            left: 0;
+            width: 100vw;
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            opacity: 0.5; /* Изящная, не отвлекающая яркость */
+            filter: none; 
+            opacity: 0.45; /* Оптимальная прозрачность для масштабного шлейфа */
         }
 
         ::selection { background: var(--fg); color: var(--bg); }
@@ -514,39 +513,42 @@
             updateCartButtonText();
         }
 
-        // --- УЛЬТРА-ОПТИМИЗИРОВАННЫЙ ЦЕНТРАЛЬНЫЙ ДЫМ (0% ЛАГОВ, БЕЗ РАЗЛЕТА В БОКА) ---
+        // --- ОБНОВЛЕННАЯ СИСТЕМА: ОБШИРНЫЙ, ВЫСОКИЙ ДЫМ ИЗ ОДНОЙ ТОЧКИ (БЕЗ ЛАГОВ) ---
         const canvas = document.getElementById('smokeCanvas');
         const ctx = canvas.getContext('2d');
         let dpr = window.devicePixelRatio || 1;
 
         function resize() {
             dpr = window.devicePixelRatio || 1;
-            // Рассчитываем размер холста строго под его CSS-границы
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
             ctx.scale(dpr, dpr);
         }
         window.addEventListener('resize', resize);
         resize();
 
         class SmokeThread {
-            constructor() {
+            constructor(spreadOffset) {
                 this.nodes = [];
-                this.maxNodes = 90; // Короткий шлейф = моментальный рендер без лагов
-                this.time = Math.random() * 500;
-                this.speedY = -(Math.random() * 1.2 + 1.0);
-                this.baseAlpha = Math.random() * 0.12 + 0.08;
-                this.waveRange = Math.random() * 15 + 10; // Небольшой изгиб, чтобы не улетал в бока
+                // УВЕЛИЧЕНО: Длина шлейфа (190), чтобы дым гарантированно достигал верха страницы
+                this.maxNodes = 190; 
+                this.time = Math.random() * 1000;
+                this.speedY = -(Math.random() * 0.7 + 1.1); // Скорость подъема вверх
+                this.baseAlpha = Math.random() * 0.07 + 0.05;
+                
+                // УВЕЛИЧЕНО: Амплитуда изгибов (волны) для создания объемной формы
+                this.waveRange = Math.random() * 35 + 25; 
+                // Направление разлёта веером (-1.5 до +1.5)
+                this.spreadOffset = spreadOffset; 
             }
             
             update(scrollDelta) {
-                this.time += 0.015;
-                const canvasW = canvas.width / dpr;
-                const canvasH = canvas.height / dpr;
+                this.time += 0.013;
+                const canvasW = window.innerWidth;
+                const canvasH = window.innerHeight;
                 
-                // Спавн строго по центру холста (имитация одной сигареты)
-                const headX = canvasW / 2 + (Math.sin(this.time * 2) * 3);
+                // Источник СТРОГО один — внизу экрана строго по центру
+                const headX = canvasW / 2;
                 const headY = canvasH + 20;
                 
                 this.nodes.unshift({ x: headX, y: headY, timeSeed: this.time });
@@ -557,49 +559,65 @@
                 
                 for (let i = 0; i < this.nodes.length; i++) {
                     const n = this.nodes[i];
-                    const ageRatio = i / this.nodes.length;
+                    const ageRatio = i / this.nodes.length; // 0 внизу (молодой), 1 вверху (старый)
                     
-                    n.y += this.speedY + (scrollDelta * 0.4);
+                    // Движение вверх + учет скролла колесиком
+                    n.y += this.speedY + (scrollDelta * 0.35);
                     
-                    // Красивый сигаретный изгиб, зажатый строго по центру холста
-                    n.x = (canvasW / 2) + Math.sin(this.time + n.y * 0.01) * (ageRatio * this.waveRange);
+                    // ИЗМЕНЕНО: Формула обширного раскрытия. С высотой (ageRatio) нить плавно
+                    // расходится веером от центральной оси во все стороны, создавая гигантский шлейф.
+                    let fanSpread = this.spreadOffset * ageRatio * 220; 
+                    let smoothWiggle = Math.sin(this.time * 1.3 + n.y * 0.005) * (ageRatio * this.waveRange);
+                    
+                    n.x = (canvasW / 2) + fanSpread + smoothWiggle;
                 }
             }
             
             draw() {
                 if (this.nodes.length < 2) return;
                 
-                // Рисуем две тонкие параллельные нити для имитации объема струи дыма
+                // Отрисовка двух переплетенных микро-нитей для создания эффекта глубокой текстуры
                 for (let strand = 0; strand < 2; strand++) {
                     ctx.beginPath();
                     for (let i = 0; i < this.nodes.length - 1; i++) {
                         let n1 = this.nodes[i];
                         let ageRatio = i / this.nodes.length;
                         
-                        let offset = Math.sin(n1.y * 0.05 + (strand * Math.PI)) * (ageRatio * 2);
+                        // Легкое спиральное скручивание нитей внутри общей струи дыма
+                        let twist = Math.sin(n1.y * 0.04 + (strand * Math.PI)) * (ageRatio * 4);
                         
-                        if (i === 0) ctx.moveTo(n1.x + offset, n1.y);
-                        else ctx.lineTo(n1.x + offset, n1.y);
+                        if (i === 0) ctx.moveTo(n1.x + twist, n1.y);
+                        else ctx.lineTo(n1.x + twist, n1.y);
                     }
                     
-                    ctx.lineWidth = 0.8 + (strand * 0.4);
+                    // У основания ниточка супер-резкая, кверху расширяется в воздушный шлейф
+                    ctx.lineWidth = 0.7 + (strand * 0.3);
                     
-                    // Мягкое растворение дыма кверху холста
+                    // Растворение дыма вверху экрана
                     let firstNode = this.nodes[0];
-                    let alpha = (1 - (this.nodes[0].y / (canvas.height/dpr))) * this.baseAlpha;
-                    
-                    ctx.strokeStyle = `rgba(240, 240, 240, ${Math.max(0, this.baseAlpha * 0.7)})`;
-                    ctx.stroke();
+                    if (firstNode) {
+                        let currentAlpha = (1 - (firstNode.y / window.innerHeight)) * this.baseAlpha;
+                        ctx.strokeStyle = `rgba(242, 242, 242, ${Math.max(0, this.baseAlpha * 0.85)})`;
+                        ctx.stroke();
+                    }
                 }
             }
         }
 
-        // Оставляем всего 3 нити вместо 25! Это полностью убирает нагрузку на процессор.
-        const threads = [new SmokeThread(), new SmokeThread(), new SmokeThread()];
+        // ОПТИМИЗАЦИЯ: Всего 5 мощных нитей, запущенных веером в разные стороны от -1.6 до +1.6.
+        // Дает огромный, обширный объем без единого микро-лага.
+        const threads = [
+            new SmokeThread(-1.6), // Резко влево вверх
+            new SmokeThread(-0.7), // По диагонали влево
+            new SmokeThread(0.0),  // Строго по центру
+            new SmokeThread(0.7),  // По диагонали вправо
+            new SmokeThread(1.6)   // Резко вправо вверх
+        ];
+        
         let lastScrollY = window.scrollY;
 
         function animateSmoke() {
-            ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
             let currentScrollY = window.scrollY;
             let scrollDelta = currentScrollY - lastScrollY;
             lastScrollY = currentScrollY;
@@ -612,7 +630,6 @@
             requestAnimationFrame(animateSmoke);
         }
         
-        // Запуск анимации после скрытия прелоадера для экономии ресурсов
         window.addEventListener('load', () => {
             setTimeout(animateSmoke, 1200);
         });
@@ -713,7 +730,7 @@
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
                 homeTitle: `ERA ZEITU`,
                 homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio y la calidad.",
-                homeDesc2: "Cada pieza es una declaración de minimalism. Sin ruido, solo estética pura y materiales sin compromisos.",
+                homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y materiales sin compromisos.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
                 orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
@@ -726,10 +743,10 @@
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بيان للبساطة. لا ضوضاء، только جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
-                cotton: "100% قطн ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
+                cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفраг (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
-                bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
-                cartTitle: "حقيبتك", checkoutBtn: "المتابعة لإتمام الطلб"
+                bannerText: "نحن نعالج بياناتк لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
+                cartTitle: "حقيبتك", checkoutBtn: "المتابعة لإتمام الطلب"
             }
         };
 
