@@ -13,7 +13,6 @@
     <meta property="og:image" content="https://yourdomain.com/eye.png">
     <meta property="og:type" content="website">
 
-    <!-- Подключаем ТРИ шрифта: оригинальные Cinzel и Inter + готический UnifrakturMaguntia -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -188,18 +187,20 @@
         .banner-btn:hover { background: var(--fg); color: var(--bg); }
 
         /* ==========================================================================
-           ⚡ ТОЧЕЧНЫЕ СТИЛИ ДЛЯ ГОТИКИ (ТОЛЬКО ДЛЯ КЛАССА .gothic-mode)
+           ⚡ ГОТИКА ДЛЯ ВООБЩЕ ВСЕГО ТЕКСТА (ТОЛЬКО ДЛЯ EN / DE)
            ========================================================================== */
-        body.gothic-mode .preloader-content,
-        body.gothic-mode .logo,
-        body.gothic-mode .mobile-nav a,
-        body.gothic-mode .history h1,
-        body.gothic-mode .section-title,
-        body.gothic-mode .modal-content h2,
-        body.gothic-mode .cart-total-price {
-            font-family: 'UnifrakturMaguntia', serif;
-            letter-spacing: 2px; /* Уменьшаем интервал для читаемости готики */
+        
+        /* Применяем жесткое правило !important ко всем текстовым элементам при готическом моде */
+        body.gothic-mode,
+        body.gothic-mode *,
+        body.gothic-mode button,
+        body.gothic-mode input,
+        body.gothic-mode select,
+        body.gothic-mode textarea {
+            font-family: 'UnifrakturMaguntia', serif !important;
+            letter-spacing: 1px !important; /* Уменьшаем трекинг, чтобы слова не распадались */
         }
+
         body.gothic-mode .history h1 {
             font-size: 5rem;
             line-height: 1.2;
@@ -213,8 +214,10 @@
             .contact-info { text-align: center; }
             .social-links { justify-content: center; }
             .history h1 { font-size: 2.2rem; line-height: 1.8; letter-spacing: 5px; }
+            
             /* Адаптив для готического заголовка на мобилках */
             body.gothic-mode .history h1 { font-size: 2.8rem; line-height: 1.3; letter-spacing: 2px; }
+            
             .sub-input-group input[type="email"] { width: 100%; }
             #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
             .banner-btns { width: 100%; justify-content: center;}
