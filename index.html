@@ -55,7 +55,7 @@
             66% { transform: scale(0.98) translateY(-5px) translateX(-10px) rotate(-1deg); }
         }
 
-        /* Оптимизация для мобильных и слабых устройств: отключаем тяжелую анимацию */
+        /* Оптимизация для мобильных и слабых устройств */
         @media (max-width: 768px), (prefers-reduced-motion: reduce) {
             .smoke-bg { animation: none; opacity: 0.15; }
         }
@@ -150,6 +150,26 @@
         .cart-drawer .close-cart { position: absolute; top: 35px; right: 30px; font-size: 2rem; cursor: pointer; background: transparent; border: none; color: #fff; line-height: 1; }
         .cart-drawer-content { flex: 1; overflow-y: auto; margin-bottom: 20px; }
 
+        /* КНОПКИ РАЗМЕРА В КОРЗИНЕ (ВМЕСТО ВЫПАДАЮЩЕГО СПИСКА) */
+        .size-pills { display: flex; gap: 5px; margin-top: 8px; }
+        .size-pills button { 
+            background: transparent; 
+            border: 1px solid var(--border); 
+            color: var(--grey); 
+            width: 24px; 
+            height: 24px; 
+            font-size: 0.6rem; 
+            cursor: crosshair; 
+            transition: 0.3s;
+            font-family: 'Inter', sans-serif;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .size-pills button:hover { border-color: var(--grey); color: var(--fg); }
+        .size-pills button.active { background: var(--fg); color: var(--bg); border-color: var(--fg); font-weight: 600; }
+
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 3000; padding: 100px 20px; opacity: 0; transition: opacity 0.4s ease; overflow-y: auto; }
         .modal.active { display: block; opacity: 1; }
         .modal-content { max-width: 500px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; position: relative; }
@@ -157,8 +177,7 @@
         .modal-content .item-name { text-align: center; color: var(--grey); font-size: 0.8rem; margin-bottom: 30px; letter-spacing: 2px; }
         
         .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
-        .cart-item-details { display: flex; flex-direction: column; gap: 8px; }
-        .cart-item-details select { background: transparent; color: var(--fg); border: 1px solid var(--border); padding: 3px; font-size: 0.65rem; }
+        .cart-item-details { display: flex; flex-direction: column; gap: 2px; }
         .cart-item-qty { display: flex; align-items: center; gap: 8px; }
         .cart-item-qty button { background: transparent; border: 1px solid var(--border); color: var(--fg); width: 22px; height: 22px; cursor: pointer; font-size: 0.7rem; }
         .cart-item-remove { background: none; border: none; color: var(--grey); cursor: pointer; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -166,7 +185,7 @@
         .cart-total-price { text-align: right; font-family: 'Cinzel', serif; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; border-top: 1px solid var(--border); padding-top: 15px; }
 
         .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; }
-        .order-form select, .order-form input[type="email"], .order-form input[type="number"], .order-form input[type="text"] { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; cursor: crosshair; }
+        .order-form input[type="email"], .order-form input[type="text"] { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; cursor: crosshair; }
         
         .order-form button { width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 15px; margin-top: 30px; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; }
         .order-form button:hover { opacity: 0.8; }
@@ -191,7 +210,6 @@
         body.gothic-mode *,
         body.gothic-mode button,
         body.gothic-mode input,
-        body.gothic-mode select,
         body.gothic-mode textarea {
             font-family: "Old English Text MT", "Cloister Black", "Pirata One", serif !important;
             letter-spacing: 0.5px !important; 
@@ -203,6 +221,9 @@
             line-height: 1.1;
             letter-spacing: 2px !important; 
         }
+
+        /* Убираем сильный межбуквенный интервал для готических таблеток размеров */
+        body.gothic-mode .size-pills button { letter-spacing: 0 !important; font-size: 0.75rem !important; }
 
         @media (max-width: 768px) {
             header { padding: 20px; }
@@ -297,7 +318,6 @@
                         <h3>Void T-Shirt</h3>
                         <p data-t="cotton">100% HEAVY COTTON</p>
                     </div>
-                    <!-- ИСПОЛЬЗУЕМ DATA-АТРИБУТЫ -->
                     <button class="btn-buy add-to-cart-btn" data-name="Void T-Shirt" data-price="120">€ 120</button>
                 </div>
             </div>
@@ -408,7 +428,6 @@
         </div>
     </div>
 
-    <!-- ВЫЕЗЖАЮЩАЯ КОРЗИНА (DRAWER) -->
     <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartDrawer()"></div>
     <div id="cart-drawer" class="cart-drawer">
         <button class="close-cart" onclick="closeCartDrawer()">×</button>
@@ -420,7 +439,6 @@
         <button class="btn-buy" style="width:100%; padding:15px;" onclick="proceedToCheckout()" data-t="checkoutBtn">PROCEED TO CHECKOUT</button>
     </div>
 
-    <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
     <div id="m-order" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('m-order')">×</span>
@@ -542,6 +560,7 @@
         function changeItemSize(index, size) {
             cart[index].size = size;
             saveCartToStorage();
+            renderCartItems();
         }
 
         function removeFromCart(index) {
@@ -570,13 +589,11 @@
                 row.innerHTML = `
                     <div class="cart-item-details">
                         <div><strong>${item.name}</strong></div>
-                        <div>
-                            <select onchange="changeItemSize(${index}, this.value)">
-                                <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
-                                <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
-                                <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
-                                <option value="XL" ${item.size === 'XL' ? 'selected' : ''}>XL</option>
-                            </select>
+                        <div class="size-pills">
+                            <button class="${item.size === 'S' ? 'active' : ''}" onclick="changeItemSize(${index}, 'S')">S</button>
+                            <button class="${item.size === 'M' ? 'active' : ''}" onclick="changeItemSize(${index}, 'M')">M</button>
+                            <button class="${item.size === 'L' ? 'active' : ''}" onclick="changeItemSize(${index}, 'L')">L</button>
+                            <button class="${item.size === 'XL' ? 'active' : ''}" onclick="changeItemSize(${index}, 'XL')">XL</button>
                         </div>
                     </div>
                     <div class="cart-item-qty">
@@ -668,7 +685,7 @@
             const modal = document.getElementById('m-pol');
             const innerContainer = document.getElementById('m-text');
             const closeBtn = '<span class="close" onclick="closeModal(\'m-pol\')">×</span>';
-            // Убрал style="font-family: Inter;", чтобы текст модалки тоже подчинялся готике
+            
             innerContainer.innerHTML = closeBtn + (type === 'privacy' 
                 ? '<h1>Privacy Policy</h1><p>Your data is safe with ZEITU. We process data according to strict minimalism.</p>' 
                 : '<h1>Terms of Service</h1><p>Terms and conditions for ZEITU era. No compromises.</p>');
