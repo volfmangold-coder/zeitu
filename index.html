@@ -13,7 +13,8 @@
     <meta property="og:image" content="https://yourdomain.com/eye.png">
     <meta property="og:type" content="website">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Подключаем ТРИ шрифта: оригинальные Cinzel и Inter + готический UnifrakturMaguntia -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
         :root { 
             --bg: #050505; 
@@ -186,6 +187,24 @@
         .banner-btn { background: transparent; color: var(--fg); border: 1px solid var(--fg); padding: 8px 25px; font-size: 0.6rem; letter-spacing: 2px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;}
         .banner-btn:hover { background: var(--fg); color: var(--bg); }
 
+        /* ==========================================================================
+           ⚡ ТОЧЕЧНЫЕ СТИЛИ ДЛЯ ГОТИКИ (ТОЛЬКО ДЛЯ КЛАССА .gothic-mode)
+           ========================================================================== */
+        body.gothic-mode .preloader-content,
+        body.gothic-mode .logo,
+        body.gothic-mode .mobile-nav a,
+        body.gothic-mode .history h1,
+        body.gothic-mode .section-title,
+        body.gothic-mode .modal-content h2,
+        body.gothic-mode .cart-total-price {
+            font-family: 'UnifrakturMaguntia', serif;
+            letter-spacing: 2px; /* Уменьшаем интервал для читаемости готики */
+        }
+        body.gothic-mode .history h1 {
+            font-size: 5rem;
+            line-height: 1.2;
+        }
+
         @media (max-width: 768px) {
             header { padding: 20px; }
             .nav-links { display: none; } 
@@ -194,6 +213,8 @@
             .contact-info { text-align: center; }
             .social-links { justify-content: center; }
             .history h1 { font-size: 2.2rem; line-height: 1.8; letter-spacing: 5px; }
+            /* Адаптив для готического заголовка на мобилках */
+            body.gothic-mode .history h1 { font-size: 2.8rem; line-height: 1.3; letter-spacing: 2px; }
             .sub-input-group input[type="email"] { width: 100%; }
             #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
             .banner-btns { width: 100%; justify-content: center;}
@@ -468,7 +489,7 @@
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
                 homeTitle: "عصر ZEITU",
-                homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئك الذين يقدرون الصمت والجودة.",
+                homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئк الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بیان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
@@ -478,8 +499,6 @@
             }
         };
 
-        // --- УМНАЯ СИСТЕМА КОРЗИНЫ С АВТОСОХРАНЕНИЕМ (LOCAL STORAGE) ---
-        // ИЗМЕНЕНО: Корзина автоматически подтягивает старые данные при обновлении страницы
         let cart = JSON.parse(localStorage.getItem('zeitu_cart')) || [];
 
         function saveCartToStorage() {
@@ -598,15 +617,11 @@
             updateCartButtonText();
         }
 
-        // --- ТЕХНИЧЕСКИЙ АПГРЕЙД: ЛОГИКА ОБРАБОТКИ И ОТПРАВКИ ЗАКАЗА ---
         function sendOrderToBackend(event) {
             event.preventDefault();
-            
             const email = document.getElementById('order-customer-email').value;
-            const orderSummary = cart.map(item => `${item.name} [Size: ${item.size}] x${item.qty}`).join('\n');
             const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            // Текстовый массив данных для отправки тебе на почту или в Telegram-бот
             const payload = {
                 customer_email: email,
                 items: cart,
@@ -615,28 +630,12 @@
 
             console.log("Данные готовы к бэкенду:", payload);
 
-            /* ПРИМЕР ДЛЯ ИНТЕГРАЦИИ С TELEGRAM:
-              Когда создашь бота, просто раскомментируй этот кусок кода:
-
-              const token = "ТВОЙ_ТОКЕН_БОТА";
-              const chatId = "ТВОЙ_CHAT_ID";
-              const text = `Новый заказ ZEITU!\nEmail: ${email}\n\nТовары:\n${orderSummary}\n\nИтого: € ${total}`;
-              
-              fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ chat_id: chatId, text: text })
-              });
-            */
-
-            // Завершаем заказ на клиенте
             clearCart();
             showToast('Request sent to the Void.');
             closeModal('m-order');
             event.target.reset();
         }
 
-        // --- ДЕФОЛТНАЯ СИСТЕМНАЯ ЛОГИКА ---
         function scrollToSec(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
         if (window.location.hash) { history.replaceState(null, null, window.location.pathname); }
 
@@ -694,8 +693,17 @@
 
         const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt="Eye Detail"></span>';
 
+        // --- УМНОЕ ПЕРЕКЛЮЧЕНИЕ ШРИФТОВ В ЗАВИСИМОСТИ ОТ РАСКЛАДКИ ---
         function changeLang(l) {
             localStorage.setItem('zeitu_lang', l); 
+            
+            // Включаем класс .gothic-mode только для EN (английского) и DE (немецкого)
+            if (l === 'en' || l === 'de') {
+                document.body.classList.add('gothic-mode');
+            } else {
+                document.body.classList.remove('gothic-mode');
+            }
+
             document.querySelectorAll('[data-t]').forEach(el => {
                 const key = el.getAttribute('data-t');
                 if(dict[l] && dict[l][key]) { el.innerHTML = dict[l][key]; }
@@ -712,8 +720,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('zeitu_lang') || document.querySelector('.lang-select').value;
             document.querySelector('.lang-select').value = savedLang; 
-            changeLang(savedLang);
-            updateCartButtonText(); // Обновляем счётчик корзины сразу при загрузке страницы
+            changeLang(savedLang); // Автоматически применит готику, если сохранён EN или DE
+            updateCartButtonText();
         });
     </script>
 </body>
