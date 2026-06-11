@@ -6,14 +6,15 @@
     
     <title>ZEITU</title>
     <link rel="icon" href="eye.png" type="image/png">
-    <link rel="icon" href="eye1.gif" type="image/gif">
+    <link rel="icon" href="eye.gif" type="image/gif">
     <meta name="description" content="ZEITU was born from the search for the perfect form. Every piece is a statement of minimalism.">
     <meta property="og:title" content="ZEITU ERA">
     <meta property="og:description" content="Raw aesthetic and uncompromising materials.">
     <meta property="og:image" content="https://yourdomain.com/eye.png">
     <meta property="og:type" content="website">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <!-- Подключаем шрифты: оригинальные Cinzel и Inter + готический Pirata One (как запасной для телефонов) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500&family=Pirata+One&display=swap" rel="stylesheet">
     <style>
         :root { 
             --bg: #050505; 
@@ -197,13 +198,16 @@
         body.gothic-mode input,
         body.gothic-mode select,
         body.gothic-mode textarea {
-            font-family: 'UnifrakturMaguntia', serif !important;
-            letter-spacing: 1px !important; /* Уменьшаем трекинг, чтобы слова не распадались */
+            /* Первым идет точный шрифт с картинки (у многих он установлен), вторым - запасной для телефонов */
+            font-family: "Old English Text MT", "Cloister Black", "Pirata One", serif !important;
+            letter-spacing: 0.5px !important; /* Уменьшаем трекинг, классическая готика должна быть плотнее */
+            font-weight: normal !important; /* Классическая готика не любит искусственного "жирного" стиля */
         }
 
         body.gothic-mode .history h1 {
-            font-size: 5rem;
-            line-height: 1.2;
+            font-size: 5.5rem;
+            line-height: 1.1;
+            letter-spacing: 2px !important; /* Для крупного заголовка оставляем чуть воздуха */
         }
 
         @media (max-width: 768px) {
@@ -216,7 +220,7 @@
             .history h1 { font-size: 2.2rem; line-height: 1.8; letter-spacing: 5px; }
             
             /* Адаптив для готического заголовка на мобилках */
-            body.gothic-mode .history h1 { font-size: 2.8rem; line-height: 1.3; letter-spacing: 2px; }
+            body.gothic-mode .history h1 { font-size: 3.2rem; line-height: 1.2; letter-spacing: 1px !important; }
             
             .sub-input-group input[type="email"] { width: 100%; }
             #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
@@ -232,7 +236,7 @@
 
     <div id="preloader">
         <div class="preloader-content">
-            <img src="eye1.gif" alt="ZEITU Eye Animation" style="width: 50px; border-radius: 50%;">
+            <img src="eye.gif" alt="ZEITU Eye Animation" style="width: 50px; border-radius: 50%;">
             ZEITU
         </div>
     </div>
