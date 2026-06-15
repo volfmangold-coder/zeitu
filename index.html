@@ -8,7 +8,7 @@
     <link rel="icon" href="eye.png" type="image/png">
     <link rel="icon" href="eye.gif" type="image/gif">
     <meta name="description" content="ZEITU was born from the search for the perfect form. Every piece is a statement of minimalism.">
-    <meta property="og:title" content="ZEITU ERA">
+    <meta property="og:title" content="ZEITU">
     <meta property="og:description" content="Raw aesthetic and uncompromising materials.">
     <meta property="og:image" content="https://yourdomain.com/eye.png">
     <meta property="og:type" content="website">
@@ -41,7 +41,7 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            background: url('smoke1.gif') center bottom no-repeat;
+            background: url('smoke.gif') center bottom no-repeat;
             background-size: cover; 
             mix-blend-mode: screen; 
             opacity: 0.35; 
@@ -96,9 +96,6 @@
         .history { justify-content: center; text-align: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10; }
         .history h1 { font-family: 'Cinzel', serif; font-size: 4rem; margin-bottom: 40px; letter-spacing: 10px; line-height: 1.5; }
         .history p { color: #ffffff; line-height: 2; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; text-shadow: 0 2px 12px rgba(0,0,0,0.9); font-weight: 400; }
-
-        .i-logo { position: relative; display: inline-block; vertical-align: baseline; }
-        .i-logo img { position: absolute; top: 0; left: 40%; transform: translate(-50%, -60%); width: 0.45em; height: 0.45em; object-fit: cover; border-radius: 50%; }
 
         .section-title { font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 5px; text-transform: uppercase; width: 100%; text-align: left; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; width: 100%; margin-bottom: 100px; }
@@ -203,14 +200,12 @@
         .banner-btn:hover { background: var(--fg); color: var(--bg); }
 
         /* ==========================================================================
-           ⚡ ТОТАЛЬНАЯ ГОТИКА ДЛЯ ВООБЩЕ ВСЕГО ТЕКСТА (ТОЛЬКО ДЛЯ EN / DE)
+           ⚡ ГОТИКА ИСКЛЮЧИТЕЛЬНО ДЛЯ ИСТОРИИ БРЕНДА (ТОЛЬКО ДЛЯ EN / DE)
            ========================================================================== */
         
-        body.gothic-mode,
-        body.gothic-mode *,
-        body.gothic-mode button,
-        body.gothic-mode input,
-        body.gothic-mode textarea {
+        /* Применяем готику ТОЛЬКО к h1 и p внутри секции .history */
+        body.gothic-mode .history h1,
+        body.gothic-mode .history p {
             font-family: "Old English Text MT", "Cloister Black", "Pirata One", serif !important;
             letter-spacing: 0.5px !important; 
             font-weight: normal !important; 
@@ -221,9 +216,6 @@
             line-height: 1.1;
             letter-spacing: 2px !important; 
         }
-
-        /* Убираем сильный межбуквенный интервал для готических таблеток размеров */
-        body.gothic-mode .size-pills button { letter-spacing: 0 !important; font-size: 0.75rem !important; }
 
         @media (max-width: 768px) {
             header { padding: 20px; }
@@ -299,7 +291,7 @@
     </header>
 
     <section class="history reveal">
-        <h1 data-t="homeTitle">ZEITU ERA</h1>
+        <h1 data-t="homeTitle">ZEITU</h1>
         <p data-t="homeDesc1">ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.</p>
         <p data-t="homeDesc2">Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.</p>
     </section>
@@ -428,6 +420,7 @@
         </div>
     </div>
 
+    <!-- ВЫЕЗЖАЮЩАЯ КОРЗИНА (DRAWER) -->
     <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartDrawer()"></div>
     <div id="cart-drawer" class="cart-drawer">
         <button class="close-cart" onclick="closeCartDrawer()">×</button>
@@ -439,6 +432,7 @@
         <button class="btn-buy" style="width:100%; padding:15px;" onclick="proceedToCheckout()" data-t="checkoutBtn">PROCEED TO CHECKOUT</button>
     </div>
 
+    <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
     <div id="m-order" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('m-order')">×</span>
@@ -460,7 +454,7 @@
         const dict = {
             en: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jackets", 
-                homeTitle: "ZEITU ERA",
+                homeTitle: "ZEITU",
                 homeDesc1: "ZEITU was born from the search for the perfect form. We create a visual language for those who value silence and quality.",
                 homeDesc2: "Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.",
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy Policy", terms: "Terms of Service",
@@ -471,7 +465,7 @@
             },
             ru: { 
                 navTshirts: "Футболки", navHoodies: "Худи", navJackets: "Куртки", 
-                homeTitle: "ЭПОХА ZEITU",
+                homeTitle: "ZEITU",
                 homeDesc1: "ZEITU родился из поиска идеальной формы. Мы создаем визуальный язык для тех, кто ценит тишину и качество.",
                 homeDesc2: "Каждая вещь — это манифест минимализма. Никакого шума, только чистая эстетика и бескомпромиссные материалы.",
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Политика конфиденциальности", terms: "Условия использования",
@@ -482,7 +476,7 @@
             },
             de: { 
                 navTshirts: "T-Shirts", navHoodies: "Hoodies", navJackets: "Jacken", 
-                homeTitle: "ZEITU ÄRA",
+                homeTitle: "ZEITU",
                 homeDesc1: "ZEITU entstand aus der Suche nach der perfekten Form. Wir schaffen eine visuelle Sprache für diejenigen, die Stille und Qualität schätzen.",
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
@@ -493,7 +487,7 @@
             },
             es: { 
                 navTshirts: "Camisetas", navHoodies: "Sudaderas", navJackets: "Chaquetas", 
-                homeTitle: "ERA ZEITU",
+                homeTitle: "ZEITU",
                 homeDesc1: "ZEITU nació de la búsqueda de la forma perfecta. Creamos un lenguaje visual para quienes valoran el silencio y la calidad.",
                 homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y materiales sin compromisos.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
@@ -504,7 +498,7 @@
             },
             ar: { 
                 navTshirts: "تي شيرت", navHoodies: "هوديي", navJackets: "سترات", 
-                homeTitle: "عصر ZEITU",
+                homeTitle: "ZEITU",
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئк الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بیان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
                 men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
@@ -721,8 +715,6 @@
             setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        const logoHTML = '<span class="i-logo">I<img src="eye.gif" alt="Eye Detail"></span>';
-
         function changeLang(l) {
             localStorage.setItem('zeitu_lang', l); 
             
@@ -738,11 +730,6 @@
             });
             document.body.style.direction = l === 'ar' ? 'rtl' : 'ltr';
             updateCartButtonText();
-            const homeTitleH1 = document.querySelector('.history h1');
-            if (homeTitleH1) {
-                const currentTitleText = homeTitleH1.innerText;
-                if (currentTitleText.includes('ZEITU')) { homeTitleH1.innerHTML = currentTitleText.replace('I', logoHTML); }
-            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
