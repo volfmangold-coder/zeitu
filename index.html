@@ -33,7 +33,7 @@
             overflow-x: hidden; 
         }
 
-        /* ГИФКА БЭКГРАУНДА */
+        /* ГИФКА БЭКГРАУНДА: По центру и без обрезки */
         .smoke-bg {
             position: fixed;
             top: 0;
@@ -42,8 +42,8 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            background: url('smoke1.gif') center bottom no-repeat;
-            background-size: cover; 
+            background: url('smoke.gif') center center no-repeat;
+            background-size: 100% 100%; 
             mix-blend-mode: screen; 
             opacity: 0.35; 
             will-change: transform; 
@@ -65,7 +65,7 @@
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ЗАКРЕПЛЕННАЯ ШАПКА: position: fixed вместо absolute */
+        /* ЗАКРЕПЛЕННАЯ ШАПКА */
         header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; position: fixed; width: 100%; top: 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); transition: 0.3s; }
         .brand { display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .eye-gif { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; }
@@ -384,7 +384,6 @@
             <p>© 2026 ZEITU</p>
             
             <div class="social-links">
-                <!-- ОБНОВЛЕННЫЕ ССЫЛКИ -->
                 <a href="https://instagram.com/zeituart" target="_blank">INSTAGRAM</a>
                 <a href="https://www.tiktok.com/@zeitu.studio" target="_blank">TIKTOK</a>
             </div>
@@ -403,7 +402,7 @@
 
         <div class="contact-info">
             <p data-t="contact" style="margin-bottom: 5px; color: #fff;">CONTACT:</p>
-            <a href="mailto:brand@zeitu.com">zeituart@gmail.com</a>
+            <a href="mailto:zeituart@gmail.com">zeituart@gmail.com</a>
             <p>+49 123 456 78 90</p>
         </div>
     </footer>
@@ -414,7 +413,6 @@
         </div>
     </div>
 
-    <!-- ВЫЕЗЖАЮЩАЯ КОРЗИНА (DRAWER) -->
     <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartDrawer()"></div>
     <div id="cart-drawer" class="cart-drawer">
         <button class="close-cart" onclick="closeCartDrawer()">×</button>
@@ -426,7 +424,6 @@
         <button class="btn-buy" style="width:100%; padding:15px;" onclick="proceedToCheckout()" data-t="checkoutBtn">PROCEED TO CHECKOUT</button>
     </div>
 
-    <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
     <div id="m-order" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('m-order')">×</span>
@@ -437,7 +434,7 @@
                 <input type="text" name="_honey" style="display:none">
                 
                 <label style="margin-top: 20px;">EMAIL</label>
-                <input type="email" id="order-customer-email" name="email" required placeholder="contact@email.com">
+                <input type="email" id="order-customer-email" name="email" required placeholder="zeituart@gmail.com">
                 
                 <button type="submit" data-t="submitOrder">SUBMIT ORDER</button>
             </form>
@@ -495,7 +492,7 @@
                 homeTitle: "ZEITU",
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئк الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بیان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
-                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
+                men: "رجال", النساء: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
                 orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
                 bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
