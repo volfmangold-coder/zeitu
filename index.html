@@ -33,7 +33,7 @@
             overflow-x: hidden; 
         }
 
-        /* ГИФКА БЭКГРАУНДА: По центру и без обрезки */
+        /* ИСПРАВЛЕННАЯ ГИФКА БЭКГРАУНДА: Сохраняем пропорции, без сплющивания */
         .smoke-bg {
             position: fixed;
             top: 0;
@@ -43,7 +43,7 @@
             z-index: -1;
             pointer-events: none;
             background: url('smoke1.gif') center center no-repeat;
-            background-size: 100% 100%; 
+            background-size: cover; /* Возвращаем cover, чтобы не ломать пропорции */
             mix-blend-mode: screen; 
             opacity: 0.35; 
             will-change: transform; 
@@ -412,6 +412,7 @@
         </div>
     </div>
 
+    <!-- ВЫЕЗЖАЮЩАЯ КОРЗИНА (DRAWER) -->
     <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartDrawer()"></div>
     <div id="cart-drawer" class="cart-drawer">
         <button class="close-cart" onclick="closeCartDrawer()">×</button>
@@ -423,6 +424,7 @@
         <button class="btn-buy" style="width:100%; padding:15px;" onclick="proceedToCheckout()" data-t="checkoutBtn">PROCEED TO CHECKOUT</button>
     </div>
 
+    <!-- РЕАЛИСТИЧНАЯ МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
     <div id="m-order" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('m-order')">×</span>
