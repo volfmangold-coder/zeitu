@@ -42,7 +42,7 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            background: url('smoke.gif') center center no-repeat;
+            background: url('smoke1.gif') center center no-repeat;
             background-size: 100% 100%; 
             mix-blend-mode: screen; 
             opacity: 0.35; 
@@ -146,29 +146,19 @@
         .cart-drawer .close-cart { position: absolute; top: 35px; right: 30px; font-size: 2rem; cursor: pointer; background: transparent; border: none; color: #fff; line-height: 1; }
         .cart-drawer-content { flex: 1; overflow-y: auto; margin-bottom: 20px; }
 
-        /* КНОПКИ РАЗМЕРА В КОРЗИНЕ (ВМЕСТО ВЫПАДАЮЩЕГО СПИСКА) */
+        /* КНОПКИ РАЗМЕРА В КОРЗИНЕ */
         .size-pills { display: flex; gap: 5px; margin-top: 8px; }
         .size-pills button { 
-            background: transparent; 
-            border: 1px solid var(--border); 
-            color: var(--grey); 
-            width: 24px; 
-            height: 24px; 
-            font-size: 0.6rem; 
-            cursor: crosshair; 
-            transition: 0.3s;
-            font-family: 'Inter', sans-serif;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: transparent; border: 1px solid var(--border); color: var(--grey); 
+            width: 24px; height: 24px; font-size: 0.6rem; cursor: crosshair; transition: 0.3s;
+            font-family: 'Inter', sans-serif; padding: 0; display: flex; align-items: center; justify-content: center;
         }
         .size-pills button:hover { border-color: var(--grey); color: var(--fg); }
         .size-pills button.active { background: var(--fg); color: var(--bg); border-color: var(--fg); font-weight: 600; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 3000; padding: 100px 20px; opacity: 0; transition: opacity 0.4s ease; overflow-y: auto; }
         .modal.active { display: block; opacity: 1; }
-        .modal-content { max-width: 500px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; position: relative; }
+        .modal-content { max-width: 600px; margin: 0 auto; line-height: 1.8; letter-spacing: 1px; border: 1px solid var(--border); padding: 40px; background: #050505; position: relative; }
         .modal-content h2 { font-family: 'Cinzel', serif; margin-bottom: 10px; font-size: 1.5rem; text-align: center; }
         .modal-content .item-name { text-align: center; color: var(--grey); font-size: 0.8rem; margin-bottom: 30px; letter-spacing: 2px; }
         
@@ -180,11 +170,21 @@
         .cart-item-remove:hover { color: var(--fg); text-decoration: line-through; }
         .cart-total-price { text-align: right; font-family: 'Cinzel', serif; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; border-top: 1px solid var(--border); padding-top: 15px; }
 
-        .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; }
-        .order-form input[type="email"], .order-form input[type="text"] { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 10px; font-size: 0.8rem; outline: none; cursor: crosshair; }
+        /* ОБНОВЛЕННАЯ ФОРМА ОФОРМЛЕНИЯ ЗАКАЗА */
+        .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;}
+        .order-form input { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 12px; font-size: 0.8rem; outline: none; cursor: crosshair; font-family: 'Inter', sans-serif;}
+        .order-form input:focus { border-color: var(--grey); }
         
-        .order-form button { width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 15px; margin-top: 30px; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; }
-        .order-form button:hover { opacity: 0.8; }
+        .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 5px; }
+        .checkout-grid.full { grid-template-columns: 1fr; }
+        
+        .payment-methods { display: flex; gap: 10px; margin-top: 15px; }
+        .pay-btn { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 12px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Inter', sans-serif;}
+        .pay-btn:hover { border-color: var(--grey); }
+        .pay-btn.active { border-color: var(--fg); background: rgba(255, 255, 255, 0.05); }
+
+        .order-form .submit-btn { width: 100%; background: var(--fg); color: var(--bg); border: none; padding: 15px; margin-top: 30px; font-weight: 600; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; font-family: 'Inter', sans-serif; cursor: crosshair;}
+        .order-form .submit-btn:hover { opacity: 0.8; }
         
         .close { position: absolute; top: 20px; right: 20px; font-size: 2.5rem; cursor: pointer; background: transparent; border: none; color: #fff; z-index: 10; width: 40px; height: 40px; line-height: 40px; text-align: center;}
 
@@ -201,9 +201,6 @@
         /* ==========================================================================
            ⚡ ГОТИКА ИСКЛЮЧИТЕЛЬНО ДЛЯ АБЗАЦЕВ ИСТОРИИ БРЕНДА (ТОЛЬКО EN / DE)
            ========================================================================== */
-        
-        /* Применяем готику только к абзацам (p) в секции .history. 
-           Главный заголовок (h1) "ZEITU" остается классическим Cinzel. */
         body.gothic-mode .history p {
             font-family: "Old English Text MT", "Cloister Black", "Pirata One", serif !important;
             letter-spacing: 0.5px !important; 
@@ -223,6 +220,8 @@
             #privacy-banner { flex-direction: column; gap: 20px; text-align: center; padding: 20px; line-height: 1.5; }
             .banner-btns { width: 100%; justify-content: center;}
             .cart-drawer { width: 100%; padding: 30px 20px; right: -100%;}
+            .checkout-grid { grid-template-columns: 1fr; gap: 0; }
+            .payment-methods { flex-direction: column; }
         }
     </style>
 </head>
@@ -427,16 +426,53 @@
     <div id="m-order" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('m-order')">×</span>
-            <h2 data-t="orderTitle">ORDER REQUEST</h2>
-            <div class="item-name" id="order-items-summary">Items summary</div>
+            <h2 data-t="orderTitle">SECURE CHECKOUT</h2>
+            <div class="item-name" id="order-items-summary" style="margin-bottom: 10px;">Items summary</div>
             
             <form class="order-form" onsubmit="sendOrderToBackend(event)">
                 <input type="text" name="_honey" style="display:none">
                 
-                <label style="margin-top: 20px;">EMAIL</label>
-                <input type="email" id="order-customer-email" name="email" required placeholder="zeituart@gmail.com">
+                <div class="checkout-grid">
+                    <div>
+                        <label>FIRST NAME</label>
+                        <input type="text" required placeholder="John">
+                    </div>
+                    <div>
+                        <label>LAST NAME</label>
+                        <input type="text" required placeholder="Doe">
+                    </div>
+                </div>
+
+                <div class="checkout-grid full">
+                    <div>
+                        <label>EMAIL</label>
+                        <input type="email" id="order-customer-email" required placeholder="zeituart@gmail.com">
+                    </div>
+                    <div>
+                        <label>SHIPPING ADDRESS</label>
+                        <input type="text" required placeholder="123 Void Street">
+                    </div>
+                </div>
+
+                <div class="checkout-grid">
+                    <div>
+                        <label>CITY</label>
+                        <input type="text" required placeholder="Berlin">
+                    </div>
+                    <div>
+                        <label>POSTAL CODE</label>
+                        <input type="text" required placeholder="10115">
+                    </div>
+                </div>
+
+                <label style="margin-top: 25px; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px;">PAYMENT METHOD</label>
+                <div class="payment-methods">
+                    <button type="button" class="pay-btn active" onclick="selectPay(this)">💳 Card</button>
+                    <button type="button" class="pay-btn" onclick="selectPay(this)"> Apple Pay</button>
+                    <button type="button" class="pay-btn" onclick="selectPay(this)">G Pay</button>
+                </div>
                 
-                <button type="submit" data-t="submitOrder">SUBMIT ORDER</button>
+                <button type="submit" class="submit-btn" data-t="submitOrder">PAY & PLACE ORDER</button>
             </form>
         </div>
     </div>
@@ -450,7 +486,7 @@
                 homeDesc2: "Every piece is a statement of minimalism. No noise, just raw aesthetic and uncompromising materials.",
                 men: "MEN", women: "WOMEN", contact: "CONTACT:", privacy: "Privacy Policy", terms: "Terms of Service",
                 cotton: "100% HEAVY COTTON", leather: "PREMIUM VEGAN LEATHER", joinVoid: "JOIN THE VOID (EARLY ACCESS)", subBtn: "ENTER",
-                orderTitle: "ORDER REQUEST", sizeLabel: "SELECT SIZE", qtyLabel: "QUANTITY", submitOrder: "SUBMIT ORDER",
+                orderTitle: "SECURE CHECKOUT", submitOrder: "PAY & PLACE ORDER",
                 bannerText: "We process data to enhance your experience in the void. Read our ", accept: "ACCEPT", decline: "DECLINE",
                 cartTitle: "YOUR CART", checkoutBtn: "PROCEED TO CHECKOUT", cartBtnLabel: "CART"
             },
@@ -461,7 +497,7 @@
                 homeDesc2: "Каждая вещь — это манифест минимализма. Никакого шума, только чистая эстетика и бескомпромиссные материалы.",
                 men: "МУЖ", women: "ЖЕН", contact: "СВЯЗЬ:", privacy: "Политика конфиденциальности", terms: "Условия использования",
                 cotton: "100% ПЛОТНЫЙ ХЛОПОК", leather: "ПРЕМИУМ ЭКО-КОЖА", joinVoid: "ВСТУПИТЬ В ПУСТОТУ (РАННИЙ ДОСТУП)", subBtn: "ВОЙТИ",
-                orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", sizeLabel: "ВЫБЕРИТЕ РАЗМЕР", qtyLabel: "КОЛИЧЕСТВО", submitOrder: "ПОДТВЕРДИТЬ ЗАКАЗ",
+                orderTitle: "ОФОРМЛЕНИЕ ЗАКАЗА", submitOrder: "ОПЛАТИТЬ ЗАКАЗ",
                 bannerText: "Мы обрабатываем ваши данные для улучшения опыта. Читайте нашу ", accept: "ПРИНЯТЬ", decline: "ОТКЛОНИТЬ",
                 cartTitle: "ВАША КОРЗИНА", checkoutBtn: "ПЕРЕЙТИ К ОФОРМЛЕНИЮ", cartBtnLabel: "КОРЗИНА"
             },
@@ -472,7 +508,7 @@
                 homeDesc2: "Jedes Stück ist ein Statement des Minimalismus. Kein Lärm, nur rohe Ästhetik und kompromisslose Materialien.",
                 men: "HERREN", women: "DAMEN", contact: "KONTAKT:", privacy: "Datenschutzrichtlinie", terms: "Nutzungsbedingungen",
                 cotton: "100% SCHWERE BAUMWOLLE", leather: "PREMIUM VEGANES LEDER", joinVoid: "TRITT DER LEERE BEI (EARLY ACCESS)", subBtn: "EINTRITT",
-                orderTitle: "BESTELLANFRAGE", sizeLabel: "GRÖSSE WÄHLEN", qtyLabel: "MENGE", submitOrder: "BESTELLUNG ABSCHLIESSEN",
+                orderTitle: "SICHERE KASSE", submitOrder: "ZAHLEN & BESTELLEN",
                 bannerText: "Wir verarbeiten Ihre Daten, um Ihr Erlebnis zu verbessern. Lesen Sie unsere ", accept: "AKZEPTIEREN", decline: "ABLEHNEN",
                 cartTitle: "IHR WARENKORB", checkoutBtn: "ZUR KASSE GEHEN", cartBtnLabel: "WARENKORB"
             },
@@ -483,7 +519,7 @@
                 homeDesc2: "Cada pieza es una declaración de minimalismo. Sin ruido, solo estética pura y materiales sin compromisos.",
                 men: "HOMBRE", women: "MUJER", contact: "CONTACTO:", privacy: "Política de Privacidad", terms: "Términos de Servicio",
                 cotton: "100% ALGODÓN PESADO", leather: "CUERO VEGANO PREMIUM", joinVoid: "ÚNETЕ AL VACÍO (ACCESO ANTICIPADO)", subBtn: "ENTRAR",
-                orderTitle: "SOLICITUD DE PEDIDO", sizeLabel: "SELECCIONAR TALLA", qtyLabel: "CANTIDAD", submitOrder: "ENVIAR PEDIDO",
+                orderTitle: "PAGO SEGURO", submitOrder: "PAGAR Y REALIZAR PEDIDO",
                 bannerText: "Procesamos sus datos para mejorar su experiencia. Lea nuestra ", accept: "ACEPTAR", decline: "RECHAZAR",
                 cartTitle: "SU CARRITO", checkoutBtn: "PROCEDER AL PAGO", cartBtnLabel: "CARRITO"
             },
@@ -492,9 +528,9 @@
                 homeTitle: "ZEITU",
                 homeDesc1: "ولدت ZEITU من البحث عن الشكل المثالي. نحن نخلق لغة بصرية لأولئк الذين يقدرون الصمت والجودة.",
                 homeDesc2: "كل قطعة هي بیان للبساطة. لا ضوضاء، فقط جمالية خام ومواد لا هوادة فيها.",
-                men: "رجال", النساء: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
+                men: "رجال", women: "نساء", contact: "اتصال:", privacy: "سياسة الخصوصية", terms: "شروط الخدمة",
                 cotton: "100% قطن ثقيل", leather: "جلد نباتي فاخر", joinVoid: "انضم إلى الفراغ (وصول مبكر)", subBtn: "أدخل",
-                orderTitle: "طلب الشراء", sizeLabel: "اختر المقاس", qtyLabel: "كمية", submitOrder: "إرسال الطلب",
+                orderTitle: "الدفع الآمن", submitOrder: "دفع وإتمام الطلب",
                 bannerText: "نحن نعالج بياناتك لتحسين تجربتك. اقرأ ", accept: "قبول", decline: "رفض",
                 cartTitle: "حقيبتك", checkoutBtn: "المتابعة لإتمام الطلب", cartBtnLabel: "العربة"
             }
@@ -620,6 +656,12 @@
             }, 450);
         }
 
+        // Анимация выбора способа оплаты
+        function selectPay(element) {
+            document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+        }
+
         function clearCart() {
             cart = [];
             saveCartToStorage();
@@ -641,10 +683,10 @@
                 items: safeCartItems
             };
 
-            console.log("Безопасные данные для бэкенда:", payload);
+            console.log("Данные заказа для бэкенда:", payload);
 
             clearCart();
-            showToast('Request sent to the Void.');
+            showToast('Order successfully placed. Check your email.');
             closeModal('m-order');
             event.target.reset();
         }
