@@ -33,7 +33,13 @@
             overflow-x: hidden; 
         }
 
-        /* ИСПРАВЛЕННАЯ ГИФКА БЭКГРАУНДА: Сохраняем пропорции, без сплющивания */
+        /* КАСТОМНЫЙ СКРОЛЛБАР */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; transition: 0.3s; }
+        ::-webkit-scrollbar-thumb:hover { background: #333333; }
+
+        /* ГИФКА БЭКГРАУНДА */
         .smoke-bg {
             position: fixed;
             top: 0;
@@ -42,8 +48,8 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
-            background: url('smoke1.gif') center center no-repeat;
-            background-size: cover; /* Возвращаем cover, чтобы не ломать пропорции */
+            background: url('smoke.gif') center center no-repeat;
+            background-size: cover; 
             mix-blend-mode: screen; 
             opacity: 0.35; 
             will-change: transform; 
@@ -137,7 +143,7 @@
         .sub-input-group button { background: var(--fg); color: var(--bg); border: none; padding: 10px 15px; font-size: 0.7rem; font-weight: 600; cursor: crosshair; letter-spacing: 1px; transition: 0.3s; }
         .sub-input-group button:hover { opacity: 0.8; }
         
-        /* СТИЛИ ДЛЯ ВЫЕЗЖАЮЩЕЙ КОРЗИНЫ (DRAWER) */
+        /* СТИЛИ ДЛЯ ВЫЕЗЖАЮЩЕЙ КОРЗИНЫ */
         .cart-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 3000; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(5px); }
         .cart-backdrop.active { opacity: 1; pointer-events: auto; }
         .cart-drawer { position: fixed; top: 0; right: -450px; width: 400px; max-width: 100vw; height: 100vh; background: var(--bg); border-left: 1px solid var(--border); z-index: 3001; transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1); padding: 40px; display: flex; flex-direction: column; }
@@ -170,9 +176,9 @@
         .cart-item-remove:hover { color: var(--fg); text-decoration: line-through; }
         .cart-total-price { text-align: right; font-family: 'Cinzel', serif; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1px; border-top: 1px solid var(--border); padding-top: 15px; }
 
-        /* ОБНОВЛЕННАЯ ФОРМА ОФОРМЛЕНИЯ ЗАКАЗА */
+        /* ФОРМА ОФОРМЛЕНИЯ ЗАКАЗА */
         .order-form label { display: block; font-size: 0.65rem; color: var(--grey); margin-bottom: 5px; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px;}
-        .order-form input { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 12px; font-size: 0.8rem; outline: none; cursor: crosshair; font-family: 'Inter', sans-serif;}
+        .order-form input[type="text"], .order-form input[type="email"] { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--fg); padding: 12px; font-size: 0.8rem; outline: none; cursor: crosshair; font-family: 'Inter', sans-serif;}
         .order-form input:focus { border-color: var(--grey); }
         
         .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 5px; }
@@ -198,9 +204,7 @@
         .banner-btn { background: transparent; color: var(--fg); border: 1px solid var(--fg); padding: 8px 25px; font-size: 0.6rem; letter-spacing: 2px; cursor: pointer; transition: 0.3s;}
         .banner-btn:hover { background: var(--fg); color: var(--bg); }
 
-        /* ==========================================================================
-           ⚡ ГОТИКА ИСКЛЮЧИТЕЛЬНО ДЛЯ АБЗАЦЕВ ИСТОРИИ БРЕНДА (ТОЛЬКО EN / DE)
-           ========================================================================== */
+        /* ГОТИКА ИСКЛЮЧИТЕЛЬНО ДЛЯ ИСТОРИИ БРЕНДА (ТОЛЬКО EN / DE) */
         body.gothic-mode .history p {
             font-family: "Old English Text MT", "Cloister Black", "Pirata One", serif !important;
             letter-spacing: 0.5px !important; 
@@ -378,9 +382,12 @@
 
     <footer>
         <div>
+            <!-- ЮРИДИЧЕСКИЙ БЛОК: Добавлен Impressum и Returns -->
             <a href="javascript:void(0)" onclick="openPol('privacy')" data-t="privacy">Privacy Policy</a>
             <a href="javascript:void(0)" onclick="openPol('terms')" data-t="terms">Terms of Service</a>
-            <p>© 2026 ZEITU</p>
+            <a href="javascript:void(0)" onclick="openPol('impressum')">Impressum</a>
+            <a href="javascript:void(0)" onclick="openPol('returns')">Returns & Refunds</a>
+            <p style="margin-top: 20px;">© 2026 ZEITU</p>
             
             <div class="social-links">
                 <a href="https://instagram.com/zeituart" target="_blank">INSTAGRAM</a>
@@ -412,7 +419,7 @@
         </div>
     </div>
 
-    <!-- ВЫЕЗЖАЮЩАЯ КОРЗИНА (DRAWER) -->
+    <!-- ВЫЕЗЖАЮЩАЯ КОРЗИНА -->
     <div id="cart-backdrop" class="cart-backdrop" onclick="closeCartDrawer()"></div>
     <div id="cart-drawer" class="cart-drawer">
         <button class="close-cart" onclick="closeCartDrawer()">×</button>
@@ -424,7 +431,7 @@
         <button class="btn-buy" style="width:100%; padding:15px;" onclick="proceedToCheckout()" data-t="checkoutBtn">PROCEED TO CHECKOUT</button>
     </div>
 
-    <!-- РЕАЛИСТИЧНАЯ МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
+    <!-- МОДАЛКА ОФОРМЛЕНИЯ ЗАКАЗА -->
     <div id="m-order" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('m-order')">×</span>
@@ -472,6 +479,14 @@
                     <button type="button" class="pay-btn active" onclick="selectPay(this)">💳 Card</button>
                     <button type="button" class="pay-btn" onclick="selectPay(this)"> Apple Pay</button>
                     <button type="button" class="pay-btn" onclick="selectPay(this)">G Pay</button>
+                </div>
+                
+                <!-- ЮРИДИЧЕСКИЙ ЧЕКБОКС СОГЛАСИЯ -->
+                <div style="margin-top: 20px; display: flex; align-items: flex-start; gap: 10px;">
+                    <input type="checkbox" id="legal-agree" required style="width: 15px; height: 15px; margin-top: 2px;">
+                    <label for="legal-agree" style="margin-top: 0; text-transform: none; line-height: 1.4;">
+                        I have read and agree to the <a href="javascript:void(0)" onclick="openPol('terms')" style="color: var(--fg);">Terms</a> and <a href="javascript:void(0)" onclick="openPol('privacy')" style="color: var(--fg);">Privacy Policy</a>.
+                    </label>
                 </div>
                 
                 <button type="submit" class="submit-btn" data-t="submitOrder">PAY & PLACE ORDER</button>
@@ -612,19 +627,19 @@
                     <div class="cart-item-details">
                         <div><strong>${item.name}</strong></div>
                         <div class="size-pills">
-                            <button class="${item.size === 'S' ? 'active' : ''}" onclick="changeItemSize(${index}, 'S')">S</button>
-                            <button class="${item.size === 'M' ? 'active' : ''}" onclick="changeItemSize(${index}, 'M')">M</button>
-                            <button class="${item.size === 'L' ? 'active' : ''}" onclick="changeItemSize(${index}, 'L')">L</button>
-                            <button class="${item.size === 'XL' ? 'active' : ''}" onclick="changeItemSize(${index}, 'XL')">XL</button>
+                            <button type="button" class="${item.size === 'S' ? 'active' : ''}" onclick="changeItemSize(${index}, 'S')">S</button>
+                            <button type="button" class="${item.size === 'M' ? 'active' : ''}" onclick="changeItemSize(${index}, 'M')">M</button>
+                            <button type="button" class="${item.size === 'L' ? 'active' : ''}" onclick="changeItemSize(${index}, 'L')">L</button>
+                            <button type="button" class="${item.size === 'XL' ? 'active' : ''}" onclick="changeItemSize(${index}, 'XL')">XL</button>
                         </div>
                     </div>
                     <div class="cart-item-qty">
-                        <button onclick="changeItemQty(${index}, -1)">-</button>
+                        <button type="button" onclick="changeItemQty(${index}, -1)">-</button>
                         <span>${item.qty}</span>
-                        <button onclick="changeItemQty(${index}, 1)">+</button>
+                        <button type="button" onclick="changeItemQty(${index}, 1)">+</button>
                     </div>
                     <div>€ ${item.price * item.qty}</div>
-                    <button class="cart-item-remove" onclick="removeFromCart(${index})">×</button>
+                    <button type="button" class="cart-item-remove" onclick="removeFromCart(${index})">×</button>
                 `;
                 container.appendChild(row);
             });
@@ -658,7 +673,6 @@
             }, 450);
         }
 
-        // Анимация выбора способа оплаты
         function selectPay(element) {
             document.querySelectorAll('.pay-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
@@ -709,14 +723,24 @@
             document.getElementById('privacy-banner').classList.remove('show');
         }
 
+        // ОБНОВЛЕННАЯ ФУНКЦИЯ ДЛЯ ЮРИДИЧЕСКИХ СТРАНИЦ
         function openPol(type) {
             const modal = document.getElementById('m-pol');
             const innerContainer = document.getElementById('m-text');
             const closeBtn = '<span class="close" onclick="closeModal(\'m-pol\')">×</span>';
             
-            innerContainer.innerHTML = closeBtn + (type === 'privacy' 
-                ? '<h1>Privacy Policy</h1><p>Your data is safe with ZEITU. We process data according to strict minimalism.</p>' 
-                : '<h1>Terms of Service</h1><p>Terms and conditions for ZEITU era. No compromises.</p>');
+            let content = '';
+            if (type === 'privacy') {
+                content = '<h1>Privacy Policy</h1><p>Your data is safe with ZEITU. We process data according to strict minimalism.</p>';
+            } else if (type === 'terms') {
+                content = '<h1>Terms of Service</h1><p>Terms and conditions for ZEITU era. No compromises.</p>';
+            } else if (type === 'impressum') {
+                content = '<h1>Impressum</h1><p>ZEITU GmbH<br>Void Street 123<br>10115 Berlin, Germany<br><br>CEO: John Doe<br>Contact: zeituart@gmail.com<br>VAT ID: DE123456789</p>';
+            } else if (type === 'returns') {
+                content = '<h1>Returns & Refunds</h1><p>You have the right to return items within 14 days without giving any reason. The withdrawal period will expire after 14 days from the day on which you acquire physical possession of the goods.</p>';
+            }
+
+            innerContainer.innerHTML = closeBtn + content;
             modal.style.display = 'block';
             setTimeout(() => modal.classList.add('active'), 10);
         }
@@ -751,6 +775,7 @@
 
         function changeLang(l) {
             localStorage.setItem('zeitu_lang', l); 
+            document.documentElement.lang = l; // ДИНАМИЧЕСКИ МЕНЯЕМ ТЕГ ДЛЯ SEO
             
             if (l === 'en' || l === 'de') {
                 document.body.classList.add('gothic-mode');
@@ -771,6 +796,15 @@
             document.querySelector('.lang-select').value = savedLang; 
             changeLang(savedLang); 
             updateCartButtonText();
+        });
+
+        // ДИНАМИЧЕСКИЙ ЗАГОЛОВОК ВКЛАДКИ
+        let docTitle = document.title;
+        window.addEventListener("blur", () => {
+            document.title = "Come back to the void...";
+        });
+        window.addEventListener("focus", () => {
+            document.title = docTitle;
         });
     </script>
 </body>
