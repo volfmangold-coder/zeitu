@@ -33,7 +33,7 @@
             overflow-x: hidden; 
         }
 
-        /* ГИФКА БЭКГРАУНДА: ВЕРНУЛ КАК БЫЛО (Без отключения на мобильных) */
+        /* ГИФКА БЭКГРАУНДА */
         .smoke-bg {
             position: fixed;
             top: 0;
@@ -65,7 +65,8 @@
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; position: absolute; width: 100%; top: 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
+        /* ЗАКРЕПЛЕННАЯ ШАПКА: position: fixed вместо absolute */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; position: fixed; width: 100%; top: 0; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); transition: 0.3s; }
         .brand { display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .eye-gif { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; }
         .logo { font-family: 'Cinzel', serif; font-size: 1.6rem; letter-spacing: 5px; text-transform: uppercase; }
@@ -207,7 +208,7 @@
             font-family: "Old English Text MT", "Cloister Black", "Pirata One", serif !important;
             letter-spacing: 0.5px !important; 
             font-weight: normal !important; 
-            font-size: 1.25rem !important; /* Чуть увеличили, чтобы готика читалась легче */
+            font-size: 1.25rem !important; 
         }
 
         @media (max-width: 768px) {
@@ -383,8 +384,9 @@
             <p>© 2026 ZEITU</p>
             
             <div class="social-links">
-                <a href="https://instagram.com/your_zeitu_profile" target="_blank">INSTAGRAM</a>
-                <a href="https://tiktok.com/@your_zeitu_profile" target="_blank">TIKTOK</a>
+                <!-- ОБНОВЛЕННЫЕ ССЫЛКИ -->
+                <a href="https://instagram.com/zeituart" target="_blank">INSTAGRAM</a>
+                <a href="https://www.tiktok.com/@zeitu.studio" target="_blank">TIKTOK</a>
             </div>
         </div>
         
@@ -521,7 +523,6 @@
             showToast(`${name} added to cart.`);
         }
 
-        // Чистая привязка событий из JS
         document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation(); 
